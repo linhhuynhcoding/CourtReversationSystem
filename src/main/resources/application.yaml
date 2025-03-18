@@ -2,15 +2,15 @@ spring:
   application:
     name: CourtReservationSystem
   datasource:
-    url: jdbc:postgresql://172.17.0.2:5432/postgres
-    username: postgres
-    password: cuoctinhdivang
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
     show-sql: true
     hibernate:
-        ddl-auto: update
+        ddl-auto: create
     properties:
       hibernate:
         format_sql: true
