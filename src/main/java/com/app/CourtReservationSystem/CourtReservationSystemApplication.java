@@ -6,8 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CourtReservationSystemApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CourtReservationSystemApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(CourtReservationSystemApplication.class, args);
 
+    int a = 3 + 2;
+  }
 }
