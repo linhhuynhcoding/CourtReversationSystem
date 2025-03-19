@@ -1,29 +1,37 @@
 package com.app.CourtReservationSystem.model;
 
 import jakarta.persistence.*;
-
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+/**
+ * @author linhhuynhcoding
+ *
+ */
 @Entity
 @Table(name = "accounts", indexes = @Index(name = "index_accounts_username", columnList = "username", unique = true))
-public class Accounts {
+@Data
+public class Account extends Audiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
 
-    @Column
-    private int role_id;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false, updatable = true)
+    private Role role;
 
 
 }
