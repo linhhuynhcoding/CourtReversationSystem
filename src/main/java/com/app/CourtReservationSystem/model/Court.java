@@ -6,11 +6,14 @@ package com.app.CourtReservationSystem.model;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
 @Table(name = "courts")
+@Audited
 @Data
 public class Court extends Audiable {
 

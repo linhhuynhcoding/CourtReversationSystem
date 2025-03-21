@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 import java.util.List;
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "carts")
+@Audited
 public class Cart extends Audiable {
     @Id
     @GeneratedValue()

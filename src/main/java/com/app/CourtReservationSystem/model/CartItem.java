@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name= "cart_items")
+@Audited
 @Data
 public class CartItem extends Audiable {
     @Id

@@ -1,4 +1,4 @@
-package com.app.CourtReservationSystem.jwt;
+package com.app.CourtReservationSystem.security;
 
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-public class JwtTokenPovider {
+public class JwtTokenProvider {
 
         @Autowired
         private AccountRepository accountRepository;
@@ -29,21 +29,20 @@ public class JwtTokenPovider {
                 Date expiryDate = new Date(now.getTime() + JWT_EXPIRED_TIME);
                 // Tạo chuỗi json web token từ id của user.
                 return Jwts.builder()
-                        .setSubject(Long.toString(userDetails.getAccount().getId()))
+                        .setSubject(userDetails.getUsername())
                         .setIssuedAt(now)
                         .setExpiration(expiryDate)
                         .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY)
                         .compact();
         }
 
-        // Lấy thông tin user từ jwt
-        public Long getUserIdFromJWT(String token) {
-                Claims claims = Jwts.parser()
-                        .setSigningKey(JWT_SECRET_KEY)
-                        .parseClaimsJws(token)
-                        .getBody();
+        public String getUsername(String token) {
+          Claims claims = Jwts.parser()
+            .setSigningKey(JWT_SECRET_KEY)
+            .parseClaimsJws(token)
+            .getBody();
 
-                return Long.parseLong(claims.getSubject());
+          return claims.getSubject();
         }
 
         public boolean validateToken(String authToken) {

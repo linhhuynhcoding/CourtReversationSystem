@@ -2,6 +2,8 @@ package com.app.CourtReservationSystem.model;
 import com.app.CourtReservationSystem.enums.OrderType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "orders")
+@Audited
 @Data
 public class Order extends Audiable {
 

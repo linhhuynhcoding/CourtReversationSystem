@@ -1,14 +1,15 @@
-package com.app.CourtReservationSystem.service.Impl;
+package com.app.CourtReservationSystem.security;
 
-import com.app.CourtReservationSystem.jwt.CustomUserDetails;
 import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-public class AccountService implements UserDetailsService {
+@Service
+public class AccountDetailService implements UserDetailsService {
 
     @Autowired
     private AccountRepository accountRepository;

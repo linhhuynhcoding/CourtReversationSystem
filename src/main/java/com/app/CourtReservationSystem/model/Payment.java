@@ -6,9 +6,11 @@ package com.app.CourtReservationSystem.model;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "payments")
+@Audited
 @Data
 public class Payment extends Audiable {
 

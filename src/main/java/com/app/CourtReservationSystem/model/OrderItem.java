@@ -1,6 +1,8 @@
 package com.app.CourtReservationSystem.model;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "order_items")
+@Audited
 @Data
 public class OrderItem extends Audiable{
 

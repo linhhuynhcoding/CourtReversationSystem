@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.envers.Audited;
 
 /**
  * @author linhhuynhcoding
@@ -10,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
  */
 @Entity
 @Table(name = "products")
+@Audited
 @Data
 public class Product extends Audiable {
 
@@ -32,7 +34,7 @@ public class Product extends Audiable {
   @Column(nullable = false)
   private String image;
 
-//  @ManyToOne
-//  @JoinColumn(name = "category_id")
-//  private Category category;
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
 }

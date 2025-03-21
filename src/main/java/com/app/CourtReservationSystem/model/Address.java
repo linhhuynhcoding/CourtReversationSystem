@@ -2,9 +2,11 @@ package com.app.CourtReservationSystem.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "addresses")
+@Audited
 @Data
 public class Address extends Audiable {
 

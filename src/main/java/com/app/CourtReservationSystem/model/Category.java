@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.model;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 /**
  * @author linhhuynhcoding
@@ -8,6 +9,7 @@ import lombok.*;
  */
 @Entity
 @Table(name = "categories")
+@Audited
 @Data
 public class Category extends Audiable {
 

@@ -1,4 +1,4 @@
-package com.app.CourtReservationSystem.jwt;
+package com.app.CourtReservationSystem.security;
 
 import com.app.CourtReservationSystem.model.Account;
 import lombok.AllArgsConstructor;
