@@ -1,24 +1,18 @@
 package com.app.CourtReservationSystem.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+import java.util.Objects;
 
-@AllArgsConstructor
-public class ErrorResponse {
+@Data
+public class ErrorResponse<E> {
   private Date timestamp;
   private String message;
-  private String details;
+  private String details = "";
+  private String help = "";
+  private E error;
+  private String path;
 
+}
 
-  public Date getTimestamp() {
-    return timestamp;
-  }
-
-  public String getMessage() {
-    return message;
-  }
-
-  public String getDetails() {
-    return details;
-  }}
