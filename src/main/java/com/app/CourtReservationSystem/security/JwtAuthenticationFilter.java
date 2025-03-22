@@ -43,14 +43,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       // load the user associated with token
       UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+      
       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
         userDetails,
         null,
         userDetails.getAuthorities()
       );
 
-      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // gan ipaddress va session id cho token
 
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 

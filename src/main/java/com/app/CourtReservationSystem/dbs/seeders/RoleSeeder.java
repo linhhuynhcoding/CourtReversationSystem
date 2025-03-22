@@ -20,7 +20,7 @@ public class RoleSeeder implements CommandLineRunner {
 
   private void loadUserData() {
     if (roleRepository.count() == 0) {
-      String[] roles = {"USER", "COACH", "COURT_MANAGER", "ADMIN"};
+      String[] roles = {"PLAYER", "COACH", "COURT_MANAGER", "ADMIN"};
       for (String r : roles) {
         Role role = new Role();
         role.setRole(r);

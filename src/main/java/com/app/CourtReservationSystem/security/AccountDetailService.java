@@ -16,7 +16,6 @@ public class AccountDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        // Kiểm tra xem user có tồn tại trong database không?
         Account account = accountRepository.findByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException(username);
