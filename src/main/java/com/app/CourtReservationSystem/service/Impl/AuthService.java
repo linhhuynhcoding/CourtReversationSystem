@@ -66,7 +66,7 @@ public class AuthService implements IAuthService {
         account.setUsername(registerPayload.getUsername());
         account.setName(registerPayload.getName());
         account.setPassword(passwordEncoder.encode(registerPayload.getPassword()));
-        account.setRole(roleRepository.findByRole("PLAYER"));
+        account.setAccountRole(roleRepository.findByRole("PLAYER"));
         accountRepository.save(account);
         
         return "Register successfully!";

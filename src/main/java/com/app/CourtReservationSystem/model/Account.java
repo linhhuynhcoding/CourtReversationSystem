@@ -34,7 +34,7 @@ public class Account extends Audiable {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false, updatable = true)
-    private Role role;
+    private Role accountRole;
 
 
 }
