@@ -2,12 +2,17 @@ package com.app.CourtReservationSystem.dbs.seeders;
 
 import com.app.CourtReservationSystem.model.Role;
 import com.app.CourtReservationSystem.repository.RoleRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@Order(1)
 public class RoleSeeder implements CommandLineRunner {
 
   @Autowired

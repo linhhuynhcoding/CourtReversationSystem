@@ -23,7 +23,15 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
 
-  // Catch APIException.class
+  // Catch ResourceNotFoundException.class
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(Exception e, WebRequest webRequest) {
+    ErrorResponse errorResponse = new ErrorResponse(new Date(), e.getMessage(), webRequest.getDescription(false));
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  // Catch MethodArgumentNotValidException.class
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleNotValidException(Exception e, WebRequest webRequest) {
     ErrorResponse errorResponse = new ErrorResponse(new Date(), "Validation failed ", webRequest.getDescription(false));
@@ -31,12 +39,12 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-
   // Catch Exception.class
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGlobalException(Exception e, WebRequest webRequest) {
     // logging strack trace
     log.trace(e.getStackTrace().toString());
+    System.out.println(e.getStackTrace().toString());
     ErrorResponse errorResponse = new ErrorResponse(new Date(), "SERVER ERROR", webRequest.getDescription(false));
     return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }

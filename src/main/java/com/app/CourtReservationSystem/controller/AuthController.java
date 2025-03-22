@@ -6,6 +6,10 @@ import com.app.CourtReservationSystem.dto.auth.TokenResponse;
 import com.app.CourtReservationSystem.service.IAuthService;
 import com.app.CourtReservationSystem.service.Impl.AuthService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
-    @Autowired
+
     IAuthService authService;
     
     @PostMapping("/login")

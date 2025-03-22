@@ -6,10 +6,12 @@ import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(2)
 public class AccountSeeder implements CommandLineRunner {
     
     @Autowired
@@ -33,5 +35,7 @@ public class AccountSeeder implements CommandLineRunner {
         admin.setName("Anh Admin");
         admin.setPassword(passwordEncoder.encode("Admin!123"));
         admin.setAccountRole(roleRepository.findByRole("ADMIN"));
+
+        accountRepository.save(admin);
     }
 }

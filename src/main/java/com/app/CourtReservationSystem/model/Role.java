@@ -18,7 +18,7 @@ public class Role extends Audiable {
     @Column
     private String role;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "accountRole")
     private List<Account> accounts;
 
 }

@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-@Getter @Setter
-public class AccountResponse {
-    private String username;
-
+@Setter @Getter
+public class AccountUpdatePayload {
+    @NotEmpty(message = "Should not empty!")
+    @Email()
     private String email;
 
+    @NotEmpty(message = "Should not empty!")
+    @Length(min = 1)
     private String name;
 }

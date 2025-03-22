@@ -3,11 +3,15 @@ package com.app.CourtReservationSystem.service.Impl;
 import com.app.CourtReservationSystem.dto.auth.LoginPayload;
 import com.app.CourtReservationSystem.dto.auth.RegisterPayload;
 import com.app.CourtReservationSystem.exception.APIException;
+import com.app.CourtReservationSystem.mapper.AccountMapper;
 import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
 import com.app.CourtReservationSystem.security.JwtTokenProvider;
 import com.app.CourtReservationSystem.service.IAuthService;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,22 +22,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthService implements IAuthService {
-    @Autowired
     private AuthenticationManager authenticationManager;
-    
-    @Autowired
+
     private AccountRepository accountRepository;
-    
-    @Autowired
+
     private RoleRepository roleRepository;
-    
-    @Autowired
+
     private PasswordEncoder passwordEncoder;
-    
-    @Autowired
+
     private JwtTokenProvider jwtTokenProvider;
-    
+
+    private AccountMapper accountMapper;
     
     @Override
     public String login(LoginPayload loginPayload) {
@@ -60,13 +62,9 @@ public class AuthService implements IAuthService {
             throw new APIException("Email already exist", HttpStatus.BAD_REQUEST);
         }
         
-        Account account = new Account();
-        
-        account.setEmail(registerPayload.getEmail());
-        account.setUsername(registerPayload.getUsername());
-        account.setName(registerPayload.getName());
-        account.setPassword(passwordEncoder.encode(registerPayload.getPassword()));
+        Account account = accountMapper.toAccount(registerPayload);
         account.setAccountRole(roleRepository.findByRole("PLAYER"));
+
         accountRepository.save(account);
         
         return "Register successfully!";

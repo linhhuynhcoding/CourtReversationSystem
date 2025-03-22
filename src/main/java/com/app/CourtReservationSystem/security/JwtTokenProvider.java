@@ -3,6 +3,9 @@ package com.app.CourtReservationSystem.security;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +21,11 @@ import java.util.Date;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtTokenProvider {
 
-        @Autowired
-        private AccountRepository accountRepository;
+        AccountRepository accountRepository;
 
         @Value("${spring.application.jwt_secret_key}")
         private String JWT_SECRET_KEY;
