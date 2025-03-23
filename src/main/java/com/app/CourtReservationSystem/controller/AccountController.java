@@ -4,6 +4,7 @@ import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.service.IAccountService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -22,16 +23,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(
-    name = "Account"
+    name = "account"
 )
 public class AccountController {
     
     IAccountService accountService;
     
+    @Operation(
+        summary = "Get Account REST API",
+        description = "Get Account REST API is used to get account information from database"
+    )
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> getAccount(
         HttpServletRequest httpServletRequest,
-        @PathVariable(name = "id") Integer id
+        @PathVariable(name = "id") Long id
     ) {
         AccountResponse accountResponse = accountService.getAccount(id);
         
@@ -39,11 +44,15 @@ public class AccountController {
             httpServletRequest.getRequestURI(), accountResponse));
     }
     
+    @Operation(
+        summary = "Update Account REST API",
+        description = "Update Account REST API is used to update account information into database"
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> updateAccount(
         HttpServletRequest httpServletRequest,
         @Valid @RequestBody AccountUpdatePayload accountUpdatePayload,
-        @PathVariable(name = "id") Integer id
+        @PathVariable(name = "id") Long id
     ) {
         AccountResponse accountResponse = accountService.updateAccount(id, accountUpdatePayload);
         
@@ -51,9 +60,14 @@ public class AccountController {
             httpServletRequest.getRequestURI(), accountResponse));
     }
     
+    
+    @Operation(
+        summary = "Delete Account REST API",
+        description = "Delete Account REST API is used to delete account in database"
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> deleteAccount(
-        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Integer id) {
+        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Long id) {
         accountService.deleteAccount(id);
         
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
@@ -61,6 +75,10 @@ public class AccountController {
     }
     
     
+    @Operation(
+        summary = "Get All Accounts REST API",
+        description = "Get All Accounts REST API is used to get all account information from database"
+    )
     @GetMapping("")
     public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest httpServletRequest) {
         List<AccountResponse> accountResponses = accountService.getAllAccounts();

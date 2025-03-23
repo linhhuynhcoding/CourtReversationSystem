@@ -1,4 +1,4 @@
-package com.app.CourtReservationSystem.model.ManyToMany;
+package com.app.CourtReservationSystem.model.relationships;
 import jakarta.persistence.Table;
 
 

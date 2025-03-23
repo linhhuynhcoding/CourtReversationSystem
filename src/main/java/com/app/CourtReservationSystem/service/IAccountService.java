@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface IAccountService {
 
-    public AccountResponse getAccount(Integer id);
-    public AccountResponse updateAccount(Integer id, AccountUpdatePayload accountUpdatePayload);
-    public void deleteAccount(Integer id);
+    public AccountResponse getAccount(Long id);
+    public AccountResponse updateAccount(Long id, AccountUpdatePayload accountUpdatePayload);
+    public void deleteAccount(Long id);
 
     public List<AccountResponse> getAllAccounts();
 }

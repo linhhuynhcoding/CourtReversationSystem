@@ -1,13 +1,16 @@
 package com.app.CourtReservationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "addresses")
 @Audited
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Address extends Audiable {
 
   @Id
@@ -28,8 +31,12 @@ public class Address extends Audiable {
   private String addressLine;
 
   @Column(name = "latitude")
-  private Integer latitude;
+  private Long latitude;
 
   @Column(name = "longitude")
-  private Integer longitude;
+  private Long longitude;
+  
+  @JsonIgnore
+  @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
+  private Court court;
 }

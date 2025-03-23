@@ -29,7 +29,7 @@ public class Order extends Audiable {
   private OrderType orderType;
 
   @Column(name = "total")
-  private Integer total;
+  private Long total;
 
   @Column(name = "payment_id")
   private Long paymentId;

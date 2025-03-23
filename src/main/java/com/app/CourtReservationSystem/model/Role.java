@@ -13,7 +13,7 @@ import java.util.List;
 public class Role extends Audiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column
     private String role;

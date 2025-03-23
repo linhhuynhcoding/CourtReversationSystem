@@ -4,17 +4,18 @@ package com.app.CourtReservationSystem.model;
  */
 
 import com.app.CourtReservationSystem.enums.CourtStatus;
+import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "courts")
 @Audited
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Court extends Audiable {
 
   @Id
@@ -29,15 +30,19 @@ public class Court extends Audiable {
   private String phone;
 
   @Column(name = "number_of_courts")
-  private Integer numberOfCourts;
+  private Long numberOfCourts;
 
   @Column(name = "price")
   private Double price;
 
-  @Column(name = "address_id")
-  private Long addressId;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "address_id")
+  private Address address;
 
   @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private CourtStatus status;
+  
+  @OneToMany(mappedBy = "courtImage")
+  private List<ImageCourt> imageCourts;
 }

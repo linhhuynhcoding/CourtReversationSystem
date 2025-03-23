@@ -25,7 +25,7 @@ public class AccountService implements IAccountService {
     AccountMapper accountMapper;
 
     @Override
-    public AccountResponse getAccount(Integer id) {
+    public AccountResponse getAccount(Long id) {
 
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
 
@@ -33,7 +33,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountResponse updateAccount(Integer id, AccountUpdatePayload accountUpdatePayload) {
+    public AccountResponse updateAccount(Long id, AccountUpdatePayload accountUpdatePayload) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
 
         account.setName(accountUpdatePayload.getName());
@@ -45,7 +45,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public void deleteAccount(Integer id) {
+    public void deleteAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
 
         accountRepository.delete(account);

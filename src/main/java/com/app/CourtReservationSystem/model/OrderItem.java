@@ -28,7 +28,7 @@ public class OrderItem extends Audiable{
   private Long productId;
 
   @Column(name = "quantity", nullable = false)
-  private Integer quantity;
+  private Long quantity;
 
   @Column(name = "unit_price", nullable = false)
   private Double unitPrice;

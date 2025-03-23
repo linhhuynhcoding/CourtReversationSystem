@@ -64,6 +64,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception e, WebRequest webRequest,
                                                                HttpServletRequest httpServletRequest) {
+
+        e.printStackTrace();
+        
         ErrorResponse<String> errorResponse = new ErrorResponse<String>(new Date(), "Server Error", "",
             httpServletRequest.getRequestURI(),
             "", "");
