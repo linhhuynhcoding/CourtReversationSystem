@@ -28,7 +28,7 @@ public class RegisterPayload {
     private String name;
     
     @NotEmpty(message = "Should not empty!")
-    @Length(min = 8, max = 20, message = "Username's length must be between 8 and 20 characters!")
+    @Length(min = 8, message = "Password's length must be equal or larger than 8 characters!")
     @Pattern(
         regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?])[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+$",
         message = "Must be contain one special character and uppercase character!")

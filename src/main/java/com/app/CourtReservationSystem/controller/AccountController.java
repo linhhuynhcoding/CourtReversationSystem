@@ -1,9 +1,11 @@
 package com.app.CourtReservationSystem.controller;
 
+import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.service.IAccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,41 +22,51 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(
-        name = "CRUD REST APIs for Account Resource"
+    name = "Account"
 )
 public class AccountController {
-
+    
     IAccountService accountService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<ApiResponse<?>> getAccount(
+        HttpServletRequest httpServletRequest,
+        @PathVariable(name = "id") Integer id
+    ) {
         AccountResponse accountResponse = accountService.getAccount(id);
         
-        return new ResponseEntity<>(accountResponse, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), accountResponse));
     }
-
+    
     @PatchMapping("/{id}")
-    public ResponseEntity<AccountResponse> updateAccount(
-            @Valid @RequestBody AccountUpdatePayload accountUpdatePayload,
-            @PathVariable(name = "id") Integer id
+    public ResponseEntity<ApiResponse<?>> updateAccount(
+        HttpServletRequest httpServletRequest,
+        @Valid @RequestBody AccountUpdatePayload accountUpdatePayload,
+        @PathVariable(name = "id") Integer id
     ) {
         AccountResponse accountResponse = accountService.updateAccount(id, accountUpdatePayload);
-
-        return new ResponseEntity<>(accountResponse, HttpStatus.CREATED);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), accountResponse));
     }
-
+    
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<ApiResponse<?>> deleteAccount(
+        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Integer id) {
         accountService.deleteAccount(id);
-
-        return new ResponseEntity<>("Deleted successfully!", HttpStatus.NO_CONTENT);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
+            httpServletRequest.getRequestURI(), null));
     }
-
-
-    @GetMapping("/")
-    public ResponseEntity<List<AccountResponse>> getAccounts() {
+    
+    
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest httpServletRequest) {
         List<AccountResponse> accountResponses = accountService.getAllAccounts();
-
-        return new ResponseEntity<>(accountResponses, HttpStatus.FOUND);
+        
+        
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), accountResponses));
     }
 }

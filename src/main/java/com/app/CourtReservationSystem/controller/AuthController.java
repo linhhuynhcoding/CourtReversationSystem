@@ -5,6 +5,7 @@ import com.app.CourtReservationSystem.dto.auth.RegisterPayload;
 import com.app.CourtReservationSystem.dto.auth.TokenResponse;
 import com.app.CourtReservationSystem.service.IAuthService;
 import com.app.CourtReservationSystem.service.Impl.AuthService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Tag(
+    name = "Auth"
+)
 public class AuthController {
 
     IAuthService authService;
