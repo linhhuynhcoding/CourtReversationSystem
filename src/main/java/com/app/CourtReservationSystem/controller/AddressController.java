@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.controller;
 
 import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
+import com.app.CourtReservationSystem.service.IAddressService;
 import com.app.CourtReservationSystem.service.IVietnamProviceSerivce;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +27,7 @@ import java.util.List;
 )
 public class AddressController {
     
+    IAddressService addressService;
     IVietnamProviceSerivce vietnamProviceSerivce;
     
     @Operation(

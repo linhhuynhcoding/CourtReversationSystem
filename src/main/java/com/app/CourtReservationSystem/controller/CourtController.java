@@ -4,6 +4,8 @@ import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.dto.court.CourtResponse;
+import com.app.CourtReservationSystem.dto.court.CreateCourtPayload;
+import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
 import com.app.CourtReservationSystem.service.IAuthService;
 import com.app.CourtReservationSystem.service.ICourtService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,34 +44,43 @@ import java.util.List;
             httpServletRequest.getRequestURI(), courtResponse));
     }
     
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<ApiResponse<?>> updateAccount(
-//        HttpServletRequest httpServletRequest,
-//        @Valid @RequestBody AccountUpdatePayload accountUpdatePayload,
-//        @PathVariable(name = "id") Long id
-//    ) {
-//        AccountResponse accountResponse = accountService.updateAccount(id, accountUpdatePayload);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
-//            httpServletRequest.getRequestURI(), accountResponse));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<ApiResponse<?>> deleteAccount(
-//        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Long id) {
-//        accountService.deleteAccount(id);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
-//            httpServletRequest.getRequestURI(), null));
-//    }
-//
-//
-//    @GetMapping("")
-//    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest httpServletRequest) {
-//        List<AccountResponse> accountResponses = accountService.getAllAccounts();
-//
-//
-//        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-//            httpServletRequest.getRequestURI(), accountResponses));
-//    }
+    @PostMapping("")
+    public ResponseEntity<ApiResponse<?>> createCourt(
+        HttpServletRequest httpServletRequest,
+        @Valid @RequestBody CreateCourtPayload createCourtPayload
+    ) {
+        CourtResponse courtResponse = courtService.createCourt(createCourtPayload);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), courtResponse));
+    }
+    
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> updateCourt(
+        HttpServletRequest httpServletRequest,
+        @Valid @RequestBody UpdateCourtPayload updateCourtPayload,
+        @PathVariable(name = "id") Long id
+    ) {
+        CourtResponse courtResponse = courtService.updateCourt(id, updateCourtPayload);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), courtResponse));
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<?>> deleteCourt(
+        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Long id) {
+        courtService.deleteCourt(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
+            httpServletRequest.getRequestURI(), null));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<?>> getCourts(HttpServletRequest httpServletRequest) {
+        List<CourtResponse> courtResponses = courtService.getAllCourts();
+        
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
+            httpServletRequest.getRequestURI(), courtResponses));
+    }
 }

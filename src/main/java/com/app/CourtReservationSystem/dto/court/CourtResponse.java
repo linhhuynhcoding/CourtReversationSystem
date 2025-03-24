@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.dto.court;
 
+import com.app.CourtReservationSystem.dto.address.AddressResponse;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.model.Address;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
@@ -19,7 +20,7 @@ public class CourtResponse {
     private String phone;
     private Long numberOfCourts;
     private Double price;
-    private Address address;
+    private AddressResponse address;
     private CourtStatus status;
     private List<ImageCourt> imageCourts;
 }
