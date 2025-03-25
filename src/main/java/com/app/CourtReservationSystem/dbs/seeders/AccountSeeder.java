@@ -1,8 +1,8 @@
 package com.app.CourtReservationSystem.dbs.seeders;
 
 import com.app.CourtReservationSystem.model.Account;
-import com.app.CourtReservationSystem.model.Role;
 import com.app.CourtReservationSystem.repository.AccountRepository;
+import com.app.CourtReservationSystem.repository.ProductRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -37,5 +37,21 @@ public class AccountSeeder implements CommandLineRunner {
         admin.setAccountRole(roleRepository.findByRole("ADMIN"));
 
         accountRepository.save(admin);
+    }
+
+    @Component
+    @Order(4)
+    public static class CategorySeeder implements CommandLineRunner {
+
+        @Autowired
+        ProductRepository productRepository;
+
+        @Override
+        public void run(String... args) throws Exception {
+            loadProductData();
+        }
+
+        private void loadProductData(){
+        }
     }
 }

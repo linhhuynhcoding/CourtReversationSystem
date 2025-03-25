@@ -35,12 +35,12 @@ public class AddressController {
     )
     @GetMapping("/cities")
     public ResponseEntity<ApiResponse<?>> getCities(
-        HttpServletRequest httpServletRequest
+        HttpServletRequest request
     ) {
         List<?> responses = vietnamProviceSerivce.getAllCities();
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), responses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), responses));
     }
     
     @Operation(
@@ -48,14 +48,14 @@ public class AddressController {
     )
     @GetMapping("/district/{city_code}")
     public ResponseEntity<ApiResponse<?>> getDistricts(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @PathVariable Long city_code
         
     ) {
         List<?> responses = vietnamProviceSerivce.getAllDistricts(city_code);
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), responses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), responses));
     }
     
     @Operation(
@@ -63,12 +63,12 @@ public class AddressController {
     )
     @GetMapping("/wards/{district_code}")
     public ResponseEntity<ApiResponse<?>> getAccount(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @PathVariable Long district_code
     ) {
         List<?> responses = vietnamProviceSerivce.getAllWards(district_code);
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), responses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), responses));
     }
 }

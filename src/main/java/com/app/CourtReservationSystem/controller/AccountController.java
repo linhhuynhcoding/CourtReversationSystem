@@ -35,13 +35,13 @@ public class AccountController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> getAccount(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @PathVariable(name = "id") Long id
     ) {
         AccountResponse accountResponse = accountService.getAccount(id);
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), accountResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), accountResponse));
     }
     
     @Operation(
@@ -50,14 +50,14 @@ public class AccountController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> updateAccount(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @Valid @RequestBody AccountUpdatePayload accountUpdatePayload,
         @PathVariable(name = "id") Long id
     ) {
         AccountResponse accountResponse = accountService.updateAccount(id, accountUpdatePayload);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), accountResponse));
+            request.getRequestURI(), accountResponse));
     }
     
     
@@ -67,11 +67,11 @@ public class AccountController {
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> deleteAccount(
-        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Long id) {
+        HttpServletRequest request, @PathVariable(name = "id") Long id) {
         accountService.deleteAccount(id);
         
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
-            httpServletRequest.getRequestURI(), null));
+            request.getRequestURI(), null));
     }
     
     
@@ -80,11 +80,11 @@ public class AccountController {
         description = "Get All Accounts REST API is used to get all account information from database"
     )
     @GetMapping("")
-    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest request) {
         List<AccountResponse> accountResponses = accountService.getAllAccounts();
         
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), accountResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), accountResponses));
     }
 }

@@ -34,53 +34,53 @@ import java.util.List;
     
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> getCourt(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @PathVariable(name = "id") Long id ) {
         CourtResponse courtResponse = courtService.getCourt(id);
         
         System.out.println(courtResponse.getName());
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), courtResponse));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), courtResponse));
     }
     
     @PostMapping("")
     public ResponseEntity<ApiResponse<?>> createCourt(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @Valid @RequestBody CreateCourtPayload createCourtPayload
     ) {
         CourtResponse courtResponse = courtService.createCourt(createCourtPayload);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), courtResponse));
+            request.getRequestURI(), courtResponse));
     }
     
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> updateCourt(
-        HttpServletRequest httpServletRequest,
+        HttpServletRequest request,
         @Valid @RequestBody UpdateCourtPayload updateCourtPayload,
         @PathVariable(name = "id") Long id
     ) {
         CourtResponse courtResponse = courtService.updateCourt(id, updateCourtPayload);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), courtResponse));
+            request.getRequestURI(), courtResponse));
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> deleteCourt(
-        HttpServletRequest httpServletRequest, @PathVariable(name = "id") Long id) {
+        HttpServletRequest request, @PathVariable(name = "id") Long id) {
         courtService.deleteCourt(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Deleted successfully!!", "",
-            httpServletRequest.getRequestURI(), null));
+            request.getRequestURI(), null));
     }
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse<?>> getCourts(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ApiResponse<?>> getCourts(HttpServletRequest request) {
         List<CourtResponse> courtResponses = courtService.getAllCourts();
         
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ApiResponse<>("Success!", "",
-            httpServletRequest.getRequestURI(), courtResponses));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), courtResponses));
     }
 }

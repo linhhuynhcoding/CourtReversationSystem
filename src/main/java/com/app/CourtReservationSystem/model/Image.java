@@ -3,11 +3,14 @@ package com.app.CourtReservationSystem.model;
 import com.app.CourtReservationSystem.enums.ResolutionType;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.envers.Audited;
 
 @Entity
 @Audited
 @Table(name="images")
+@Getter @Setter
 public class Image extends Audiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +27,12 @@ public class Image extends Audiable {
     private Long height;
     
     @Column(nullable = false)
-    private ResolutionType type;
+    private ResolutionType type = ResolutionType.ORIGINAL;
     
     @OneToOne(mappedBy = "images")
     private ImageCourt imageCourt;
+
+    @OneToOne(mappedBy = "imageProduct")
+    private Product product;
+
 }
