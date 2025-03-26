@@ -17,5 +17,7 @@ public class PaymentMethod extends Audiable {
 
   @Column(name = "name")
   private String name;
+  
+  
 }
 

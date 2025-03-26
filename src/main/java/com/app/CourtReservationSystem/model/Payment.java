@@ -26,7 +26,11 @@ public class Payment extends Audiable {
   @Enumerated(EnumType.STRING)
   private PaymentStatus status;
 
-  @Column(name = "method_id")
-  private Long methodId;
+  @ManyToOne
+  @JoinColumn(name="method_id")
+  private PaymentMethod methodPayment;
+  
+  @OneToOne(mappedBy = "payment")
+  private Booking booking;
 }
 

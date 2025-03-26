@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 
+import java.util.List;
+
 /**
  * @author linhhuynhcoding
  *
@@ -35,4 +37,7 @@ public class Account extends Audiable {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false, updatable = true)
     private Role accountRole;
+    
+    @OneToMany(mappedBy = "account")
+    private List<Booking> bookings;
 }

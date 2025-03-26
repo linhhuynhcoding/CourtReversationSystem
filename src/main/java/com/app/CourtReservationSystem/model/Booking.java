@@ -22,26 +22,28 @@ public class Booking extends Audiable {
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "order_id")
+  @Column(name = "order_id", nullable = true)
   private Long orderId;
 
   @ManyToOne
   @JoinColumn(name = "court_id")
   private Court court;
-
-  @Column(name = "date")
-  private Date date;
+  
+  @ManyToOne
+  @JoinColumn(name = "account_id")
+  private Account account;
 
   @Column(name = "time_start")
-  private Timestamp timeStart;
-
-  @Column(name = "hours")
-  private Double hours;
+  private Date timeStart;
+  
+  @Column(name = "time_end")
+  private Date timeEnd; // dam bao time_start & time_end chung mot ngay (validation)
 
   @Column(name = "status")
   @Enumerated(EnumType.STRING)
-  private BookingStatus status;
+  private BookingStatus status = BookingStatus.PENDING;
 
-  @Column(name = "payment_id")
-  private Long paymentId;
+  @OneToOne()
+  @JoinColumn(name = "payment_id")
+  private Payment payment;
 }
