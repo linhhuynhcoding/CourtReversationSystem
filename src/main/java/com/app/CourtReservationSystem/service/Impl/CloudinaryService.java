@@ -9,12 +9,9 @@ import org.springframework.stereotype.Service;
 import com.cloudinary.*;
 
 @Service
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class CloudinaryService extends Cloudinary implements ICloudService {
-    @Value("${spring.application.couldinary_url}")
-    private static String CLOUDINARY_URL;
-    
-    public CloudinaryService(){
+    public CloudinaryService(@Value("${spring.application.couldinary_url}") String CLOUDINARY_URL){
         super(CLOUDINARY_URL);
     }
 }

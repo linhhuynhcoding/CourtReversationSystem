@@ -1,4 +1,4 @@
 package com.app.CourtReservationSystem.service;
 
-public class ICacheService {
+public interface ICacheService {
 }

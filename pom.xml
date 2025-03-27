@@ -141,11 +141,11 @@
       <artifactId>jedis</artifactId>
       <version>5.2.0</version>
     </dependency>
-    <dependency>
-      <groupId>io.lettuce</groupId>
-      <artifactId>lettuce-core</artifactId>
-      <version>5.1.3.RELEASE</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>io.lettuce</groupId>-->
+<!--      <artifactId>lettuce-core</artifactId>-->
+<!--      <version>5.1.3.RELEASE</version>-->
+<!--    </dependency>-->
   </dependencies>
 
   <build>
