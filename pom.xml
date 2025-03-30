@@ -202,6 +202,8 @@
         <filtering>true</filtering>
       </resource>
     </resources>
+    <finalName>app-1.0-SNAPSHOT</finalName>
+
   </build>
 
 </project>
