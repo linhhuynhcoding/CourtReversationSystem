@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -23,8 +24,18 @@ public class CourtService implements ICourtService {
     CourtRepository courtRepository;
     CourtMapper courtMapper;
     
+    static Long SEVEN_DAYS_TIMESTAMP = 1000 * 3600 * 24 * 7L;
+    
     @Override
     public CourtResponse getCourt(Long id) {
+        Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        
+        return courtMapper.toDTO(court);
+    }
+    
+    @Override
+    public CourtResponse getCourt(Long id, Date startFrom) {
+        Date endAt = new Date(startFrom.getTime() + SEVEN_DAYS_TIMESTAMP);
         Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
         return courtMapper.toDTO(court);
