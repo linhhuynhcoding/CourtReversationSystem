@@ -27,16 +27,15 @@ public class FileStorageService implements IStorageService {
     
     private Path rootLocation;
     
-    public FileStorageService(){
-    }
-    
-    public FileStorageService(@Value("spring.storage.upload_dir") String path) {
+    public FileStorageService(@Value("${spring.storage.upload_dir}") String path) {
         
         if(path.length() == 0){
             throw new StorageException("File upload location can not be Empty.");
         }
         
         this.rootLocation = Paths.get(path);
+        
+        System.out.println("Uploads path:\t" + this.rootLocation.toUri());
     }
     
     @Override

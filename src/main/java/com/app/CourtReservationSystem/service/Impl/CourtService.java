@@ -9,6 +9,7 @@ import com.app.CourtReservationSystem.mapper.CourtMapper;
 import com.app.CourtReservationSystem.model.Court;
 import com.app.CourtReservationSystem.repository.CourtRepository;
 import com.app.CourtReservationSystem.service.ICourtService;
+import com.app.CourtReservationSystem.service.IStorageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +24,7 @@ import java.util.List;
 public class CourtService implements ICourtService {
     CourtRepository courtRepository;
     CourtMapper courtMapper;
+    IStorageService fileStorageService;
     
     static Long SEVEN_DAYS_TIMESTAMP = 1000 * 3600 * 24 * 7L;
     
