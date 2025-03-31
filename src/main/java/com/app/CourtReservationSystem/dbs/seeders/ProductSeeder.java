@@ -55,8 +55,8 @@ public class ProductSeeder implements CommandLineRunner {
             Image image = new Image();
 
             image.setImage_url(String.format("http://localhost:8080/images/%s.png", i));
-            image.setHeight(800L);
-            image.setWidth(800L);
+            image.setHeight(800);
+            image.setWidth(800);
 
             product.setName("Product " + i);
             product.setCategory(category);

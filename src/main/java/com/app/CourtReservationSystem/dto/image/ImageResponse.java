@@ -8,8 +8,8 @@ import lombok.Setter;
 public class ImageResponse {
     private Long id;
     private String image_url;
-    private Long width;
-    private Long height;
+    private Integer width;
+    private Integer height;
     private ResolutionType type;
 }
 

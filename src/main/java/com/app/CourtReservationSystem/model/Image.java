@@ -21,10 +21,10 @@ public class Image extends Audiable {
     private String image_url;
     
     @Column(nullable = false)
-    private Long width;
+    private Integer width;
     
     @Column(nullable = false)
-    private Long height;
+    private Integer height;
     
     @Column(nullable = false)
     private ResolutionType type = ResolutionType.ORIGINAL;

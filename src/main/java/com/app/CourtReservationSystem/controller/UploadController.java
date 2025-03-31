@@ -30,7 +30,7 @@ public class UploadController {
     
     @PostMapping()
     public ResponseEntity<List<?>> uploadImage(@Valid @NotNull @RequestPart(name = "images", required = false) List<MultipartFile> files){
-        List<Map> data = this.cloudService.upload(files);
+        List<?> data = this.cloudService.upload(files);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

@@ -1,8 +1,12 @@
 package com.app.CourtReservationSystem.service.Impl;
 
+import com.app.CourtReservationSystem.dto.image.ImageResponse;
+import com.app.CourtReservationSystem.mapper.ImageMapper;
 import com.app.CourtReservationSystem.service.ICloudService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.envers.AuditOverride;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -16,15 +20,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class CloudinaryService extends Cloudinary implements ICloudService {
-    public CloudinaryService(@Value("${spring.application.couldinary_url}") String CLOUDINARY_URL) {
+    
+    @Autowired
+    ImageMapper imageMapper;
+    
+    public CloudinaryService(@Value("${spring.application.couldinary_url}") String CLOUDINARY_URL,
+                             ImageMapper imageMapper) {
         super(CLOUDINARY_URL);
+        this.imageMapper = imageMapper;
     }
     
     @Override
-    public List<Map> upload(List<MultipartFile> files) {
-        return files.stream().map((file) -> {
+    public List<ImageResponse> upload(List<MultipartFile> files) {
+        List<Map> datas = files.stream().map((file) -> {
             try {
                 return this.uploader().upload(file.getBytes(), Map.of());
                 
@@ -32,5 +41,7 @@ public class CloudinaryService extends Cloudinary implements ICloudService {
                 return Collections.emptyMap();
             }
         }).collect(Collectors.toList());
+        
+        return this.imageMapper.mapToDTOs(datas);
     }
 }
