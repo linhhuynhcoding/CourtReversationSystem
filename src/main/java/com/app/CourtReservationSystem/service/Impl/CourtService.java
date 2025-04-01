@@ -59,7 +59,9 @@ public class CourtService implements ICourtService {
         return courtMapper.toDTO(court);
     }
     
+    
     @Override
+    @Transactional
     public CourtResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload) {
         courtRepository.updateCourtById(id, updateCourtPayload);
         Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
@@ -71,7 +73,7 @@ public class CourtService implements ICourtService {
         oldImages.stream().forEach((imageDTO) -> {
             Image i = imageRepository.findById(imageDTO.getId()).orElseThrow(null);
             if (imageDTO.getStatus() == ImageStatus.INACTIVE) {
-                i.setStatus(ImageStatus.INACTIVE);
+                i.setStatus(ImageStatus.INACTIVE); // SET INACTIVE TO DELETE IN FUTURE BY CRON
                 imageRepository.save(i);
             }
         });
@@ -83,7 +85,7 @@ public class CourtService implements ICourtService {
             return imageCourt;
         }).collect(Collectors.toList());
         
-        if (newImages.size() > 0) court.setImageCourts(newImages);
+        if (!newImages.isEmpty()) court.setImageCourts(newImages);
         
         // TODO Xu ly dia chi
         if (updateCourtPayload.getAddress() != null) {

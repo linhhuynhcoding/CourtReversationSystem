@@ -17,7 +17,7 @@ public class CreateProductPayload {
     @NotNull
     private Long stock;
     @NotNull
-    private Long category_id;
+    private Long categoryId;
     @NotNull
     private ImagePayload image;
 }

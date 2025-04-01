@@ -21,5 +21,4 @@ public class UpdateProductPayload {
 
     private ImagePayload image;
     
-    private ImageResponse oldImage;
 }
