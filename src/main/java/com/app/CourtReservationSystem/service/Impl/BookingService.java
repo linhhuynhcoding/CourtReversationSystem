@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,10 +33,16 @@ public class BookingService implements IBookingService {
         
         return bookingMapper.toDTOs(bookings);
     }
-    
+
     @Override
     public List<?> getAllCourtBookings(Long id) {
-        List<Booking> bookings = bookingRepository.findAllByCourtId(id);
+        return List.of();
+    }
+
+    @Override
+    public List<?> getAllCourtBookings(Long id, LocalDateTime createdDateAfter) {
+        LocalDateTime createdDateBefore = createdDateAfter.plusDays(7);
+        List<Booking> bookings = bookingRepository.findAllByCourt_IdAndTimeStartBetween(id, createdDateAfter, createdDateBefore);
         
         return bookingMapper.toDTOs(bookings);
     }
