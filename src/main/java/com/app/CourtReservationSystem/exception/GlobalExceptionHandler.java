@@ -27,10 +27,10 @@ public class GlobalExceptionHandler {
     // Catch
     // APIException.class
     @ExceptionHandler(APIException.class)
-    public ResponseEntity<ErrorResponse<String>> handleAPIException(Exception e, WebRequest webRequest,
+    public ResponseEntity<ErrorResponse<String>> handleAPIException(APIException e, WebRequest webRequest,
                                                                     HttpServletRequest httpServletRequest) {
-        ErrorResponse<String> errorResponse = new ErrorResponse<String>(new Date(), "API Error", "",
-            webRequest.getDescription(false), "", "");
+        ErrorResponse<String> errorResponse = new ErrorResponse<String>(new Date(), "API Error", e.getMessage(),
+                httpServletRequest.getRequestURI(), "", "");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
     

@@ -3,6 +3,8 @@ package com.app.CourtReservationSystem.repository;
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
 import com.app.CourtReservationSystem.model.Court;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +30,6 @@ public interface CourtRepository extends JpaRepository<Court, Long> {
         @Param("id") Long id,
         @Param("nc") UpdateCourtPayload nc
     );
+
+//    Page<Court> findAll(Pageable pageable);
 }

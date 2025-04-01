@@ -23,6 +23,9 @@ import com.app.CourtReservationSystem.service.IStorageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -132,8 +135,11 @@ public class CourtService implements ICourtService {
     }
     
     @Override
-    public List<CourtResponse> getAllCourts() {
-        List<Court> courts = courtRepository.findAll();
-        return courtMapper.toDTOs(courts);
+    public Page getAllCourts(Pageable pageable) {
+
+        Page<Court> courts = courtRepository.findAll(pageable);
+
+        return courts;
+//        return courtMapper.toDTOs(courts);
     }
 }
