@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.dto.image;
 
+import com.app.CourtReservationSystem.enums.ImageStatus;
 import com.app.CourtReservationSystem.enums.ResolutionType;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ public class ImageResponse {
     private String image_url;
     private Integer width;
     private Integer height;
+    private ImageStatus status;
     private ResolutionType type;
 }
 

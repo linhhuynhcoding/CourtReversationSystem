@@ -5,5 +5,4 @@ public enum CourtStatus {
     MAINTAINABLE,
     CLOSED,
     FULLED
-    
 }

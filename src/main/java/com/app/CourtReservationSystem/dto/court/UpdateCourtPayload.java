@@ -1,6 +1,8 @@
 package com.app.CourtReservationSystem.dto.court;
 
 import com.app.CourtReservationSystem.dto.address.CreateAddressPayload;
+import com.app.CourtReservationSystem.dto.image.ImagePayload;
+import com.app.CourtReservationSystem.dto.image.ImageResponse;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -30,5 +32,8 @@ public class UpdateCourtPayload {
     private CreateAddressPayload address;
     
     @Size(min=3, max=5)
-    private List<String> imageCourt;
+    private List<ImagePayload> imageCourts;
+    
+    @Size(min=0, max=5)
+    private List<ImageResponse> oldImages;
 }

@@ -20,4 +20,6 @@ public class UpdateProductPayload {
     private String category;
 
     private ImagePayload image;
+    
+    private ImageResponse oldImage;
 }

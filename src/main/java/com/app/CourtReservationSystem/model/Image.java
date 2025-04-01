@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.model;
 
+import com.app.CourtReservationSystem.enums.ImageStatus;
 import com.app.CourtReservationSystem.enums.ResolutionType;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import jakarta.persistence.*;
@@ -27,9 +28,12 @@ public class Image extends Audiable {
     private Integer height;
     
     @Column(nullable = false)
+    private ImageStatus status = ImageStatus.ACTIVE;
+    
+    @Column(nullable = false)
     private ResolutionType type = ResolutionType.ORIGINAL;
     
-    @OneToOne(mappedBy = "images")
+    @OneToOne(mappedBy = "image", cascade = CascadeType.ALL)
     private ImageCourt imageCourt;
 
     @OneToOne(mappedBy = "imageProduct")
