@@ -6,6 +6,9 @@ import com.app.CourtReservationSystem.service.IBookingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -46,11 +49,13 @@ public class BookingController {
             HttpServletRequest request,
             @PathVariable("id") Long id,
             @RequestParam(name = "date")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date // ISO 8601 format
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateStart, // ISO 8601 format
+            @Valid @Max(7) @Min(1) Integer duration  // ISO 8601 format
     ) {
-        date.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        duration = duration == null ? 7 : duration;
+        dateStart.withHour(0).withMinute(0).withSecond(0).withNano(0);
 
-        List<?> response = bookingService.getAllCourtBookings(id, date);
+        List<?> response = bookingService.getAllCourtBookings(id, dateStart, dateStart.plusDays(duration));
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
     }

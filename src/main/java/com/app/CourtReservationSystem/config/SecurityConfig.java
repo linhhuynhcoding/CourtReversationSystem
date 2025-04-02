@@ -70,7 +70,8 @@ public class SecurityConfig {
                             authorize.requestMatchers("/v3/api-docs*/**").permitAll();
 
                             authorize.requestMatchers(HttpMethod.POST).permitAll();
-                            authorize.requestMatchers(HttpMethod.GET).authenticated();
+                            authorize.anyRequest().permitAll();
+//                            authorize.requestMatchers(HttpMethod.GET).authenticated();
 
                         }
                 ).exceptionHandling(exception -> exception
