@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +24,10 @@ import java.io.IOException;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+  @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
   private UserDetailsService userDetailsService;
 
   public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
@@ -39,6 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // get JWT token from http request
     String token = getTokenFromRequest(request);
+
+    System.out.println("token: " + token);
 
     // validate token
     if(StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)){
@@ -58,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // gan ipaddress va session id cho token
 
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
     }
 
     filterChain.doFilter(request, response);

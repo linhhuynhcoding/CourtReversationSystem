@@ -30,7 +30,7 @@ public class AccountSeeder implements CommandLineRunner {
     
     private void loadUserData() {
         Account admin = new Account();
-        admin.setUsername("admin");
+        admin.setUsername("admin123");
         admin.setEmail("admin@gmail.com");
         admin.setName("Anh Admin");
         admin.setPassword(passwordEncoder.encode("Admin!123"));

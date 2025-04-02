@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountDetailService implements UserDetailsService {
 
+    @Autowired
     private AccountRepository accountRepository;
 
     @Override

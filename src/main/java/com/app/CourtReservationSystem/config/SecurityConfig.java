@@ -4,6 +4,7 @@ import com.app.CourtReservationSystem.security.JwtAuthenticationEntryPoint;
 import com.app.CourtReservationSystem.security.JwtAuthenticationFilter;
 //import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 //import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
@@ -27,19 +28,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity
 @SecurityScheme(
-    name = "Bear Authentication",
-    type = SecuritySchemeType.HTTP,
-    bearerFormat = "JWT",
-    scheme = "bearer"
+        name = "Bear Authentication",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
 )
 public class SecurityConfig {
-    
+
     private UserDetailsService userDetailsService;
-    
+
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
-    
+
     private JwtAuthenticationFilter authenticationFilter;
-    
+
     public SecurityConfig(UserDetailsService userDetailsService,
                           JwtAuthenticationEntryPoint authenticationEntryPoint,
                           JwtAuthenticationFilter authenticationFilter) {
@@ -47,31 +49,39 @@ public class SecurityConfig {
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.authenticationFilter = authenticationFilter;
     }
-    
+
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-    
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        
+
         http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests((authorize) ->
-                authorize.anyRequest().permitAll()
-            ).exceptionHandling(exception -> exception
-                .authenticationEntryPoint(authenticationEntryPoint)
-            ).sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
-        
+                .authorizeHttpRequests((authorize) -> {
+
+                            authorize.requestMatchers("/swagger-ui/**").permitAll();
+                            authorize.requestMatchers("/v3/api-docs*/**").permitAll();
+
+
+                            authorize.requestMatchers(HttpMethod.POST).permitAll();
+                            authorize.requestMatchers(HttpMethod.GET).authenticated();
+
+                        }
+                ).exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                ).sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
         return http.build();
     }
 

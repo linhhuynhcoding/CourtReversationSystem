@@ -5,6 +5,7 @@ import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.service.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -80,6 +81,7 @@ public class AccountController {
         description = "Get All Accounts REST API is used to get all account information from database"
     )
     @GetMapping("")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest request) {
         List<AccountResponse> accountResponses = accountService.getAllAccounts();
         
