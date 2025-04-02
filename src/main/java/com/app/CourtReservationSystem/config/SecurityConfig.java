@@ -69,7 +69,6 @@ public class SecurityConfig {
                             authorize.requestMatchers("/swagger-ui/**").permitAll();
                             authorize.requestMatchers("/v3/api-docs*/**").permitAll();
 
-
                             authorize.requestMatchers(HttpMethod.POST).permitAll();
                             authorize.requestMatchers(HttpMethod.GET).authenticated();
 

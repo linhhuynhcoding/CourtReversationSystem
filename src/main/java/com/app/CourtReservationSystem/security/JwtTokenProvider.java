@@ -25,6 +25,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtTokenProvider {
 
+        @Autowired
         AccountRepository accountRepository;
 
         @Value("${spring.application.jwt_secret_key}")
@@ -38,14 +39,16 @@ public class JwtTokenProvider {
 
                 Date now = new Date();
                 Date expiryDate = new Date(now.getTime() + JWT_EXPIRED_TIME);
-                System.out.println(authentication.getName());
+                String username = authentication.getName();
+                String role = accountRepository.findByUsername(username).getAccountRole().getRole();
                 // Tạo chuỗi json web token từ username của user.
                 
                 return Jwts.builder()
-                        .setSubject(authentication.getName())
-                        .setIssuedAt(now)
-                        .setExpiration(expiryDate)
-                        .signWith(SignatureAlgorithm.HS512, key())
+                        .subject(authentication.getName())
+                        .claim("role", role)
+                        .issuedAt(now)
+                        .expiration(expiryDate)
+                        .signWith(key())
                         .compact();
         }
         
