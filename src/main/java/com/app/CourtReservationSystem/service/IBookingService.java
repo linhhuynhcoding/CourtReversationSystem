@@ -7,5 +7,6 @@ public interface IBookingService {
     List<?> getAllBookings();
     List<?> getAllUserBookings(Long id);
     List<?> getAllCourtBookings(Long id);
-    List<?> getAllCourtBookings(Long id, LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
+    
+    List<?> getAllCourtBookings(Long id, LocalDateTime dateStart, LocalDateTime localDateTime);
 }

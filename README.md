@@ -8,3 +8,6 @@ Additionally, the system can provide information and product suggestions based o
 
 #  ✏️ Diagram 
 ➡️ [draw.io](https://drive.google.com/file/d/1Iz2G0s7HiSTZYi1OE2Zatx8i2G5_kW4y/view?usp=sharing)
+
+#  📝 Requitement
+➡️ [docs.google.com](https://docs.google.com/document/d/1AmkYMM3WOQ7AzaLKPF0EPBjOwG_rlejL/edit?usp=sharing&ouid=114710647190176584622&rtpof=true&sd=true)
