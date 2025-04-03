@@ -14,7 +14,7 @@ public interface ProductMapper {
     @Mapping(ignore = true, target = "category")
     Product toEntity(CreateProductPayload payload);
 
-    @Mapping(target = "category", expression = "java(product.getCategory().getName())")
+//    @Mapping(target = "category", expression = "java(product.getCategory().getName())")
     @Mapping(source = "imageProduct", target = "image")
     ProductResponse toDTO(Product product);
 

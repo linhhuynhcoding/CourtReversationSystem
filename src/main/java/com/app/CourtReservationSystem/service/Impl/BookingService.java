@@ -42,7 +42,7 @@ public class BookingService implements IBookingService {
     @Override
     public List<?> getAllCourtBookings(Long id, LocalDateTime createdDateAfter, LocalDateTime createdDateBefore) {
 
-        List<Booking> bookings = bookingRepository.findAllByCourt_IdAndTimeStartBetween(id, createdDateAfter, createdDateBefore);
+        List<Booking> bookings = bookingRepository.findAllByCourtIdAndTimeStartBetween(id, createdDateAfter, createdDateBefore);
         
         return bookingMapper.toDTOs(bookings);
     }

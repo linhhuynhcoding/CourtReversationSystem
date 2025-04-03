@@ -5,8 +5,10 @@ import com.app.CourtReservationSystem.dto.auth.RegisterPayload;
 import com.app.CourtReservationSystem.exception.APIException;
 import com.app.CourtReservationSystem.mapper.AccountMapper;
 import com.app.CourtReservationSystem.model.Account;
+import com.app.CourtReservationSystem.model.Cart;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
+import com.app.CourtReservationSystem.security.CustomUserDetails;
 import com.app.CourtReservationSystem.security.JwtTokenProvider;
 import com.app.CourtReservationSystem.service.IAuthService;
 import lombok.AccessLevel;
@@ -25,17 +27,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthService implements IAuthService {
-    private AuthenticationManager authenticationManager;
-
-    private AccountRepository accountRepository;
-
-    private RoleRepository roleRepository;
-
-    private PasswordEncoder passwordEncoder;
-
-    private JwtTokenProvider jwtTokenProvider;
-
+    
     private AccountMapper accountMapper;
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
+    private AccountRepository accountRepository;
+    private AuthenticationManager authenticationManager;
     
     @Override
     public String login(LoginPayload loginPayload) {
@@ -44,6 +42,10 @@ public class AuthService implements IAuthService {
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             loginPayload.getUsername(), loginPayload.getPassword()));
+        
+//        CustomUserDetails userDetails = new CustomUserDetails()
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//            );
         
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
@@ -64,9 +66,10 @@ public class AuthService implements IAuthService {
         
         Account account = accountMapper.toAccount(registerPayload);
         account.setAccountRole(roleRepository.findByRole("PLAYER"));
+        Cart cart = new Cart();
+        account.setCart(cart);
 
         accountRepository.save(account);
-        
         return "Register successfully!";
     }
     

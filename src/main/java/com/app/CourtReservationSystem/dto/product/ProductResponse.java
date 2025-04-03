@@ -18,6 +18,6 @@ public class ProductResponse {
     private Double price;
     private Long buyTurn;
     private Long stock;
-    private String category;
+    private Category category;
     private ImageResponse image;
 }
