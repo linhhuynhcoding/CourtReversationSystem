@@ -1,10 +1,12 @@
 package com.app.CourtReservationSystem.service.Impl;
 
+import com.app.CourtReservationSystem.dto.payment.PaymentPayload;
 import com.app.CourtReservationSystem.enums.PaymentMethod;
 import com.app.CourtReservationSystem.model.Payment;
 import com.app.CourtReservationSystem.repository.PaymentRepository;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -19,17 +21,17 @@ public class PaymentService implements IPaymentService {
 
     public PaymentService(PaymentRepository paymentRepository, VNPAYService vnpayService, CODSerivce codSerivce) {
         this.paymentRepository = paymentRepository;
+        paymentMethodServiceMap = new HashMap<>();
         this.paymentMethodServiceMap.put(PaymentMethod.VNPAY, vnpayService);
         this.paymentMethodServiceMap.put(PaymentMethod.COD, codSerivce);
     }
 
     @Override
-    public Payment processPayment(PaymentMethod paymentMethod, Double amount) {
+    @Transactional
+    public Payment createPayment(PaymentPayload payload) {
         Payment payment = new Payment();
-        payment.setAmount(amount);
-        payment.setMethodPayment(paymentMethod);
-
-        payment.setStatus(this.paymentMethodServiceMap.get(paymentMethod).process(amount));
+        payment.setAmount(payload.getAmount());
+        payment.setMethodPayment(payload.getPaymentMethod());
         paymentRepository.save(payment);
         return payment;
     }

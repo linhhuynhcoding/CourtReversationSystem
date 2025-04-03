@@ -15,7 +15,6 @@ import java.util.List;
 @Audited
 @Data
 public class Order extends Audiable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

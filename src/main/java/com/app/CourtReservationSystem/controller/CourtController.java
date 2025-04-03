@@ -45,8 +45,6 @@ import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 public class CourtController {
     ICourtService courtService;
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> getCourt(
             HttpServletRequest request,
