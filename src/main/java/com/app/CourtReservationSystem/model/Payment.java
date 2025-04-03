@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.model;
  * @author linhhuynhcoding
  */
 
+import com.app.CourtReservationSystem.enums.PaymentMethod;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,13 +25,15 @@ public class Payment extends Audiable {
 
   @Column(name = "status")
   @Enumerated(EnumType.STRING)
-  private PaymentStatus status;
+  private PaymentStatus status = PaymentStatus.PENDING;
 
-  @ManyToOne
-  @JoinColumn(name="method_id")
+  @Column(name="method_id")
   private PaymentMethod methodPayment;
   
   @OneToOne(mappedBy = "payment")
   private Booking booking;
+
+  @OneToOne(mappedBy = "payment")
+  private Order order;
 }
 

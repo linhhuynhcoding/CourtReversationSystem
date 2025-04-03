@@ -40,7 +40,10 @@ public class Account extends Audiable {
     
     @OneToMany(mappedBy = "account")
     private List<Booking> bookings;
-    
+
+    @OneToMany(mappedBy = "account")
+    private List<Order> orders;
+
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Cart cart;
 }

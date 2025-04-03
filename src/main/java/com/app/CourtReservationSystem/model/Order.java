@@ -1,4 +1,5 @@
 package com.app.CourtReservationSystem.model;
+
 import com.app.CourtReservationSystem.enums.OrderType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +9,6 @@ import java.util.List;
 
 /**
  * @author linhhuynhcoding
- *
  */
 @Entity
 @Table(name = "orders")
@@ -16,33 +16,36 @@ import java.util.List;
 @Data
 public class Order extends Audiable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-  @Column(name = "account_id")
-  private Long accountId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Account account;
 
-  @Column(name = "order_type")
-  @Enumerated(EnumType.STRING)
-  private OrderType orderType;
+    @Column(name = "order_type")
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;
 
-  @Column(name = "total")
-  private Long total;
+    @Column(name = "total")
+    private Double total;
 
-  @Column(name = "payment_id")
-  private Long paymentId;
+    @Column(name = "product_price")
+    private Double productPrice;
 
-  @Column(name = "address_id")
-  private Long addressId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
-  @Column(name = "court_id")
-  private Long courtId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-  @Column(name = "ship_fee")
-  private Double shipFee;
+    @Column(name = "ship_fee")
+    private Double shipFee;
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 }

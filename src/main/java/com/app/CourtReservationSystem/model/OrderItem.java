@@ -14,7 +14,6 @@ import java.util.List;
 @Audited
 @Data
 public class OrderItem extends Audiable{
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -24,8 +23,9 @@ public class OrderItem extends Audiable{
   @JoinColumn(name = "order_id")
   private Order order;
 
-  @Column(name = "product_id", nullable = false)
-  private Long productId;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
 
   @Column(name = "quantity", nullable = false)
   private Long quantity;
