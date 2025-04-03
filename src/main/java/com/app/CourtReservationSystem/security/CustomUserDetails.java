@@ -16,7 +16,7 @@ import java.util.Collections;
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     Account account;
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(account.getAccountRole().getRole()));
@@ -30,6 +30,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return account.getUsername();
+    }
+
+    public Long getId() {
+        return account.getId();
     }
 
     @Override

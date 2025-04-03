@@ -20,7 +20,7 @@ public class AccountDetailService implements UserDetailsService {
     private AccountRepository accountRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public CustomUserDetails loadUserByUsername(String username) {
         Account account = accountRepository.findByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException(username);

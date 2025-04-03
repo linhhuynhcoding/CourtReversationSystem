@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
@@ -13,23 +14,18 @@ import java.util.List;
 @Entity
 @Table(name = "carts")
 @Audited
+@Data
 public class Cart extends Audiable {
     @Id
-    @GeneratedValue()
-    @Getter
-    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @Getter
-    @Setter
-    @JoinColumn(name = "account_id", nullable = false)
+//    @MapsId
+    @JoinColumn(name = "account_id")
     private Account account;
     
     @OneToMany(mappedBy = "cart")
-    @Getter
-    @Setter
     private List<CartItem> items;
     
 }

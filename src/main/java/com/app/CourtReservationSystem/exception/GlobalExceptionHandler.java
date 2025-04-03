@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,7 +34,17 @@ public class GlobalExceptionHandler {
                 httpServletRequest.getRequestURI(), "", "");
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    
+
+    // Catch
+    // BadCredentialsException.class
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse<String>> handleBadCredentialsException(BadCredentialsException e, WebRequest webRequest,
+                                                                    HttpServletRequest httpServletRequest) {
+        ErrorResponse<String> errorResponse = new ErrorResponse<String>(new Date(), "Username or password is incorrect!", e.getMessage(),
+                httpServletRequest.getRequestURI(), "", "");
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
     // Catch
     // ResourceNotFoundException.class
     @ExceptionHandler(ResourceNotFoundException.class)

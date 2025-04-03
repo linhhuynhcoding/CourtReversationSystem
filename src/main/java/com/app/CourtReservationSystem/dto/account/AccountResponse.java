@@ -14,4 +14,6 @@ public class AccountResponse {
     private String email;
 
     private String name;
+
+    private Long cartId;
 }

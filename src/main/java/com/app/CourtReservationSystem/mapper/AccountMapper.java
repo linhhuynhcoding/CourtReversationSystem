@@ -12,6 +12,7 @@ import java.util.List;
 public interface AccountMapper {
     Account toAccount(RegisterPayload registerPayload);
 
+    @Mapping(target = "cartId", expression = "java(account.getCart().getId())")
     AccountResponse toDTO(Account account);
 
     List<AccountResponse> toDTOs(List<Account> accounts);

@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.dbs.seeders;
 
 import com.app.CourtReservationSystem.model.Account;
+import com.app.CourtReservationSystem.model.Cart;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.ProductRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
@@ -35,6 +36,10 @@ public class AccountSeeder implements CommandLineRunner {
         admin.setName("Anh Admin");
         admin.setPassword(passwordEncoder.encode("Admin!123"));
         admin.setAccountRole(roleRepository.findByRole("ADMIN"));
+
+        Cart cart = new Cart();
+        cart.setAccount(admin);
+        admin.setCart(cart);
 
         accountRepository.save(admin);
     }
