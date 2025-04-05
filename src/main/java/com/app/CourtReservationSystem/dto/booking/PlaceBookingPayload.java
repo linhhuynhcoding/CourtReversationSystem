@@ -14,7 +14,10 @@ import java.time.LocalDateTime;
 public class PlaceBookingPayload {
     @NotNull
     private Long accountId;
-    
+
+    @NotNull
+    private Long orgaId;
+
     @NotNull
     private Long courtId;
     

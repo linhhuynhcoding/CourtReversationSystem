@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -27,7 +26,11 @@ public class Booking extends Audiable {
   private Order order;
 
   @ManyToOne
-  @JoinColumn(name = "court_id")
+  @JoinColumn(name = "orga_id", nullable = false)
+  private Organisation orga;
+
+  @ManyToOne
+  @JoinColumn(name = "court_id", nullable = false)
   private Court court;
   
   @ManyToOne

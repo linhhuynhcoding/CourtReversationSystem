@@ -38,5 +38,5 @@ public class Address extends Audiable {
   
   @JsonIgnore
   @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
-  private Court court;
+  private Organisation court;
 }

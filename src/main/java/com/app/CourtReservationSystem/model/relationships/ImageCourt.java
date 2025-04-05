@@ -1,7 +1,7 @@
 package com.app.CourtReservationSystem.model.relationships;
 
 import com.app.CourtReservationSystem.model.Audiable;
-import com.app.CourtReservationSystem.model.Court;
+import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.model.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -26,5 +26,5 @@ public class ImageCourt extends Audiable {
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "court_id")
-    private Court courtImage;
+    private Organisation courtImage;
 }

@@ -4,7 +4,6 @@ import com.app.CourtReservationSystem.dto.address.CreateAddressPayload;
 import com.app.CourtReservationSystem.dto.court.CourtResponse;
 import com.app.CourtReservationSystem.dto.court.CreateCourtPayload;
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
-import com.app.CourtReservationSystem.dto.image.ImagePayload;
 import com.app.CourtReservationSystem.dto.image.ImageResponse;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.enums.ImageStatus;
@@ -14,24 +13,24 @@ import com.app.CourtReservationSystem.mapper.CourtMapper;
 import com.app.CourtReservationSystem.mapper.ImageMapper;
 import com.app.CourtReservationSystem.model.Address;
 import com.app.CourtReservationSystem.model.Court;
+import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.model.Image;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
-import com.app.CourtReservationSystem.repository.CourtRepository;
+import com.app.CourtReservationSystem.repository.OrgaRepository;
 import com.app.CourtReservationSystem.repository.ImageRepository;
 import com.app.CourtReservationSystem.service.ICourtService;
 import com.app.CourtReservationSystem.service.IStorageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CourtService implements ICourtService {
-    CourtRepository courtRepository;
+    OrgaRepository courtRepository;
     ImageRepository imageRepository;
     CourtMapper courtMapper;
     ImageMapper imageMapper;
@@ -50,7 +49,7 @@ public class CourtService implements ICourtService {
     
     @Override
     public CourtResponse getCourt(Long id) {
-        Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
         return courtMapper.toDTO(court);
     }
@@ -58,7 +57,7 @@ public class CourtService implements ICourtService {
     @Override
     public CourtResponse getCourt(Long id, Date startFrom) {
         Date endAt = new Date(startFrom.getTime() + SEVEN_DAYS_TIMESTAMP);
-        Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
         return courtMapper.toDTO(court);
     }
@@ -68,7 +67,7 @@ public class CourtService implements ICourtService {
     @Transactional
     public CourtResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload) {
         courtRepository.updateCourtById(id, updateCourtPayload);
-        Court court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
         // TODO Xu ly anh
         List<ImageResponse> oldImages = updateCourtPayload.getOldImages();
@@ -107,7 +106,16 @@ public class CourtService implements ICourtService {
     @Override
     @Transactional
     public CourtResponse createCourt(CreateCourtPayload createCourtPayload) {
-        Court court = courtMapper.createToEntity(createCourtPayload);
+        Organisation orga = courtMapper.createToEntity(createCourtPayload);
+
+        List<Court> courtList = new ArrayList<>();
+        for (int j = 1; j <= orga.getNumberOfCourts(); j++) {
+            Court court = new Court();
+            court.setOrganisation(orga);
+            court.setName(createCourtPayload.getCourtNames().get(j - 1));
+            courtList.add(court);
+        }
+        orga.setCourts(courtList);
         
         // TODO Xu ly anh
         List<Image> images = this.imageMapper.toEntities(createCourtPayload.getImageCourts());
@@ -121,13 +129,13 @@ public class CourtService implements ICourtService {
         // TODO Xu ly address
         Address address = this.addressMapper.createToEntity(createCourtPayload.getAddress());
         
-        court.setImageCourts(imageCourts);
-        court.setAddress(address);
-        court.setStatus(CourtStatus.OPENING);
+        orga.setImageCourts(imageCourts);
+        orga.setAddress(address);
+        orga.setStatus(CourtStatus.OPENING);
         
-        courtRepository.save(court);
+        courtRepository.save(orga);
         
-        return courtMapper.toDTO(court);
+        return courtMapper.toDTO(orga);
     }
     
     @Override
@@ -138,7 +146,7 @@ public class CourtService implements ICourtService {
     @Override
     public Page getAllCourts(Pageable pageable) {
 
-        Page<Court> courts = courtRepository.findAll(pageable);
+        Page<Organisation> courts = courtRepository.findAll(pageable);
 
         return courts;
 //        return courtMapper.toDTOs(courts);

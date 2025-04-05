@@ -3,8 +3,8 @@ package com.app.CourtReservationSystem.dbs.seeders;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.model.Address;
 import com.app.CourtReservationSystem.model.Court;
-import com.app.CourtReservationSystem.repository.CourtRepository;
-import com.app.CourtReservationSystem.repository.RoleRepository;
+import com.app.CourtReservationSystem.model.Organisation;
+import com.app.CourtReservationSystem.repository.OrgaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -19,7 +19,7 @@ public class CourtSeeder implements CommandLineRunner {
     
     
     @Autowired
-    CourtRepository courtRepository;
+    OrgaRepository courtRepository;
     
     private static final String[] cities = {"City A", "City B", "City C" ,"City D"};
     private static final String[] districts = {"District A", "District B", "District C" ,"District D"};
@@ -31,16 +31,25 @@ public class CourtSeeder implements CommandLineRunner {
     }
     
     private void loadCourtData(){
-        List<Court> courts = new ArrayList<>() {};
+        List<Organisation> courts = new ArrayList<>() {};
         
-        for (int i = 1; i <= 100; i++) {
-            Court court = new Court();
+        for (int i = 0; i <= 100; i++) {
+            Organisation orga = new Organisation();
             Address address = new Address();
             
-            court.setName("Court " + i);
-            court.setPrice(Math.floor(Math.random() * 100000));
-            court.setNumberOfCourts(Math.round(Math.random() * 100000 % 10));
-            court.setPhone("+84 999 129 11" + i);
+            orga.setName("Orga  " + i);
+            orga.setPrice(Math.floor(Math.random() * 100000));
+            orga.setNumberOfCourts(Math.round(Math.random() * 100000 % 10) + 1);
+
+            List<Court> courtList = new ArrayList<>();
+            for (int j = 1; j <= orga.getNumberOfCourts(); j++) {
+                Court court = new Court();
+                court.setOrganisation(orga);
+                court.setName("Court " + (char) ('A' + j - 1));
+                courtList.add(court);
+            }
+            orga.setCourts(courtList);
+            orga.setPhone("+84 999 129 11" + i);
             
             address.setAddressLine("" + i);
             address.setCity(cities[i % 4]);
@@ -49,10 +58,10 @@ public class CourtSeeder implements CommandLineRunner {
             address.setLatitude(Math.round(Math.random() * 10000000));
             address.setLongitude(Math.round(Math.random() * 10000000));
             
-            court.setAddress(address);
-            court.setStatus(CourtStatus.values()[i % 3]);
+            orga.setAddress(address);
+            orga.setStatus(CourtStatus.values()[i % 3]);
             
-            courts.add(court);
+            courts.add(orga);
         }
         
         courtRepository.saveAll(courts);

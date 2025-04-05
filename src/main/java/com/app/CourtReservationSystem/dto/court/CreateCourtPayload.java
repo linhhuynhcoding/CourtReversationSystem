@@ -26,6 +26,10 @@ public class CreateCourtPayload {
     private String phone;
     @NotNull
     private Long numberOfCourts;
+
+    @NotNull
+    private List<String> courtNames;
+
     @NotNull
     @Min(1000)
     private Double price;

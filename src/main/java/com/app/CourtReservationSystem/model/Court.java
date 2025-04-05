@@ -1,48 +1,24 @@
 package com.app.CourtReservationSystem.model;
-/**
- * @author linhhuynhcoding
- */
 
-import com.app.CourtReservationSystem.enums.CourtStatus;
-import com.app.CourtReservationSystem.model.relationships.ImageCourt;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 import org.hibernate.envers.Audited;
-
-import java.util.List;
+import org.springframework.context.annotation.Primary;
 
 @Entity
-@Table(name = "courts")
-@Audited
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class Court extends Audiable {
+@Audited
+@Table(name = "courts")
+public class Court extends Audiable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+    private String name;
 
-  @Column(name = "name", nullable = false)
-  private String name;
-
-  @Column(name = "phone")
-  private String phone;
-
-  @Column(name = "number_of_courts")
-  private Long numberOfCourts;
-
-  @Column(name = "price")
-  private Double price;
-
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "address_id")
-  private Address address;
-
-  @Column(name = "status")
-  @Enumerated(EnumType.STRING)
-  private CourtStatus status;
-  
-  @OneToMany(mappedBy = "courtImage")
-  private List<ImageCourt> imageCourts;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orga_id")
+    @JsonIgnore // ignore when return to client
+    Organisation organisation;
 }
