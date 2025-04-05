@@ -27,5 +27,7 @@ public class Cart extends Audiable {
     
     @OneToMany(mappedBy = "cart")
     private List<CartItem> items;
-    
+
+    @Column
+    private Double totalPrice;
 }

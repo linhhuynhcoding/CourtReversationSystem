@@ -22,8 +22,9 @@ public class Booking extends Audiable {
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "order_id", nullable = true)
-  private Long orderId;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "order_id", nullable = true)
+  private Order order;
 
   @ManyToOne
   @JoinColumn(name = "court_id")

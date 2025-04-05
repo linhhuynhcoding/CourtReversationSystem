@@ -24,7 +24,10 @@ public class CartItem extends Audiable {
     private Product product;
 
     @Column
-    private Long quantity;
+    private Double price;
+
+    @Column
+    private Integer quantity;
     
     @Column
     private boolean selected = false;

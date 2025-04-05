@@ -22,4 +22,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """
     )
     int updateProductById(@Param("np") UpdateProductPayload payload, @Param("id") Long id);
+
+    @Modifying
+    @Query("""
+           UPDATE Product p
+           SET
+              p.stock = p.stock - :quantity
+           WHERE p.id = :id
+           """)
+    void decreamentStock(Long id, Integer quantity);
 }

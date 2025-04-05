@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class UpdateItemPayload {
     private Long productId;
-    private Long quantity;
+    private Integer quantity;
     private boolean selected;
 }
