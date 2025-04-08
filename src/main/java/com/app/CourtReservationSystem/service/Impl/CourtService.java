@@ -1,7 +1,7 @@
 package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.address.CreateAddressPayload;
-import com.app.CourtReservationSystem.dto.court.CourtResponse;
+import com.app.CourtReservationSystem.dto.court.OrgaResponse;
 import com.app.CourtReservationSystem.dto.court.CreateCourtPayload;
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
 import com.app.CourtReservationSystem.dto.image.ImageResponse;
@@ -48,14 +48,14 @@ public class CourtService implements ICourtService {
     static Long SEVEN_DAYS_TIMESTAMP = 1000 * 3600 * 24 * 7L;
     
     @Override
-    public CourtResponse getCourt(Long id) {
+    public OrgaResponse getCourt(Long id) {
         Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
         return courtMapper.toDTO(court);
     }
     
     @Override
-    public CourtResponse getCourt(Long id, Date startFrom) {
+    public OrgaResponse getCourt(Long id, Date startFrom) {
         Date endAt = new Date(startFrom.getTime() + SEVEN_DAYS_TIMESTAMP);
         Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
@@ -65,7 +65,7 @@ public class CourtService implements ICourtService {
     
     @Override
     @Transactional
-    public CourtResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload) {
+    public OrgaResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload) {
         courtRepository.updateCourtById(id, updateCourtPayload);
         Organisation court = courtRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
         
@@ -105,7 +105,7 @@ public class CourtService implements ICourtService {
     
     @Override
     @Transactional
-    public CourtResponse createCourt(CreateCourtPayload createCourtPayload) {
+    public OrgaResponse createCourt(CreateCourtPayload createCourtPayload) {
         Organisation orga = courtMapper.createToEntity(createCourtPayload);
 
         List<Court> courtList = new ArrayList<>();
@@ -148,7 +148,7 @@ public class CourtService implements ICourtService {
 
         Page<Organisation> courts = courtRepository.findAll(pageable);
 
-        return courts;
+        return courts.map(courtMapper::toDTO);
 //        return courtMapper.toDTOs(courts);
     }
 }

@@ -17,10 +17,13 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -74,9 +77,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
+    public Page getAllProducts(Pageable pageable) {
+        Page products = productRepository.findAll(pageable);
 
-        return productMapper.toDTOs(products);
+        return products;
     }
 }

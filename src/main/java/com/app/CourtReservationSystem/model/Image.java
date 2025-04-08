@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.model;
 import com.app.CourtReservationSystem.enums.ImageStatus;
 import com.app.CourtReservationSystem.enums.ResolutionType;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class Image extends Audiable {
     @Column(name = "id")
     private Long id;
     
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String image_url;
     
     @Column(nullable = false)
@@ -32,10 +33,12 @@ public class Image extends Audiable {
     
     @Column(nullable = false)
     private ResolutionType type = ResolutionType.ORIGINAL;
-    
+
+    @JsonIgnore
     @OneToOne(mappedBy = "image", cascade = CascadeType.ALL)
     private ImageCourt imageCourt;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "imageProduct")
     private Product product;
 

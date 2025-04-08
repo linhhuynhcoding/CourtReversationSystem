@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TokenResponse {
-    private String token;
-    private String tokenType = "access_token";
+    private String accessToken;
+    private String refreshToken;
 }

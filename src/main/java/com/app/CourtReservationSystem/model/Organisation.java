@@ -43,7 +43,7 @@ public class Organisation extends Audiable {
   @Enumerated(EnumType.STRING)
   private CourtStatus status;
   
-  @OneToMany(mappedBy = "courtImage")
+  @OneToMany(mappedBy = "courtImage", cascade = CascadeType.ALL)
   private List<ImageCourt> imageCourts;
 
   @OneToMany(mappedBy = "organisation", cascade = CascadeType.ALL)

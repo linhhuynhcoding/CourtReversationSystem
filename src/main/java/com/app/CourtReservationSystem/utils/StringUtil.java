@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class StringUtil {
-    public static <T extends Enum<T>> List<Sort.Order> toOrders(String sort, Class<T> enumClass) throws ApiException {
+    public static <T extends Enum<T>> List<Sort.Order> toOrders(String sort, Class<T> enumClass)  {
         try {
             List<Sort.Order> orders = new ArrayList<Sort.Order>();
 

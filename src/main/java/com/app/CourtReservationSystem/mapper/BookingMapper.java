@@ -11,5 +11,5 @@ public interface BookingMapper {
     BookingResponse toDTO(Booking booking);
     
     List<BookingResponse> toDTOs(List<Booking> bookings);
-    
+
 }

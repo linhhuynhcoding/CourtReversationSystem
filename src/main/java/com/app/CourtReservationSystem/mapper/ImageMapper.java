@@ -27,5 +27,4 @@ public interface ImageMapper {
     ImageResponse mapToDTO(Map<String, Object> image);
     
     List<ImageResponse> mapToDTOs(List<Map> images);
-    
 }

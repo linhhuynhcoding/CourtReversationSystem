@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 public class PlaceBookingPayload {
-    @NotNull
     private Long accountId;
 
     @NotNull
@@ -23,7 +22,7 @@ public class PlaceBookingPayload {
     
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime date;
+    private LocalDateTime timeStart;
     
     @NotNull
     @DecimalMin("0.5")

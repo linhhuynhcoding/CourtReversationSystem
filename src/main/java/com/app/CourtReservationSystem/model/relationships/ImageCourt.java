@@ -19,12 +19,12 @@ public class ImageCourt extends Audiable {
     @Column(name = "id")
     private Long id;
     
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
     
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "court_id")
     private Organisation courtImage;
 }

@@ -1,19 +1,14 @@
 package com.app.CourtReservationSystem.controller;
 
 import com.app.CourtReservationSystem.dto.ApiResponse;
-import com.app.CourtReservationSystem.dto.account.AccountResponse;
-import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.dto.court.CourtFilter;
-import com.app.CourtReservationSystem.dto.court.CourtResponse;
+import com.app.CourtReservationSystem.dto.court.OrgaResponse;
 import com.app.CourtReservationSystem.dto.court.CreateCourtPayload;
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
 import com.app.CourtReservationSystem.enums.CourtSortField;
-import com.app.CourtReservationSystem.exception.APIException;
-import com.app.CourtReservationSystem.service.IAuthService;
 import com.app.CourtReservationSystem.service.ICourtService;
 import com.cloudinary.api.exceptions.ApiException;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -26,10 +21,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
@@ -49,7 +42,7 @@ public class CourtController {
     public ResponseEntity<ApiResponse<?>> getCourt(
             HttpServletRequest request,
             @PathVariable(name = "id") Long id) {
-        CourtResponse courtResponse = courtService.getCourt(id);
+        OrgaResponse courtResponse = courtService.getCourt(id);
 
         System.out.println(courtResponse.getName());
 
@@ -62,7 +55,7 @@ public class CourtController {
             HttpServletRequest request,
             @Valid @RequestBody CreateCourtPayload createCourtPayload
     ) {
-        CourtResponse courtResponse = courtService.createCourt(createCourtPayload);
+        OrgaResponse courtResponse = courtService.createCourt(createCourtPayload);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), courtResponse));
@@ -74,7 +67,7 @@ public class CourtController {
             @Valid @RequestBody UpdateCourtPayload updateCourtPayload,
             @PathVariable(name = "id") Long id
     ) {
-        CourtResponse courtResponse = courtService.updateCourt(id, updateCourtPayload);
+        OrgaResponse courtResponse = courtService.updateCourt(id, updateCourtPayload);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), courtResponse));

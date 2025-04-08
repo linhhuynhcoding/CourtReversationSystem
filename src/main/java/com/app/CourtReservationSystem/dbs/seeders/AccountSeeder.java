@@ -41,6 +41,18 @@ public class AccountSeeder implements CommandLineRunner {
         cart.setAccount(admin);
         admin.setCart(cart);
 
+        Account user = new Account();
+        user.setUsername("user1234");
+        user.setEmail("user@gmail.com");
+        user.setName("Em User");
+        user.setPassword(passwordEncoder.encode("User!123"));
+        user.setAccountRole(roleRepository.findByRole("PLAYER"));
+
+        Cart cart2 = new Cart();
+        cart2.setAccount(user);
+        user.setCart(cart2);
+
+
         accountRepository.save(admin);
     }
 

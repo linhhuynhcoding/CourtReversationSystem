@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -38,10 +39,10 @@ public class Booking extends Audiable {
   private Account account;
 
   @Column(name = "time_start")
-  private Date timeStart;
+  private LocalDateTime timeStart;
   
   @Column(name = "time_end")
-  private Date timeEnd; // dam bao time_start & time_end chung mot ngay (validation)
+  private LocalDateTime timeEnd; // dam bao time_start & time_end chung mot ngay (validation)
 
   @Column(name = "status")
   @Enumerated(EnumType.STRING)

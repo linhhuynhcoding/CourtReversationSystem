@@ -13,6 +13,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,15 +56,14 @@ public class BookingSeeder implements CommandLineRunner {
             calendar.set(Calendar.MINUTE, 30);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
-
             if (orga != null && !orga.getCourts().isEmpty()) {
                 booking.setCourt(orga.getCourts().get(0));
             }
 
 
-            booking.setTimeStart(calendar.getTime());
+            booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
             calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(16 + i, 23)));
-            booking.setTimeEnd(calendar.getTime());
+            booking.setTimeEnd(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
             booking.setAccount(accountRepository.findById(1L).orElse(null));
 
             bookings.add(booking);

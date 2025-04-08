@@ -1,8 +1,10 @@
 package com.app.CourtReservationSystem.service.Impl;
 
+import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.auth.LoginPayload;
 import com.app.CourtReservationSystem.dto.auth.RegisterPayload;
 import com.app.CourtReservationSystem.exception.APIException;
+import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.AccountMapper;
 import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.model.Cart;
@@ -18,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,15 +49,20 @@ public class AuthService implements IAuthService {
 //        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 //            loginPayload.getUsername(), loginPayload.getPassword()));
 
-        CustomUserDetails userDetails = accountDetailService.loadUserByUsername(loginPayload.getUsername());
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                userDetails, loginPayload.getPassword(), userDetails.getAuthorities()));
+        try {
+            CustomUserDetails userDetails = accountDetailService.loadUserByUsername(loginPayload.getUsername());
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    userDetails, loginPayload.getPassword(), userDetails.getAuthorities()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            String token = jwtTokenProvider.generateToken(authentication);
 
-        String token = jwtTokenProvider.generateToken(authentication);
+            return token;
+        } catch (BadCredentialsException e) {
+            throw e;
+        }
 
-        return token;
+
     }
 
     @Override
@@ -81,6 +89,13 @@ public class AuthService implements IAuthService {
     @Override
     public String logout() {
         return "";
+    }
+
+    @Override
+    public AccountResponse me(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
+
+        return accountMapper.toDTO(account);
     }
 
 

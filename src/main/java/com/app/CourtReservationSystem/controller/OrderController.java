@@ -1,8 +1,6 @@
 package com.app.CourtReservationSystem.controller;
 
 import com.app.CourtReservationSystem.dto.ApiResponse;
-import com.app.CourtReservationSystem.dto.court.CourtResponse;
-import com.app.CourtReservationSystem.dto.court.CreateCourtPayload;
 import com.app.CourtReservationSystem.dto.order.OrderFilter;
 import com.app.CourtReservationSystem.dto.order.OrderResponse;
 import com.app.CourtReservationSystem.dto.order.PlaceOrderPayload;
@@ -22,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
