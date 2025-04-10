@@ -51,4 +51,7 @@ public class Booking extends Audiable {
   @OneToOne()
   @JoinColumn(name = "payment_id")
   private Payment payment;
+
+  @Column
+  private Double total;
 }

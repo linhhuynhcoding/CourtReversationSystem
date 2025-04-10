@@ -27,7 +27,6 @@ import java.util.List;
 
 import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 
-
 @RestController
 @RequestMapping("/api/v1/courts")
 @RequiredArgsConstructor

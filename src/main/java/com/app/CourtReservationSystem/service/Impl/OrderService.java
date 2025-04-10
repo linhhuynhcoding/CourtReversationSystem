@@ -92,6 +92,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponse placeOrderBooking(Long accountId, Long bookingId, PlaceOrderBookingPayload payload) {
         Booking bookingProxy = bookingRepository.getReferenceById(bookingId);
         Account account = accountRepository.getReferenceById(accountId);
@@ -134,6 +135,7 @@ public class OrderService implements IOrderService {
         order.setAccount(account);
 
         orderRepository.save(order);
+
         return orderMapper.toDTO(order);
     }
 

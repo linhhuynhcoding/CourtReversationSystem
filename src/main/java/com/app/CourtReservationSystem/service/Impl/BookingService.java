@@ -2,7 +2,9 @@ package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
+import com.app.CourtReservationSystem.enums.BookingStatus;
 import com.app.CourtReservationSystem.exception.APIException;
+import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.BookingMapper;
 import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.model.Booking;
@@ -70,6 +72,7 @@ public class BookingService implements IBookingService {
         booking.setAccount(accountProxy);
         booking.setTimeStart(payload.getTimeStart());
         booking.setTimeEnd(timeEnd);
+        booking.setTotal(orgProxy.getPrice() * payload.getDuration() * 1.0);
 
         bookingRepository.save(booking);
 
@@ -102,5 +105,14 @@ public class BookingService implements IBookingService {
         List<Booking> bookings = bookingRepository.findAllByCourtIdAndTimeStartBetween(id, createdDateAfter, createdDateBefore);
 
         return bookingMapper.toDTOs(bookings);
+    }
+
+    @Override
+    @Transactional
+    public void updateBookingStatus(Long id, BookingStatus status) {
+        var booking = bookingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking", "id", id));
+
+        booking.setStatus(status);
+        bookingRepository.save(booking);
     }
 }

@@ -6,10 +6,16 @@
 package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.config.VNPAYConfig;
+import com.app.CourtReservationSystem.dto.payment.PaymentResult;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
+import com.app.CourtReservationSystem.model.Payment;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -18,7 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Service
+@Component
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VNPAYService implements IPaymentMethodService {
 
     public String createOrder(HttpServletRequest request, int amount, String orderInfor, String urlReturn) {
@@ -130,5 +138,14 @@ public class VNPAYService implements IPaymentMethodService {
     @Override
     public PaymentStatus process(Double amount) {
         return null;
+    }
+
+    @Override
+    public PaymentResult process(Payment payment) {
+        var resultPayment = new PaymentResult();
+        resultPayment.setRedirect(true);
+        resultPayment.setRedirectUrl("http://localhost:8080/");
+
+        return resultPayment;
     }
 }
