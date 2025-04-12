@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.dto.product;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,13 @@ public class ProductFilter {
     @Min(10)
     @Max(50)
     private Integer pageSize = 10;
+
+    @NotNull
+    private String categoryName;
+
+    private Double priceMin = 0.0;
+
+    private Double priceMax = 5000000.0;
 
     @Override
     public String toString() {

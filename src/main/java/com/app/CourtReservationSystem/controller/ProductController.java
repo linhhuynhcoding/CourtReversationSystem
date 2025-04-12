@@ -89,7 +89,7 @@ public class ProductController {
         List<Sort.Order> orders = toOrders(filter.getSort(), ProductSortField.class);
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getPageSize(), Sort.by(orders));
 
-        Page response = productService.getAllProducts(pageable);
+        Page response = productService.getAllProducts(pageable, filter);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
     }

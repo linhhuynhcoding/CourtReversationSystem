@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.service;
 
 import com.app.CourtReservationSystem.dto.product.CreateProductPayload;
+import com.app.CourtReservationSystem.dto.product.ProductFilter;
 import com.app.CourtReservationSystem.dto.product.ProductResponse;
 import com.app.CourtReservationSystem.dto.product.UpdateProductPayload;
 import org.springframework.data.domain.Page;
@@ -13,5 +14,5 @@ public interface IProductService {
     ProductResponse createProduct(CreateProductPayload createProductPayload);
     ProductResponse updateProduct(UpdateProductPayload updateProductPayload, Long id);
     void deleteProduct(Long id);
-    Page getAllProducts(Pageable pageable);
+    Page getAllProducts(Pageable pageable, ProductFilter filter);
 }

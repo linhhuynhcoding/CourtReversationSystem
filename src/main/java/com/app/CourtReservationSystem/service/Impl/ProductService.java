@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.image.ImagePayload;
 import com.app.CourtReservationSystem.dto.product.CreateProductPayload;
+import com.app.CourtReservationSystem.dto.product.ProductFilter;
 import com.app.CourtReservationSystem.dto.product.ProductResponse;
 import com.app.CourtReservationSystem.dto.product.UpdateProductPayload;
 import com.app.CourtReservationSystem.enums.ImageStatus;
@@ -13,12 +14,14 @@ import com.app.CourtReservationSystem.model.Product;
 import com.app.CourtReservationSystem.repository.CategoryRepository;
 import com.app.CourtReservationSystem.repository.ProductRepository;
 import com.app.CourtReservationSystem.service.IProductService;
+import com.app.CourtReservationSystem.specification.ProductSpecifications;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -46,10 +49,10 @@ public class ProductService implements IProductService {
     public ProductResponse createProduct(CreateProductPayload createProductPayload) {
         Product product = productMapper.toEntity(createProductPayload);
         product.setCategory(categoryRepository.findById(createProductPayload.getCategoryId()).orElse(null));
-        
+
         Image image = this.imageMapper.toEntity(createProductPayload.getImage());
         product.setImageProduct(image);
-        
+
         productRepository.save(product);
         return productMapper.toDTO(product);
     }
@@ -77,8 +80,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page getAllProducts(Pageable pageable) {
-        Page products = productRepository.findAll(pageable);
+    public Page getAllProducts(Pageable pageable, ProductFilter filter) {
+        Specification<Product> spec = ProductSpecifications.withFilter(filter);
+
+        Page products = productRepository.findAll(spec, pageable);
 
         return products;
     }

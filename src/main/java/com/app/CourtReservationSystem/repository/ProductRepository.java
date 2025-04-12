@@ -1,14 +1,17 @@
 package com.app.CourtReservationSystem.repository;
 
+import com.app.CourtReservationSystem.dto.product.ProductFilter;
 import com.app.CourtReservationSystem.dto.product.UpdateProductPayload;
 import com.app.CourtReservationSystem.model.Product;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
     @Modifying
     @Transactional
@@ -31,4 +34,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
            WHERE p.id = :id
            """)
     void decreamentStock(Long id, Integer quantity);
+
 }
