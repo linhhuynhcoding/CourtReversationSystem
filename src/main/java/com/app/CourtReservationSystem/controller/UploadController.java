@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.controller;
 import com.app.CourtReservationSystem.service.ICloudService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,12 @@ public class UploadController {
     ICloudService cloudService;
     
     @PostMapping()
-    public ResponseEntity<List<?>> uploadImage(@Valid @NotNull @RequestPart(name = "images", required = false) List<MultipartFile> files){
-        List<?> data = this.cloudService.upload(files);
+    public ResponseEntity<?> uploadImage(@RequestPart(name = "images", required = true) List<MultipartFile> images){
+        if (images == null || images.isEmpty()) {
+            return ResponseEntity.badRequest().body("No images uploaded.");
+        }
+
+        List<?> data = this.cloudService.upload(images);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

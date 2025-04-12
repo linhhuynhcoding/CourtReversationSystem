@@ -46,7 +46,7 @@ public class AddressController {
     @Operation(
         summary = "Get All Districts by city_code REST API"
     )
-    @GetMapping("/district/{city_code}")
+    @GetMapping("/districts/{city_code}")
     public ResponseEntity<ApiResponse<?>> getDistricts(
         HttpServletRequest request,
         @PathVariable Long city_code

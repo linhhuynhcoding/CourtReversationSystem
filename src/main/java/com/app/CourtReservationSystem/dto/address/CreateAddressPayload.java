@@ -12,3 +12,4 @@ public class CreateAddressPayload {
     private Long latitude;
     private Long longitude;
 }
+

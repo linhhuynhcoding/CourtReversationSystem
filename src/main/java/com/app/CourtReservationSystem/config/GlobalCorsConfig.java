@@ -10,7 +10,7 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Apply CORS policy to all endpoints
-                .allowedOrigins("http://localhost:3000", "http://192.168.1.17" +
+                .allowedOrigins("http://localhost:3000", "http://172.19.128.1" +
                         ":3000") // Allowed origins
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // HTTP methods
                 .allowedHeaders("Authorization", "Content-Type") // Allowed headers

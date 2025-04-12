@@ -41,7 +41,4 @@ public class CreateCourtPayload {
     @NotNull
     @Size(min=3, max=5)
     private List<ImagePayload> imageCourts;
-
-
-
 }
