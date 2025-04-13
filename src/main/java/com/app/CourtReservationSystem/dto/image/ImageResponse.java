@@ -11,7 +11,7 @@ public class ImageResponse {
     private String image_url;
     private Integer width;
     private Integer height;
-    private ImageStatus status;
-    private ResolutionType type;
+    private ImageStatus status = ImageStatus.ACTIVE;
+    private ResolutionType type = ResolutionType.ORIGINAL;
 }
 
