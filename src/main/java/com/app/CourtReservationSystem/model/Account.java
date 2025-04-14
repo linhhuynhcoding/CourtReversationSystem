@@ -1,9 +1,11 @@
 package com.app.CourtReservationSystem.model;
 
+import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.catalina.Manager;
 import org.hibernate.envers.Audited;
 
 import java.util.List;
@@ -46,4 +48,7 @@ public class Account extends Audiable {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Cart cart;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private ManagerAccount manager;
 }

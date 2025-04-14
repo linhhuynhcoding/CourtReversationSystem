@@ -17,21 +17,21 @@ import org.hibernate.validator.constraints.Normalized;
 public class RegisterPayload {
     @NotEmpty(message = "Should not empty!")
     @Length(min = 8, max = 20, message = "Username's length must be between 8 and 20 characters!")
-    private String username;
+    protected String username;
     
     @NotEmpty(message = "Should not empty!")
     @Email()
-    private String email;
+    protected String email;
     
     @NotEmpty(message = "Should not empty!")
     @Length(min = 1)
-    private String name;
+    protected String name;
     
     @NotEmpty(message = "Should not empty!")
     @Length(min = 8, message = "Password's length must be equal or larger than 8 characters!")
     @Pattern(
         regexp = "^(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?])[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+$",
         message = "Must be contain one special character and uppercase character!")
-    private String password;
+    protected String password;
 }
 

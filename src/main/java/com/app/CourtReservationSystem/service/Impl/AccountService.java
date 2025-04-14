@@ -2,11 +2,17 @@ package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
+import com.app.CourtReservationSystem.dto.account.AddAccountPayload;
+import com.app.CourtReservationSystem.dto.auth.RegisterPayload;
 import com.app.CourtReservationSystem.exception.APIException;
 import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.AccountMapper;
 import com.app.CourtReservationSystem.model.Account;
+import com.app.CourtReservationSystem.model.Role;
+import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
 import com.app.CourtReservationSystem.repository.AccountRepository;
+import com.app.CourtReservationSystem.repository.OrgaRepository;
+import com.app.CourtReservationSystem.repository.RoleRepository;
 import com.app.CourtReservationSystem.service.IAccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +27,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountService implements IAccountService {
-    AccountRepository accountRepository;
+    private RoleRepository roleRepository;
     AccountMapper accountMapper;
+    AccountRepository accountRepository;
+    OrgaRepository orgaRepository;
 
     @Override
     public AccountResponse getAccount(Long id) {
@@ -58,5 +66,30 @@ public class AccountService implements IAccountService {
         List<AccountResponse> accountResponses = accountMapper.toDTOs(accounts);
 
         return accountResponses;
+    }
+
+    @Override
+    public AccountResponse addAccountByRole(AddAccountPayload payload) {
+        if (accountRepository.existsByUsername(payload.getUsername())) {
+            throw new APIException("Username already exist", HttpStatus.BAD_REQUEST);
+        }
+
+        if (accountRepository.existsByEmail(payload.getEmail())) {
+            throw new APIException("Email already exist", HttpStatus.BAD_REQUEST);
+        }
+
+        Account account = accountMapper.toAccount(payload);
+        account.setAccountRole(roleRepository.findByRole(payload.getRole()));
+
+        if (payload.getRole().equals("COURT_MANAGER")) {
+            ManagerAccount managerAccount = new ManagerAccount();
+            managerAccount.setAccount(account);
+            managerAccount.setCourt(orgaRepository.getReferenceById(payload.getOrgaId()));
+            account.setManager(managerAccount);
+        }
+
+        accountRepository.save(account);
+
+        return accountMapper.toDTO(account);
     }
 }

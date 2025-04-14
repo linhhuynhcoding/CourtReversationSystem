@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.controller;
 import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
+import com.app.CourtReservationSystem.dto.account.AddAccountPayload;
 import com.app.CourtReservationSystem.service.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -88,5 +89,14 @@ public class AccountController {
         
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
             request.getRequestURI(), accountResponses));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<ApiResponse<?>> addAccount(HttpServletRequest request, @RequestBody AddAccountPayload payload) {
+
+        AccountResponse accountResponses = accountService.addAccountByRole(payload);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+                request.getRequestURI(), accountResponses));
     }
 }

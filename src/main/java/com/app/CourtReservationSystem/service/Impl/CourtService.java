@@ -122,7 +122,8 @@ public class CourtService implements ICourtService {
         List<ImageCourt> imageCourts = images.stream().map((image) -> {
             ImageCourt imageCourt = new ImageCourt();
             imageCourt.setImage(image);
-            
+            imageCourt.setCourtImage(orga);
+
             return imageCourt;
         }).collect(Collectors.toList());
         
