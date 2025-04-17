@@ -36,6 +36,7 @@ public class CourtSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("CourtSeeder starting...");
         loadCourtData();
     }
 
@@ -49,7 +50,7 @@ public class CourtSeeder implements CommandLineRunner {
 
             orga.setName("Orga  " + i);
             orga.setPrice(Math.floor(Math.random() * 100000));
-            orga.setNumberOfCourts(Math.round(Math.random() * 100000 % 4) + 1);
+            orga.setNumberOfCourts(Math.round(Math.random() * 100000 % 1) + 1);
 
             List<Court> courtList = new ArrayList<>();
             for (int j = 1; j <= orga.getNumberOfCourts(); j++) {

@@ -29,6 +29,7 @@ public class ProductSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("CourtSeeder starting...");
         loadCategoriesData();
         loadProductsData();
     }

@@ -10,10 +10,8 @@ import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.model.Booking;
 import com.app.CourtReservationSystem.model.Court;
 import com.app.CourtReservationSystem.model.Organisation;
-import com.app.CourtReservationSystem.repository.AccountRepository;
-import com.app.CourtReservationSystem.repository.BookingRepository;
-import com.app.CourtReservationSystem.repository.CourtRepository;
-import com.app.CourtReservationSystem.repository.OrgaRepository;
+import com.app.CourtReservationSystem.model.relationships.CourtFull;
+import com.app.CourtReservationSystem.repository.*;
 import com.app.CourtReservationSystem.service.IBookingService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
@@ -37,7 +35,39 @@ public class BookingService implements IBookingService {
     BookingMapper bookingMapper;
     CourtRepository courtRepository;
     OrgaRepository orgaRepository;
+    CourtStatusRepository courtStatusRepository;
     private final AccountRepository accountRepository;
+
+    private void updateIfFull(Organisation org, LocalDateTime date) {
+        date = date.withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+        for (double i = 0.0; i <= 23.5; i += 0.5) {
+            long hour = Math.round(Math.floor(i));
+            long minute = Math.round(((i - hour) * 60));
+            LocalDateTime startDate = date.withHour((int) hour).withMinute((int) minute);
+            LocalDateTime endDate = startDate.plusMinutes((long) (0.5 * 60));
+
+            System.out.println("startDate: " + startDate);
+            System.out.println("endDate" + endDate);
+
+            List<Booking> bookings = bookingRepository.findAllBookingByOgranisation(
+                    org.getId(),
+                    startDate, endDate
+            );
+            System.out.println("Bookings: " + bookings.size());
+            System.out.println("NumberOfCourts: " + org.getNumberOfCourts());
+            System.out.println("___________________");
+
+            if (bookings.size() < org.getNumberOfCourts()) {
+                return;
+            }
+        }
+
+        var cS = new CourtFull();
+        cS.setDate(date);
+        cS.setOrganisation(org);
+        courtStatusRepository.save(cS);
+    }
 
     @Override
     @Transactional
@@ -75,6 +105,8 @@ public class BookingService implements IBookingService {
         booking.setTotal(orgProxy.getPrice() * payload.getDuration() * 1.0);
 
         bookingRepository.save(booking);
+
+        updateIfFull(orgProxy, payload.getTimeStart());
 
         Booking booking1 = bookingRepository.findById(booking.getId()).orElseThrow(() -> new APIException("Tạo booking thất bại", HttpStatus.INTERNAL_SERVER_ERROR));
         return bookingMapper.toDTO(booking1);

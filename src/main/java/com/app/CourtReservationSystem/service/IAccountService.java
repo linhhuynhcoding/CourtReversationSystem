@@ -6,6 +6,8 @@ package com.app.CourtReservationSystem.service;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.dto.account.AddAccountPayload;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,5 +18,7 @@ public interface IAccountService {
     public AccountResponse updateAccount(Long id, AccountUpdatePayload accountUpdatePayload);
     public void deleteAccount(Long id);
 
-    public List<AccountResponse> getAllAccounts();
+    public Page getAllAccounts(Pageable pageable);
+    public Page getAllAccountsByRole(String role, Pageable pageable);
+
 }

@@ -4,6 +4,7 @@ package com.app.CourtReservationSystem.model;
  */
 
 import com.app.CourtReservationSystem.enums.CourtStatus;
+import com.app.CourtReservationSystem.model.relationships.CourtFull;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
 import jakarta.persistence.*;
@@ -52,4 +53,7 @@ public class Organisation extends Audiable {
 
   @OneToMany(mappedBy = "court", cascade = CascadeType.ALL)
   private List<ManagerAccount> manager;
+
+  @OneToMany(mappedBy = "organisation")
+  private List<CourtFull> courtFull;
 }

@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.dto.court;
 
 import com.app.CourtReservationSystem.dto.address.AddressResponse;
+import com.app.CourtReservationSystem.dto.image.ImageResponse;
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.model.Court;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
@@ -19,6 +20,7 @@ public class OrgaResponse {
     private Double price;
     private AddressResponse address;
     private CourtStatus status;
-    private List<ImageCourt> imageCourts;
+    private List<ImageResponse> imageCourts;
+//    private List<ImageCourt> imageCourts;
     private List<CourtResponse> courts;
 }

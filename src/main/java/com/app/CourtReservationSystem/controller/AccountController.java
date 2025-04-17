@@ -1,9 +1,11 @@
 package com.app.CourtReservationSystem.controller;
 
 import com.app.CourtReservationSystem.dto.ApiResponse;
+import com.app.CourtReservationSystem.dto.BaseFilter;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.dto.account.AccountUpdatePayload;
 import com.app.CourtReservationSystem.dto.account.AddAccountPayload;
+import com.app.CourtReservationSystem.enums.CourtSortField;
 import com.app.CourtReservationSystem.service.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,11 +16,17 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -83,12 +91,27 @@ public class AccountController {
     )
     @GetMapping("")
     @SecurityRequirement(name = "Bear Authentication")
-    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest request) {
-        List<AccountResponse> accountResponses = accountService.getAllAccounts();
-        
+    public ResponseEntity<ApiResponse<?>> getAccounts(HttpServletRequest request, BaseFilter filter) {
+        Pageable pageable = PageRequest.of(filter.getPage(), filter.getPageSize());
+
+        Page accountResponses = accountService.getAllAccounts(pageable);
         
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
             request.getRequestURI(), accountResponses));
+    }
+
+    @Operation(
+            summary = "Get All Accounts By Role REST API",
+            description = "Get All Accounts By Role REST API is used to get all account information from database"
+    )
+    @GetMapping("/role")
+    public ResponseEntity<ApiResponse<?>> getAccountsByRole(HttpServletRequest request, BaseFilter filter, String role) {
+        Pageable pageable = PageRequest.of(filter.getPage(), filter.getPageSize());
+
+        Page accountResponses = accountService.getAllAccountsByRole(role, pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+                request.getRequestURI(), accountResponses));
     }
 
     @PostMapping("")

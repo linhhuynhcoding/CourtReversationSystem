@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.mapper;
 import com.app.CourtReservationSystem.dto.image.ImagePayload;
 import com.app.CourtReservationSystem.dto.image.ImageResponse;
 import com.app.CourtReservationSystem.model.Image;
+import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -25,6 +26,9 @@ public interface ImageMapper {
     @Mapping(target = "type", ignore = true)
     @Mapping(target = "status", ignore = true)
     ImageResponse mapToDTO(Map<String, Object> image);
-    
+
     List<ImageResponse> mapToDTOs(List<Map> images);
+
+
+
 }

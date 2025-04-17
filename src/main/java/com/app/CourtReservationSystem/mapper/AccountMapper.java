@@ -10,9 +10,10 @@ import java.util.List;
 
 @Mapper(componentModel =  "spring")
 public interface AccountMapper {
+    @Mapping(target = "password", ignore = true)
     Account toAccount(RegisterPayload registerPayload);
 
-    @Mapping(target = "cartId", expression = "java(account.getCart().getId())")
+    @Mapping(target = "cartId", expression = "java(account.getCart() != null ? account.getCart().getId() : null)")
     AccountResponse toDTO(Account account);
 
     List<AccountResponse> toDTOs(List<Account> accounts);

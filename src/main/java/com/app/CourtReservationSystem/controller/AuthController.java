@@ -61,10 +61,11 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    private ResponseEntity<String> register(@Valid @RequestBody RegisterPayload registerPayload) {
+    private ResponseEntity<ApiResponse> register(@Valid @RequestBody RegisterPayload registerPayload, HttpServletRequest request) {
         String response = authService.register(registerPayload);
-        
-        return new ResponseEntity<String>(response, HttpStatus.CREATED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(response, "", request.getRequestURI(), ""));
+
     }
     
     @PostMapping("/logout")

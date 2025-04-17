@@ -92,4 +92,12 @@ public class CourtController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), courtResponses));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<?>> searchCourts(HttpServletRequest request, @Valid CourtFilter courtFilter) throws ApiException {
+        Page courtResponses = courtService.getAllCourts(courtFilter);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+                request.getRequestURI(), courtResponses));
+    }
 }

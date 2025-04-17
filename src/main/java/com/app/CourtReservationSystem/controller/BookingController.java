@@ -4,6 +4,7 @@ import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.booking.BookingFilter;
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
+import com.app.CourtReservationSystem.dto.court.CourtFilter;
 import com.app.CourtReservationSystem.dto.product.ProductResponse;
 import com.app.CourtReservationSystem.enums.BookingSortField;
 import com.app.CourtReservationSystem.enums.ProductSortField;
@@ -45,7 +46,7 @@ public class BookingController {
 
     @Operation(summary = "Get All Booking REST API")
     @GetMapping("/bookings")
-    public ResponseEntity<ApiResponse<?>> getAllBookings(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<?>> getAllBookings(HttpServletRequest request, CourtFilter courtFilter) {
         List<?> response = bookingService.getAllBookings();
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
     }

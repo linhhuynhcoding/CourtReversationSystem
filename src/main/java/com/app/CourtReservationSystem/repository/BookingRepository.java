@@ -15,10 +15,20 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             SELECT b
             FROM Booking b 
             WHERE b.orga.id = :org_id AND b.court.id = :court_id 
-            AND ((b.timeStart <= :timeStart AND b.timeEnd >= :timeStart) 
-                                    OR (b.timeStart <= :timeEnd AND b.timeEnd >= :timeEnd))
+            AND ((b.timeStart <= :timeStart AND b.timeEnd > :timeStart) 
+                                    OR (b.timeStart < :timeEnd AND b.timeEnd >= :timeEnd))
             """)
     List<Booking> findAllBookingByOgranisationAndCourt(Long org_id, Long court_id, LocalDateTime timeStart, LocalDateTime timeEnd);
+
+    @Query("""
+            SELECT b
+            FROM Booking b 
+            WHERE b.orga.id = :org_id
+            AND ((b.timeStart <= :timeStart AND b.timeEnd > :timeStart) 
+                                    OR (b.timeStart < :timeEnd AND b.timeEnd >= :timeEnd))
+            """)
+    List<Booking> findAllBookingByOgranisation(Long org_id, LocalDateTime timeStart, LocalDateTime timeEnd);
+
 
     Page<Booking> findAllByAccountId(Long id, Pageable pageable);
 

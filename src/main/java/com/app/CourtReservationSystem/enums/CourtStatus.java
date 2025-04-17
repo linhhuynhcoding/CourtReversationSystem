@@ -4,5 +4,5 @@ public enum CourtStatus {
     OPENING,
     MAINTAINABLE,
     CLOSED,
-    FULLED
+    FULLY_BOOKED
 }

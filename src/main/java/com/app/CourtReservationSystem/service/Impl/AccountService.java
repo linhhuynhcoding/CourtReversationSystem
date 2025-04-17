@@ -18,6 +18,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -60,12 +62,19 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public List<AccountResponse> getAllAccounts() {
+    public Page getAllAccounts(Pageable pageable) {
 
-        List<Account> accounts = accountRepository.findAll();
-        List<AccountResponse> accountResponses = accountMapper.toDTOs(accounts);
+        Page<Account> accounts = accountRepository.findAll(pageable);
 
-        return accountResponses;
+        return accounts.map(accountMapper::toDTO);
+    }
+
+    @Override
+    public Page getAllAccountsByRole(String role, Pageable pageable) {
+        Role roleObj = roleRepository.findByRole(role);
+        Page<Account> accounts = accountRepository.findAllByAccountRole(roleObj, pageable);
+
+        return accounts.map(accountMapper::toDTO);
     }
 
     @Override

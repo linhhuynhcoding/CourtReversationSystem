@@ -8,6 +8,10 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BookingMapper {
+    @Mapping(source = "orga.id", target = "orgaId")
+    @Mapping(source = "orga.name", target = "orgaName")
+    @Mapping(source = "court.id", target = "courtId")
+    @Mapping(source = "court.name", target = "courtName")
     BookingResponse toDTO(Booking booking);
     
     List<BookingResponse> toDTOs(List<Booking> bookings);

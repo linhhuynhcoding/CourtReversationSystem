@@ -76,6 +76,7 @@ public class AuthService implements IAuthService {
         }
 
         Account account = accountMapper.toAccount(registerPayload);
+        account.setPassword(passwordEncoder.encode(registerPayload.getPassword()));
         account.setAccountRole(roleRepository.findByRole("PLAYER"));
         Cart cart = new Cart();
         cart.setAccount(account);

@@ -28,6 +28,8 @@ public class ProductFilter {
 
     private Double priceMax = 5000000.0;
 
+    private String search;
+
     @Override
     public String toString() {
         return "ProductFilter [sort=" + sort + ", page=" + page + ", pageSize=" + pageSize + "]";

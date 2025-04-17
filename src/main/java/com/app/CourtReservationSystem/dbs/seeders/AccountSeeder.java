@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.dbs.seeders;
 
 import com.app.CourtReservationSystem.model.Account;
 import com.app.CourtReservationSystem.model.Cart;
+import com.app.CourtReservationSystem.model.Role;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.ProductRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
@@ -10,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +31,18 @@ public class AccountSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadUserData();
+        try {
+            System.out.println("AccountSeeder started");
+            loadUserData();
+            System.out.println("AccountSeeder done");
+        } catch (Exception e) {
+            System.out.println("AccountSeeder error");
+            e.printStackTrace();
+        }
     }
 
-    private void loadUserData() {
+    @Transactional
+    public void loadUserData() {
         Account admin = new Account();
         List<Account> accountList = new ArrayList<>();
         admin.setUsername("admin123");
@@ -47,13 +57,16 @@ public class AccountSeeder implements CommandLineRunner {
 
         accountList.add(admin);
 
-        for (int i = 0; i < 1000; i++) {
+        Role userRole = roleRepository.findByRole("PLAYER");
+        Role managerRole = roleRepository.findByRole("COURT_MANAGER");
+
+        for (int i = 0; i < 100; i++) {
             Account user = new Account();
             user.setUsername("user1234" + i);
             user.setEmail("user" + i + "@gmail.com");
             user.setName("Em User số " + (i + 1));
             user.setPassword(passwordEncoder.encode("User!123"));
-            user.setAccountRole(roleRepository.findByRole("PLAYER"));
+            user.setAccountRole(userRole);
 
             Cart cart2 = new Cart();
             cart2.setAccount(user);
@@ -68,7 +81,7 @@ public class AccountSeeder implements CommandLineRunner {
             account.setEmail("manager" + i + "@gmail.com");
             account.setName("Manager " + i);
             account.setPassword(passwordEncoder.encode("Manager!123"));
-            account.setAccountRole(roleRepository.findByRole("MANAGER"));
+            account.setAccountRole(managerRole);
 
             accountList.add(account);
         }

@@ -16,12 +16,16 @@ import java.time.LocalDateTime;
 public class BookingResponse {
     private Long id;
     private Long orderId;
-    private OrgaResponse orga;
-    private AccountResponse account;
+    //    private OrgaResponse orga;
+    private Long orgaId;
+    private String orgaName;
+    //    private AccountResponse account;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private BookingStatus status;
     private Payment payment;
     private BookingStatus bookingStatus;
-    private CourtResponse court;
+    //    private CourtResponse court;
+    private Long courtId;
+    private String courtName;
 }

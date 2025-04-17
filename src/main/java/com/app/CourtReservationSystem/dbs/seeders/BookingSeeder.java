@@ -39,6 +39,7 @@ public class BookingSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        System.out.println("BookingSeeder started");
         loadBookingData();
     }
 
@@ -64,10 +65,12 @@ public class BookingSeeder implements CommandLineRunner {
             booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
             calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(16 + i, 23)));
             booking.setTimeEnd(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
-            booking.setAccount(accountRepository.findById(1L).orElse(null));
+            booking.setAccount(accountRepository.findById(i).orElse(null));
 
             bookings.add(booking);
         }
+
+
 
         bookingRepository.saveAll(bookings);
     }
