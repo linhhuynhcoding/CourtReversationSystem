@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,6 +41,10 @@ public class Product extends Audiable {
   
   @OneToMany(mappedBy = "product")
   private List<CartItem> cartItems;
+  
+  @OneToMany(mappedBy = "product")
+  @JsonIgnore
+  private List<OrderItem> orderItems;
   
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "image_id")

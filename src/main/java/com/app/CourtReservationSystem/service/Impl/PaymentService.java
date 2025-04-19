@@ -14,6 +14,7 @@ import com.app.CourtReservationSystem.repository.OrderRepository;
 import com.app.CourtReservationSystem.repository.PaymentRepository;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +73,7 @@ public class PaymentService implements IPaymentService {
 
     @Override
     @Transactional
-    public PaymentResult handlePaymentBooking(PaymentPayload payload) {
+    public PaymentResult handlePaymentBooking(HttpServletRequest request, PaymentPayload payload) {
         // Chỉ chấp nhận thanh toán cho Booking
         if (payload.getPaymentFor() != PaymentFor.BOOKING) {
             throw new APIException("Thông tin thanh toán không phù hợp!", HttpStatus.BAD_REQUEST);
@@ -104,6 +105,6 @@ public class PaymentService implements IPaymentService {
         paymentRepository.save(payment);
 
         // Chuyển đến function xử lý thanh toán theo phương thức
-        return paymentMethodServiceMap.get(payload.getPaymentMethod()).process(payment);
+        return paymentMethodServiceMap.get(payload.getPaymentMethod()).process(request, payment);
     }
 }

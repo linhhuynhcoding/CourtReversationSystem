@@ -23,7 +23,7 @@ public class OrderItem extends Audiable{
   @JoinColumn(name = "order_id")
   private Order order;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
 

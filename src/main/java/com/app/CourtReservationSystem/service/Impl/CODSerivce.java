@@ -7,6 +7,7 @@ import com.app.CourtReservationSystem.model.Payment;
 import com.app.CourtReservationSystem.repository.PaymentRepository;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +30,7 @@ public class CODSerivce implements IPaymentMethodService {
 
     @Override
     @Transactional
-    public PaymentResult process(Payment payment) {
+    public PaymentResult process(HttpServletRequest request, Payment payment) {
         payment.setStatus(PaymentStatus.SUCCESS);
         paymentRepository.save(payment);
 

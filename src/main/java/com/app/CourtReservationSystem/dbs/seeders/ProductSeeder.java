@@ -25,7 +25,7 @@ public class ProductSeeder implements CommandLineRunner {
     @Autowired
     CategoryRepository categoryRepository;
 
-    private final String[] cates = {"BEVERAGE", "FOOD", "SNACK", "SPORT EQUIPMENT"};
+    private final String[] cates = {"BEVERAGE", "SPORT EQUIPMENT"};
 
     @Override
     public void run(String... args) throws Exception {

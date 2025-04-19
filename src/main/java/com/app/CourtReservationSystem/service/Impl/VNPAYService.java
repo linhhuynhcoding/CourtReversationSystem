@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,16 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Component
+@Component("VNPAYService")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VNPAYService implements IPaymentMethodService {
+    
 
-    public String createOrder(HttpServletRequest request, int amount, String orderInfor, String urlReturn) {
+    public String createOrder(HttpServletRequest request, long amount, String orderInfor, String urlReturn) {
+        System.out.println("hash: " + VNPAYConfig.vnp_HashSecret);
+        System.out.println("code: " + VNPAYConfig.vnp_TmnCode);
+        System.out.println("ip: " + VNPAYConfig.getIpAddress(request));
         //Các bạn có thể tham khảo tài liệu hướng dẫn và điều chỉnh các tham số
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -48,13 +53,14 @@ public class VNPAYService implements IPaymentMethodService {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", orderInfor);
         vnp_Params.put("vnp_OrderType", orderType);
-
+        vnp_Params.put("vnp_BankCode", "VNBANK");
         String locate = "vn";
         vnp_Params.put("vnp_Locale", locate);
 
         urlReturn += VNPAYConfig.vnp_Returnurl;
         vnp_Params.put("vnp_ReturnUrl", urlReturn);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        System.out.println("return: " + urlReturn);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -64,6 +70,8 @@ public class VNPAYService implements IPaymentMethodService {
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+        
+        
 
         List fieldNames = new ArrayList(vnp_Params.keySet());
         Collections.sort(fieldNames);
@@ -141,10 +149,14 @@ public class VNPAYService implements IPaymentMethodService {
     }
 
     @Override
-    public PaymentResult process(Payment payment) {
+    public PaymentResult process(HttpServletRequest request, Payment payment) {
         var resultPayment = new PaymentResult();
         resultPayment.setRedirect(true);
-        resultPayment.setRedirectUrl("http://localhost:8080/");
+        String serverUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        
+        String url = this.createOrder(request, payment.getAmount().longValue(), "1234", serverUrl);
+        
+        resultPayment.setRedirectUrl(url);
 
         return resultPayment;
     }

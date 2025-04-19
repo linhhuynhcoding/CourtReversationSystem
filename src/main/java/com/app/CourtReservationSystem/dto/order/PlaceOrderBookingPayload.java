@@ -12,5 +12,4 @@ import java.util.List;
 public class PlaceOrderBookingPayload {
     private Long bookingId;
     private List<Item> items;
-
 }
