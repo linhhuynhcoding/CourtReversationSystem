@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @Getter
 public class PlaceOrderBookingPayload {
+    private Long bookingId;
     private List<Item> items;
 
 }

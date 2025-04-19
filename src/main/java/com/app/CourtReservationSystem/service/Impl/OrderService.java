@@ -93,7 +93,8 @@ public class OrderService implements IOrderService {
 
     @Override
     @Transactional
-    public OrderResponse placeOrderBooking(Long accountId, Long bookingId, PlaceOrderBookingPayload payload) {
+    public OrderResponse placeOrderBooking(Long accountId, PlaceOrderBookingPayload payload) {
+        var bookingId = payload.getBookingId();
         Booking bookingProxy = bookingRepository.getReferenceById(bookingId);
         Account account = accountRepository.getReferenceById(accountId);
 

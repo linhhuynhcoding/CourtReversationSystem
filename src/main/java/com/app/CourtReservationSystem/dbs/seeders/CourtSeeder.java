@@ -49,7 +49,7 @@ public class CourtSeeder implements CommandLineRunner {
             Address address = new Address();
 
             orga.setName("Orga  " + i);
-            orga.setPrice(Math.floor(Math.random() * 100000));
+            orga.setPrice((Math.floor(Math.random() * 100000) % 1000 + 150) * 1000);
             orga.setNumberOfCourts(Math.round(Math.random() * 100000 % 1) + 1);
 
             List<Court> courtList = new ArrayList<>();

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IOrderService {
     OrderResponse placeOrder(Long accountId, PlaceOrderPayload payload);
-    OrderResponse placeOrderBooking(Long accountId, Long bookingId, PlaceOrderBookingPayload payload);
+    OrderResponse placeOrderBooking(Long accountId, PlaceOrderBookingPayload payload);
     OrderResponse getOrder(Long id);
     Page getAccountOrders(Long id, Pageable pageable);
     Page getOrders(Pageable pageable);

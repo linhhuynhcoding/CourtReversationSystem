@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.controller;
 import com.app.CourtReservationSystem.dto.ApiResponse;
 import com.app.CourtReservationSystem.dto.order.OrderFilter;
 import com.app.CourtReservationSystem.dto.order.OrderResponse;
+import com.app.CourtReservationSystem.dto.order.PlaceOrderBookingPayload;
 import com.app.CourtReservationSystem.dto.order.PlaceOrderPayload;
 import com.app.CourtReservationSystem.security.CustomUserDetails;
 import com.app.CourtReservationSystem.service.IOrderService;
@@ -80,5 +81,20 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), response));
+    }
+    
+    @PostMapping("/orders/booking")
+    @SecurityRequirement(name = "Bear Authentication")
+    public ResponseEntity<ApiResponse<?>> createOrderBooking(
+        HttpServletRequest request,
+        @Valid @RequestBody PlaceOrderBookingPayload placeOrderPayload
+    ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        
+        OrderResponse response = orderService.placeOrderBooking(userDetails.getId(), placeOrderPayload);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
+            request.getRequestURI(), response));
     }
 }
