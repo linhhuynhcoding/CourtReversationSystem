@@ -58,7 +58,7 @@ async function run() {
         3000
     );
 
-    await sleep(31000);
+    await sleep(11000);
     clearInterval(timeId);
     console.log("Kết thúc!");
 
@@ -91,7 +91,7 @@ async function run() {
             const imgs = document.querySelectorAll(imageClass);
             let res = [];
             for (const img of imgs) {
-                res.push(img.getAttribute("src"));
+                res.push(img.getAttribute("src").replace("3840", "640"));
                 // console.log(`\t-> crawl image: \t`, img.getAttribute("src"));
             }
             return res;

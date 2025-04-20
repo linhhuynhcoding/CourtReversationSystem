@@ -29,10 +29,10 @@ public class CourtSeeder implements CommandLineRunner {
     private static final String[] districts = {"District A", "District B", "District C", "District D"};
     private static final String[] wards = {"Ward A", "Ward B", "Ward C", "Ward D"};
     private static final String[] image_urls = {
-            "https://img.courtsite.my/insecure/rs:auto:640:0:0/g:sm/aHR0cHM6Ly9maXJlYmFzZXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vdjAvYi9jb3VydHNpdGUtdGVycmFmb3JtLmFwcHNwb3QuY29tL28vY2VudHJlSW1hZ2VzJTJGY203aXJoeDNiMDFhcDA3YjluNTV5ajh4YyUyRm9tMmZwcXZmdWxPOGJNaDFiWXpUeUU0aXowSzMtZGFmYjg0ODYtOWE2Ni00NjU1LTg1MjctYzBlNTlmY2ZiNzYwLmpwZz9hbHQ9bWVkaWEmdG9rZW49ZTMyZDliNTUtMWNkNC00ODE2LTllYWQtNTI1NzM4OThiOGI5.webp",
-            "https://img.courtsite.my/insecure/rs:auto:640:0:0/g:sm/aHR0cHM6Ly9maXJlYmFzZXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vdjAvYi9jb3VydHNpdGUtdGVycmFmb3JtLmFwcHNwb3QuY29tL28vY2VudHJlSW1hZ2VzJTJGY202YXVqejIxMDQ4ODA4ZW1seDZzMHh0eCUyRjBrSWo5dE53aWFOWUtkak03MVUwbXZMWFVuUzItNmFmZmE1NGQtZjMzYS00Mzg1LWE3MzUtZDE1Y2RhMjdiMjdhLmpwZz9hbHQ9bWVkaWEmdG9rZW49ZjAwOTg5YzUtN2M2Yi00ZjYwLWJmNWItZWVkMWE4YWQyODRl.webp",
-            "https://img.courtsite.my/insecure/rs:auto:640:0:0/g:sm/aHR0cHM6Ly9maXJlYmFzZXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vdjAvYi9jb3VydHNpdGUtdGVycmFmb3JtLmFwcHNwb3QuY29tL28vY2VudHJlSW1hZ2VzJTJGY204NzRwcXl1MGJ0NDA3YXZudTJwNXk2OSUyRm9tMmZwcXZmdWxPOGJNaDFiWXpUeUU0aXowSzMtZjIwNmQ4OWEtMGE1OC00YzM1LTllNmYtMjZkODdiNGJhNDg4LmpwZz9hbHQ9bWVkaWEmdG9rZW49OGNiYmM3OTMtNzM2Yy00ZGRmLTkyMzUtZTcwNjZhYTY2YTBl.webp"
-    };
+            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151472/oqmb43wxmmc9tz1zyiyv.webp",
+            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151473/rxb9dygix9mmz8qscjly.webp",
+            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151474/hvxrclpcdxqccl6lhtl0.webp"
+};
 
     @Override
     public void run(String... args) throws Exception {
