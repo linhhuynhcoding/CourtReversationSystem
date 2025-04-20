@@ -40,6 +40,7 @@ public class Product extends Audiable {
   private Category category;
   
   @OneToMany(mappedBy = "product")
+  @JsonIgnore
   private List<CartItem> cartItems;
   
   @OneToMany(mappedBy = "product")
