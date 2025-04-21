@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.payment.PaymentPayload;
 import com.app.CourtReservationSystem.dto.payment.PaymentResult;
+import com.app.CourtReservationSystem.enums.BookingStatus;
 import com.app.CourtReservationSystem.enums.PaymentFor;
 import com.app.CourtReservationSystem.enums.PaymentMethod;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
@@ -103,8 +104,23 @@ public class PaymentService implements IPaymentService {
             payment.setOrder(booking.getOrder());
         }
         paymentRepository.save(payment);
+        
+        booking.setPayment(payment);
 
         // Chuyển đến function xử lý thanh toán theo phương thức
-        return paymentMethodServiceMap.get(payload.getPaymentMethod()).process(request, payment);
+        var result =  paymentMethodServiceMap.get(payload.getPaymentMethod()).process(request, payment);
+        
+        if (result.getStatus() == PaymentStatus.SUCCESS) {
+            booking.setStatus(BookingStatus.BOOKED);
+        }
+        else if (result.getStatus() == PaymentStatus.PENDING) {
+            booking.setStatus(BookingStatus.PAYING);
+        }
+        else if (result.getStatus() == PaymentStatus.FAIL) {
+            booking.setStatus(BookingStatus.FAILED);
+        }
+        bookingRepository.save(booking);
+        
+        return result;
     }
 }

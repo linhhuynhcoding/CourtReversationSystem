@@ -19,7 +19,15 @@ public class BookingFilter {
     @Min(10)
     @Max(50)
     private Integer pageSize = 10;
-
+    
+    @Min(1)
+    @Max(360)
+    private Integer duration = 1;
+    
+    private Long id;
+    
+    private Long orgaId;
+    
     @Override
     public String toString() {
         return "BookingFilter [sort=" + sort + ", page=" + page + ", pageSize=" + pageSize + "]";

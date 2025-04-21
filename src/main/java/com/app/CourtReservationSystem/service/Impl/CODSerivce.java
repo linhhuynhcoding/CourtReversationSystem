@@ -36,6 +36,7 @@ public class CODSerivce implements IPaymentMethodService {
 
         var result = new PaymentResult();
         result.setPayment(paymentMapper.toDTO(payment));
+        result.setStatus(PaymentStatus.SUCCESS);
 
         return result;
     }

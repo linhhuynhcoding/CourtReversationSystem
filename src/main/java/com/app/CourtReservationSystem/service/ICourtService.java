@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public interface ICourtService {
 
     OrgaResponse getCourt(Long id);
+    OrgaResponse getCourtByManagerId(Long id);
     OrgaResponse getCourt(Long id, Date startFrom);
     OrgaResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload);
     OrgaResponse createCourt(CreateCourtPayload createCourtPayload);

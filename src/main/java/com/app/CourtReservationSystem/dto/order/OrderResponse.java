@@ -21,5 +21,5 @@ public class OrderResponse {
     private Payment payment;
     private AddressResponse address;
     private Double shipFee;
-    private List<OrderResponse> orderItems;
+    private List<OrderItemResponse> orderItems;
 }

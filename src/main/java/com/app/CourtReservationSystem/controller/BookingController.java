@@ -66,15 +66,14 @@ public class BookingController {
     @GetMapping("/courts/{id}/bookings")
     public ResponseEntity<ApiResponse<?>> getAllCourtBookings(
             HttpServletRequest request,
-            @PathVariable("id") Long id,
-            @RequestParam(name = "date")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateStart, // ISO 8601 format
-            @Valid @Max(7) @Min(1) Integer duration  // ISO 8601 format
+            @PathVariable("id") Long id, BookingFilter filter
+//            @RequestParam(name = "date")
+//            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateStart, // ISO 8601 format
+//            @Valid @Max(7) @Min(1) Integer duration  // ISO 8601 format
     ) {
-        duration = duration == null ? 7 : duration;
-        dateStart.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        filter.setOrgaId(id);
 
-        List<?> response = bookingService.getAllCourtBookings(id, dateStart, dateStart.plusDays(duration));
+        Page response = bookingService.getAllCourtBookings(filter);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
     }

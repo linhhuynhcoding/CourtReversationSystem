@@ -20,6 +20,8 @@ public interface CourtMapper {
     
 //    @Mapping(ignore = true, target="imageCourts")
     Organisation updateToEntity(UpdateCourtPayload updateCourtPayload);
+    
+    @Mapping(source = "manager.account", target = "manager")
     OrgaResponse toDTO(Organisation court);
     List<OrgaResponse> toDTOs (List<Organisation> courts);
 

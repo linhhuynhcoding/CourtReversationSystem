@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.service;
 
+import com.app.CourtReservationSystem.dto.booking.BookingFilter;
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
 import com.app.CourtReservationSystem.enums.BookingStatus;
@@ -16,5 +17,6 @@ public interface IBookingService {
     Page getAllUserBookings(Long id, Pageable pageable);
     List<?> getAllCourtBookings(Long id);
     List<?> getAllCourtBookings(Long id, LocalDateTime dateStart, LocalDateTime localDateTime);
+    Page getAllCourtBookings(BookingFilter filter);
     void updateBookingStatus(Long id, BookingStatus status);
 }

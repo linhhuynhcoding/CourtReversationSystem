@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.model;
 
 import com.app.CourtReservationSystem.enums.OrderType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -43,6 +44,7 @@ public class Order extends Audiable {
     private Address address;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
+    @JsonIgnore
     private Booking booking;
 
     @Column(name = "ship_fee")

@@ -51,8 +51,8 @@ public class Organisation extends Audiable {
   @OneToMany(mappedBy = "organisation", cascade = CascadeType.ALL)
   private List<Court> courts;
 
-  @OneToMany(mappedBy = "court", cascade = CascadeType.ALL)
-  private List<ManagerAccount> manager;
+  @OneToOne(mappedBy = "court", cascade = CascadeType.ALL)
+  private ManagerAccount manager;
 
   @OneToMany(mappedBy = "organisation")
   private List<CourtFull> courtFull;

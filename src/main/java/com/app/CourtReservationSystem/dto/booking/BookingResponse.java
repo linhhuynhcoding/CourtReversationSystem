@@ -6,8 +6,10 @@ import com.app.CourtReservationSystem.dto.court.OrgaResponse;
 import com.app.CourtReservationSystem.enums.BookingStatus;
 import com.app.CourtReservationSystem.model.Court;
 import com.app.CourtReservationSystem.model.Payment;
+import com.app.CourtReservationSystem.model.relationships.ImageCourt;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ public class BookingResponse {
     private Long orderId;
     //    private OrgaResponse orga;
     private Long orgaId;
+    private List<ImageCourt> image;
     private String orgaName;
     //    private AccountResponse account;
     private LocalDateTime timeStart;

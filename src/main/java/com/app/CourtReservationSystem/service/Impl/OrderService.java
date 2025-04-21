@@ -54,12 +54,13 @@ public class OrderService implements IOrderService {
             throw new APIException("No cart item is selected!", HttpStatus.BAD_REQUEST);
         }
         Order order = new Order();
-        List<OrderItem> orderItems = cartItems.stream().map((item) -> {
+        List<OrderItem> orderItems = cartItems.stream().filter(CartItem::isSelected).map((item) -> {
             OrderItem orderItem = new OrderItem();
             if (item.getProduct().getStock() < item.getQuantity()) {
                 throw new APIException("Vượt quá số lượng tồn kho!!", HttpStatus.BAD_REQUEST);
             }
             orderItem.setQuantity(item.getQuantity());
+            orderItem.setOrder(order);
             orderItem.setProduct(item.getProduct());
             orderItem.setUnitPrice(item.getProduct().getPrice());
             orderItem.setTotalPrice(item.getProduct().getPrice() * item.getQuantity());
@@ -70,7 +71,7 @@ public class OrderService implements IOrderService {
 
         Double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
         order.setOrderItems(orderItems);
-        order.setTotal(totalPrice);
+        order.setTotal(totalPrice + 50000.0);
         order.setOrderType(OrderType.DELIVERY);
         order.setAccount(account);
         order.setAddress(address);
@@ -148,9 +149,9 @@ public class OrderService implements IOrderService {
 
     @Override
     public Page getAccountOrders(Long id, Pageable pageable) {
-        Page orders = orderRepository.findAllByAccountId(id, pageable);
+        Page<Order> orders = orderRepository.findAllByAccountId(id, pageable);
 
-        return orders;
+        return orders.map(orderMapper::toDTO);
     }
 
     @Override

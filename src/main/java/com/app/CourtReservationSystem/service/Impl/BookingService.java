@@ -1,8 +1,11 @@
 package com.app.CourtReservationSystem.service.Impl;
 
+import com.app.CourtReservationSystem.dto.booking.BookingFilter;
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
+import com.app.CourtReservationSystem.enums.BookingSortField;
 import com.app.CourtReservationSystem.enums.BookingStatus;
+import com.app.CourtReservationSystem.enums.CourtSortField;
 import com.app.CourtReservationSystem.exception.APIException;
 import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.BookingMapper;
@@ -13,18 +16,25 @@ import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.model.relationships.CourtFull;
 import com.app.CourtReservationSystem.repository.*;
 import com.app.CourtReservationSystem.service.IBookingService;
+import com.app.CourtReservationSystem.specification.BookingSpecifications;
+import com.app.CourtReservationSystem.specification.CourtSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 
 @Service
 @RequiredArgsConstructor
@@ -138,7 +148,19 @@ public class BookingService implements IBookingService {
 
         return bookingMapper.toDTOs(bookings);
     }
-
+    
+    @Override
+    public Page getAllCourtBookings(BookingFilter filter) {
+        Specification<Booking> spec = BookingSpecifications.withFilter(filter);
+        
+        List<Sort.Order> orders = toOrders(filter.getSort(), BookingSortField.class);
+        Pageable pageable = PageRequest.of(filter.getPage(), filter.getPageSize(), Sort.by(orders));
+        
+        Page<Booking> bookings = bookingRepository.findAll(spec, pageable);
+        
+        return bookings.map(bookingMapper::toDTO);
+    }
+    
     @Override
     @Transactional
     public void updateBookingStatus(Long id, BookingStatus status) {

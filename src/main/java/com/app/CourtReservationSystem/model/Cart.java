@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "carts")
 @Audited
-@Data
+@Getter @Setter
 public class Cart extends Audiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

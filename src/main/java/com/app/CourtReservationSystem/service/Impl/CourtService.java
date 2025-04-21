@@ -15,6 +15,8 @@ import com.app.CourtReservationSystem.mapper.CourtMapper;
 import com.app.CourtReservationSystem.mapper.ImageMapper;
 import com.app.CourtReservationSystem.model.*;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
+import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
+import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.BookingRepository;
 import com.app.CourtReservationSystem.repository.OrgaRepository;
 import com.app.CourtReservationSystem.repository.ImageRepository;
@@ -53,16 +55,25 @@ public class CourtService implements ICourtService {
     BookingRepository bookingRepository;
 
     static Long SEVEN_DAYS_TIMESTAMP = 1000 * 3600 * 24 * 7L;
-
-
-
+    private final AccountRepository accountRepository;
+    
+    
     @Override
     public OrgaResponse getCourt(Long id) {
         Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
 
         return courtMapper.toDTO(court);
     }
-
+    
+    @Override
+    public OrgaResponse getCourtByManagerId(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
+        ManagerAccount managerAccount = account.getManager();
+        Organisation court = orgaRepository.findByManager(managerAccount).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        
+        return courtMapper.toDTO(court);
+    }
+    
     @Override
     public OrgaResponse getCourt(Long id, Date startFrom) {
         Date endAt = new Date(startFrom.getTime() + SEVEN_DAYS_TIMESTAMP);

@@ -10,6 +10,7 @@ import java.util.List;
 public interface BookingMapper {
     @Mapping(source = "orga.id", target = "orgaId")
     @Mapping(source = "orga.name", target = "orgaName")
+    @Mapping(source = "orga.imageCourts", target = "image")
     @Mapping(source = "court.id", target = "courtId")
     @Mapping(source = "court.name", target = "courtName")
     BookingResponse toDTO(Booking booking);

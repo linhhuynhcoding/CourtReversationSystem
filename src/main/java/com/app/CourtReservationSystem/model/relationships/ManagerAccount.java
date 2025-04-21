@@ -24,8 +24,8 @@ public class ManagerAccount {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "court_id")
+    @JsonIgnore
     private Organisation court;
 }

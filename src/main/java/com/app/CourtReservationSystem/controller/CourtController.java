@@ -48,6 +48,16 @@ public class CourtController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), courtResponse));
     }
+    
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<ApiResponse<?>> getCourtByManagerId(
+            HttpServletRequest request,
+            @PathVariable(name = "id") Long id) {
+        OrgaResponse courtResponse = courtService.getCourtByManagerId(id);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
+                request.getRequestURI(), courtResponse));
+    }
 
     @PostMapping("")
     public ResponseEntity<ApiResponse<?>> createCourt(

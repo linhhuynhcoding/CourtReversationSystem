@@ -29,9 +29,9 @@ public class CourtSeeder implements CommandLineRunner {
     private static final String[] districts = {"District A", "District B", "District C", "District D"};
     private static final String[] wards = {"Ward A", "Ward B", "Ward C", "Ward D"};
     private static final String[] image_urls = {
-            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151472/oqmb43wxmmc9tz1zyiyv.webp",
-            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151473/rxb9dygix9mmz8qscjly.webp",
-            "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151474/hvxrclpcdxqccl6lhtl0.webp"
+        "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151475/j8i2mjbzq1k0qknxgusu.webp",
+        "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151476/nr6ixoht5bjkwat0esdm.webp",
+        "https://res.cloudinary.com/dnoq9necr/image/upload/v1745151477/ukavhj5fhshlbi1tpxd7.webp"
 };
 
     @Override

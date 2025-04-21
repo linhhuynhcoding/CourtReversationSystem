@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.repository;
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
 import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.model.Product;
+import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface OrgaRepository extends JpaRepository<Organisation, Long>, JpaSpecificationExecutor<Organisation> {
@@ -31,6 +33,8 @@ public interface OrgaRepository extends JpaRepository<Organisation, Long>, JpaSp
         @Param("id") Long id,
         @Param("nc") UpdateCourtPayload nc
     );
+    
+    Optional<Organisation> findByManager(ManagerAccount manager);
 
 //    Page<Court> findAll(Pageable pageable);
 }

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class AccountService implements IAccountService {
     AccountMapper accountMapper;
     AccountRepository accountRepository;
     OrgaRepository orgaRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public AccountResponse getAccount(Long id) {
@@ -88,6 +90,7 @@ public class AccountService implements IAccountService {
         }
 
         Account account = accountMapper.toAccount(payload);
+        account.setPassword(passwordEncoder.encode(payload.getPassword()));
         account.setAccountRole(roleRepository.findByRole(payload.getRole()));
 
         if (payload.getRole().equals("COURT_MANAGER")) {

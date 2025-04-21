@@ -5,6 +5,7 @@ package com.app.CourtReservationSystem.model;
 
 import com.app.CourtReservationSystem.enums.PaymentMethod;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -31,9 +32,11 @@ public class Payment extends Audiable {
   private PaymentMethod methodPayment;
   
   @OneToOne(mappedBy = "payment")
+  @JsonIgnore
   private Booking booking;
 
   @OneToOne(mappedBy = "payment")
+  @JsonIgnore
   private Order order;
 }
 
