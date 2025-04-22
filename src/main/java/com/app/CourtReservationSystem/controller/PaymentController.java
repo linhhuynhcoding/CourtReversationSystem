@@ -33,8 +33,6 @@ import java.io.IOException;
 public class PaymentController {
     IPaymentService paymentService;
 
-    
-
     @PostMapping("/bookings")
     public ResponseEntity<ApiResponse<?>> purchaseBooking (
             HttpServletRequest request,
@@ -46,4 +44,5 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), responsePayment));
     }
+
 }

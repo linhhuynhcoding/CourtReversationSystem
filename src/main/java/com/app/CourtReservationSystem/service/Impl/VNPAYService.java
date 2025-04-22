@@ -9,6 +9,7 @@ import com.app.CourtReservationSystem.config.VNPAYConfig;
 import com.app.CourtReservationSystem.dto.payment.PaymentResult;
 import com.app.CourtReservationSystem.enums.PaymentStatus;
 import com.app.CourtReservationSystem.model.Payment;
+import com.app.CourtReservationSystem.repository.PaymentRepository;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,8 @@ import java.util.*;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VNPAYService implements IPaymentMethodService {
-    
+
+    PaymentRepository paymentRepository;
 
     public String createOrder(HttpServletRequest request, long amount, String orderInfor, String urlReturn) {
         System.out.println("hash: " + VNPAYConfig.vnp_HashSecret);
@@ -159,5 +161,23 @@ public class VNPAYService implements IPaymentMethodService {
         resultPayment.setRedirectUrl(url);
 
         return resultPayment;
+    }
+
+    @Override
+    public void validatePayment(HttpServletRequest request) {
+        int paymentStatus = this.orderReturn(request);
+
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        String paymentTime = request.getParameter("vnp_PayDate");
+        String transactionId = request.getParameter("vnp_TransactionNo");
+        String totalPrice = request.getParameter("vnp_Amount");
+
+        var payment = paymentRepository.findById(Long.parseLong(orderInfo)).get();
+
+        if (paymentStatus == 1) {
+            payment.setStatus(PaymentStatus.SUCCESS);
+        } else {
+            payment.setStatus(PaymentStatus.FAIL);
+        }
     }
 }

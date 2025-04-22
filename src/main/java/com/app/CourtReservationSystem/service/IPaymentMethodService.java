@@ -10,4 +10,6 @@ import java.net.http.HttpRequest;
 public interface IPaymentMethodService {
     PaymentStatus process(Double amount);
     PaymentResult process(HttpServletRequest request, Payment payment);
+    void validatePayment(HttpServletRequest request);
+
 }

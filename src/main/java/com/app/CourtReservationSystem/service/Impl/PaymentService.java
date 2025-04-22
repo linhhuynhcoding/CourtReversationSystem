@@ -123,4 +123,9 @@ public class PaymentService implements IPaymentService {
         
         return result;
     }
+
+    @Override
+    public void validatePayment(HttpServletRequest request) {
+
+    }
 }

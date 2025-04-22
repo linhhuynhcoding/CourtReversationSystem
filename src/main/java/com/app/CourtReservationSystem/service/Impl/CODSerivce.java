@@ -40,4 +40,9 @@ public class CODSerivce implements IPaymentMethodService {
 
         return result;
     }
+
+    @Override
+    public void validatePayment(HttpServletRequest request) {
+
+    }
 }

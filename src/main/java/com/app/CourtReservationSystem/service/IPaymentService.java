@@ -9,6 +9,7 @@ public interface IPaymentService {
 
     Payment createPayment(PaymentPayload payload);
     PaymentResult handlePaymentBooking(HttpServletRequest request, PaymentPayload payload);
+    void validatePayment(HttpServletRequest request);
 //    void handlePaymentOrder(PaymentPayload payload);
 //    void handlePaymentBooking(PaymentPayload payload);
 }

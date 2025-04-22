@@ -59,21 +59,23 @@ public class OrderService implements IOrderService {
         Order order = new Order();
         
         List<OrderItem> orderItems = new ArrayList<>();
-        
+        orderRepository.save(order);
+
         for (var item : cart.getItems()) {
             Product product = item.getProduct();
             if (product.getStock() < item.getQuantity()) {
                 throw new APIException("Vượt quá số lượng tồn kho!!", HttpStatus.BAD_REQUEST);
             }
             productRepository.decreamentStock(product.getId(), item.getQuantity());
-            
-            
+
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
             orderItem.setQuantity(item.getQuantity());
             orderItem.setUnitPrice(product.getPrice());
             orderItem.setTotalPrice(product.getPrice() * item.getQuantity());
             orderItem.setOrder(order);
+
+            orderItemRepository.save(orderItem);
         }
         
         Double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
