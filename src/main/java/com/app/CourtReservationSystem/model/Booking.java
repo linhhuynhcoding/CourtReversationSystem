@@ -38,6 +38,7 @@ public class Booking extends Audiable {
   @JoinColumn(name = "account_id")
   private Account account;
 
+//  @Column(name = "time_start", columnDefinition = "TIMESTAMP WITH TIME ZONE")
   @Column(name = "time_start")
   private LocalDateTime timeStart;
   

@@ -3,16 +3,11 @@ package com.app.CourtReservationSystem.service.Impl;
 import com.app.CourtReservationSystem.dto.booking.BookingFilter;
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
-import com.app.CourtReservationSystem.enums.BookingSortField;
-import com.app.CourtReservationSystem.enums.BookingStatus;
-import com.app.CourtReservationSystem.enums.CourtSortField;
+import com.app.CourtReservationSystem.enums.*;
 import com.app.CourtReservationSystem.exception.APIException;
 import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.BookingMapper;
-import com.app.CourtReservationSystem.model.Account;
-import com.app.CourtReservationSystem.model.Booking;
-import com.app.CourtReservationSystem.model.Court;
-import com.app.CourtReservationSystem.model.Organisation;
+import com.app.CourtReservationSystem.model.*;
 import com.app.CourtReservationSystem.model.relationships.CourtFull;
 import com.app.CourtReservationSystem.repository.*;
 import com.app.CourtReservationSystem.service.IBookingService;
@@ -40,60 +35,61 @@ import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookingService implements IBookingService {
-
+    
     BookingRepository bookingRepository;
+    PaymentRepository paymentRepository;
     BookingMapper bookingMapper;
     CourtRepository courtRepository;
     OrgaRepository orgaRepository;
     CourtStatusRepository courtStatusRepository;
     private final AccountRepository accountRepository;
-
+    
     private void updateIfFull(Organisation org, LocalDateTime date) {
         date = date.withHour(0).withMinute(0).withSecond(0).withNano(0);
-
+        
         for (double i = 0.0; i <= 23.5; i += 0.5) {
             long hour = Math.round(Math.floor(i));
             long minute = Math.round(((i - hour) * 60));
             LocalDateTime startDate = date.withHour((int) hour).withMinute((int) minute);
             LocalDateTime endDate = startDate.plusMinutes((long) (0.5 * 60));
-
+            
             System.out.println("startDate: " + startDate);
             System.out.println("endDate" + endDate);
-
+            
             List<Booking> bookings = bookingRepository.findAllBookingByOgranisation(
-                    org.getId(),
-                    startDate, endDate
+                org.getId(),
+                startDate, endDate
             );
             System.out.println("Bookings: " + bookings.size());
             System.out.println("NumberOfCourts: " + org.getNumberOfCourts());
             System.out.println("___________________");
-
+            
             if (bookings.size() < org.getNumberOfCourts()) {
                 return;
             }
         }
-
+        
         var cS = new CourtFull();
         cS.setDate(date);
         cS.setOrganisation(org);
         courtStatusRepository.save(cS);
     }
-
+    
     @Override
     @Transactional
     public BookingResponse createBooking(PlaceBookingPayload payload) {
-
+        
         LocalDateTime timeEnd = payload.getTimeStart().plusMinutes((long) (payload.getDuration() * 60));
-
+        
         List<Booking> bookings = bookingRepository.findAllBookingByOgranisationAndCourt(
-                payload.getOrgaId(), payload.getCourtId(),
-                payload.getTimeStart(), timeEnd
-                );
-
+            payload.getOrgaId(), payload.getCourtId(),
+            payload.getTimeStart(), timeEnd
+        );
+        
         if (!bookings.isEmpty()) {
             throw new APIException("Booking đã tồn tại, vui lòng thay đổi thông tin booking!", HttpStatus.BAD_REQUEST);
         }
-
+        
         Booking booking = new Booking();
         Court courtProxy = courtRepository.getReferenceById(payload.getCourtId());
         Organisation orgProxy = orgaRepository.getReferenceById(payload.getOrgaId());
@@ -102,50 +98,55 @@ public class BookingService implements IBookingService {
             courtProxy.getId();
             orgProxy.getId();
             accountProxy.getId();
-        }
-        catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new APIException("Thông tin booking không hợp lệ!", HttpStatus.BAD_REQUEST);
         }
-
+        
+        if (orgProxy.getStatus() != CourtStatus.OPENING) {
+            throw new APIException("Sân đã hết hoặc đang bảo trì!", HttpStatus.BAD_REQUEST);
+        }
+        
         booking.setCourt(courtProxy);
         booking.setOrga(orgProxy);
         booking.setAccount(accountProxy);
         booking.setTimeStart(payload.getTimeStart());
         booking.setTimeEnd(timeEnd);
         booking.setTotal(orgProxy.getPrice() * payload.getDuration() * 1.0);
-
+        
         bookingRepository.save(booking);
-
+        
         updateIfFull(orgProxy, payload.getTimeStart());
-
-        Booking booking1 = bookingRepository.findById(booking.getId()).orElseThrow(() -> new APIException("Tạo booking thất bại", HttpStatus.INTERNAL_SERVER_ERROR));
+        
+        Booking booking1 = bookingRepository.findById(booking.getId()).orElseThrow(() -> new APIException("Tạo " +
+            "booking thất bại", HttpStatus.INTERNAL_SERVER_ERROR));
         return bookingMapper.toDTO(booking1);
     }
-
+    
     @Override
     public List<?> getAllBookings() {
         List<Booking> bookings = bookingRepository.findAll();
-
+        
         return bookingMapper.toDTOs(bookings);
     }
-
+    
     @Override
     public Page getAllUserBookings(Long id, Pageable pageable) {
         Page<Booking> bookings = bookingRepository.findAllByAccountId(id, pageable);
-
+        
         return bookings.map(bookingMapper::toDTO);
     }
-
+    
     @Override
     public List<?> getAllCourtBookings(Long id) {
         return List.of();
     }
-
+    
     @Override
     public List<?> getAllCourtBookings(Long id, LocalDateTime createdDateAfter, LocalDateTime createdDateBefore) {
-
-        List<Booking> bookings = bookingRepository.findAllByCourtIdAndTimeStartBetween(id, createdDateAfter, createdDateBefore);
-
+        
+        List<Booking> bookings = bookingRepository.findAllByCourtIdAndTimeStartBetween(id, createdDateAfter,
+            createdDateBefore);
+        
         return bookingMapper.toDTOs(bookings);
     }
     
@@ -163,10 +164,32 @@ public class BookingService implements IBookingService {
     
     @Override
     @Transactional
-    public void updateBookingStatus(Long id, BookingStatus status) {
-        var booking = bookingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking", "id", id));
-
+    public boolean updateBookingStatus(Long id, BookingStatus status) {
+        var booking = bookingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking", "id",
+            id));
+        
+        // Da thanh cong thi khong the thay doi
+        if (booking.getStatus() == BookingStatus.BOOKED) {
+            return false;
+        }
+        
+        if (status == BookingStatus.BOOKED && booking.getPayment() == null) {
+            // Tạo Payment
+            var payment = new Payment();
+            payment.setAmount(booking.getTotal());
+            payment.setStatus(PaymentStatus.PENDING);
+            payment.setMethodPayment(PaymentMethod.COD);
+            payment.setBooking(booking);
+            if (booking.getOrder() != null) {
+                payment.setOrder(booking.getOrder());
+            }
+            paymentRepository.save(payment);
+            
+            booking.setPayment(payment);
+        }
+        
         booking.setStatus(status);
         bookingRepository.save(booking);
+        return true;
     }
 }

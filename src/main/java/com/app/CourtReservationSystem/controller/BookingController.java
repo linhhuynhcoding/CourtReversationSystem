@@ -7,6 +7,7 @@ import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
 import com.app.CourtReservationSystem.dto.court.CourtFilter;
 import com.app.CourtReservationSystem.dto.product.ProductResponse;
 import com.app.CourtReservationSystem.enums.BookingSortField;
+import com.app.CourtReservationSystem.enums.BookingStatus;
 import com.app.CourtReservationSystem.enums.ProductSortField;
 import com.app.CourtReservationSystem.security.CustomUserDetails;
 import com.app.CourtReservationSystem.service.IBookingService;
@@ -72,6 +73,8 @@ public class BookingController {
 //            @Valid @Max(7) @Min(1) Integer duration  // ISO 8601 format
     ) {
         filter.setOrgaId(id);
+        
+        System.out.println(filter);
 
         Page response = bookingService.getAllCourtBookings(filter);
 
@@ -94,5 +97,18 @@ public class BookingController {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
     }
-
+    
+    @PostMapping("/bookings/{id}/update-status")
+    public ResponseEntity<ApiResponse<?>> updateBookingStatus(
+        HttpServletRequest request,
+        @PathVariable("id") Long id,
+        @RequestBody String status
+    ) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long accountId = ((CustomUserDetails) auth.getPrincipal()).getId();
+        
+        boolean response = bookingService.updateBookingStatus(id, BookingStatus.valueOf(status));
+        
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success", "", request.getRequestURI(), response));
+    }
 }

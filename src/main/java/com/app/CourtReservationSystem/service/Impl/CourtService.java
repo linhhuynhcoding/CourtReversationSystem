@@ -59,6 +59,14 @@ public class CourtService implements ICourtService {
     
     
     @Override
+    public void updateStatus(Long id, CourtStatus status) {
+        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        
+        court.setStatus(status);
+        orgaRepository.save(court);
+    }
+    
+    @Override
     public OrgaResponse getCourt(Long id) {
         Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
 

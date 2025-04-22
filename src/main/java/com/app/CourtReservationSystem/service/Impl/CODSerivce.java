@@ -31,12 +31,12 @@ public class CODSerivce implements IPaymentMethodService {
     @Override
     @Transactional
     public PaymentResult process(HttpServletRequest request, Payment payment) {
-        payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setStatus(PaymentStatus.PENDING);
         paymentRepository.save(payment);
 
         var result = new PaymentResult();
         result.setPayment(paymentMapper.toDTO(payment));
-        result.setStatus(PaymentStatus.SUCCESS);
+        result.setStatus(PaymentStatus.PENDING);
 
         return result;
     }

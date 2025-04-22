@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.model;
 
+import com.app.CourtReservationSystem.enums.OrderStatus;
 import com.app.CourtReservationSystem.enums.OrderType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -38,7 +39,7 @@ public class Order extends Audiable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", nullable = true)
     private Payment payment;
-
+    
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = true)
     private Address address;
@@ -49,6 +50,9 @@ public class Order extends Audiable {
 
     @Column(name = "ship_fee")
     private Double shipFee;
+    
+    @Column()
+    private OrderStatus status = OrderStatus.PENDING;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;

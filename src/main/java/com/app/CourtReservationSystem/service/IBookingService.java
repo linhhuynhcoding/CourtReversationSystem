@@ -18,5 +18,5 @@ public interface IBookingService {
     List<?> getAllCourtBookings(Long id);
     List<?> getAllCourtBookings(Long id, LocalDateTime dateStart, LocalDateTime localDateTime);
     Page getAllCourtBookings(BookingFilter filter);
-    void updateBookingStatus(Long id, BookingStatus status);
+    boolean updateBookingStatus(Long id, BookingStatus status);
 }

@@ -42,33 +42,40 @@ public class OrderService implements IOrderService {
     CartItemRepository cartItemRepository;
     OrderMapper orderMapper;
     AddressMapper addressMapper;
-
+    OrderItemRepository orderItemRepository;
+    
     @Override
     @Transactional
     public OrderResponse placeOrder(Long accountId, PlaceOrderPayload payload) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException(
+            "Account", "id", accountId));
         Address address = addressMapper.createToEntity(payload.getCreateAddressPayload());
-        Cart cart = cartRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Cart", "accountId", accountId));
+        Cart cart = cartRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Cart",
+            "accountId", accountId));
         List<CartItem> cartItems = cart.getItems();
         if (cartItems.isEmpty()) {
             throw new APIException("No cart item is selected!", HttpStatus.BAD_REQUEST);
         }
         Order order = new Order();
-        List<OrderItem> orderItems = cartItems.stream().filter(CartItem::isSelected).map((item) -> {
-            OrderItem orderItem = new OrderItem();
-            if (item.getProduct().getStock() < item.getQuantity()) {
+        
+        List<OrderItem> orderItems = new ArrayList<>();
+        
+        for (var item : cart.getItems()) {
+            Product product = item.getProduct();
+            if (product.getStock() < item.getQuantity()) {
                 throw new APIException("Vượt quá số lượng tồn kho!!", HttpStatus.BAD_REQUEST);
             }
+            productRepository.decreamentStock(product.getId(), item.getQuantity());
+            
+            
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(product);
             orderItem.setQuantity(item.getQuantity());
+            orderItem.setUnitPrice(product.getPrice());
+            orderItem.setTotalPrice(product.getPrice() * item.getQuantity());
             orderItem.setOrder(order);
-            orderItem.setProduct(item.getProduct());
-            orderItem.setUnitPrice(item.getProduct().getPrice());
-            orderItem.setTotalPrice(item.getProduct().getPrice() * item.getQuantity());
-
-            cartItemRepository.deleteById(item.getId());
-            return orderItem;
-        }).toList();
-
+        }
+        
         Double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
         order.setOrderItems(orderItems);
         order.setTotal(totalPrice + 50000.0);
@@ -76,40 +83,44 @@ public class OrderService implements IOrderService {
         order.setAccount(account);
         order.setAddress(address);
         order.setShipFee(50000.0);
-
+        
         PaymentPayload paymentPayload = new PaymentPayload();
         paymentPayload.setPaymentMethod(payload.getPaymentMethod());
         paymentPayload.setAmount(totalPrice);
         Payment payment = paymentService.createPayment(paymentPayload);
-
+        
         order.setPayment(payment);
         orderRepository.save(order);
-
+        
         Double totalCartPrice = cart.getItems().stream().mapToDouble(CartItem::getPrice).sum();
         cart.setTotalPrice(totalCartPrice);
         cartRepository.save(cart);
-
+        
         return orderMapper.toDTO(order);
     }
-
+    
     @Override
     @Transactional
     public OrderResponse placeOrderBooking(Long accountId, PlaceOrderBookingPayload payload) {
         var bookingId = payload.getBookingId();
-        Booking bookingProxy = bookingRepository.getReferenceById(bookingId);
+        
+        Booking bookingProxy = bookingRepository.findById(bookingId).orElseThrow(() -> new ResourceNotFoundException(
+            "Booking", "id", bookingId));
         Account account = accountRepository.getReferenceById(accountId);
-
+        
         try {
-            bookingProxy.getId();
+//            bookingProxy.getId();
             account.getId();
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Account", "id", accountId);
         }
-        catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Booking", "id", bookingId);
-        }
-
+        
+        Order order = new Order();
+        orderRepository.save(order);
+        
         List<OrderItem> orderItems = payload.getItems().stream().map((item) -> {
             OrderItem orderItem = new OrderItem();
-
+            
             try {
                 Product productProxy = productRepository.getReferenceById(item.getProductId());
                 if (productProxy.getStock() < item.getQuantity()) {
@@ -120,45 +131,47 @@ public class OrderService implements IOrderService {
                 orderItem.setProduct(productProxy);
                 orderItem.setUnitPrice(productProxy.getPrice());
                 orderItem.setTotalPrice(productProxy.getPrice() * item.getQuantity());
+                orderItem.setOrder(order);
+                orderItemRepository.save(orderItem);
                 return orderItem;
-            }
-            catch (EntityNotFoundException e) {
+            } catch (EntityNotFoundException e) {
                 throw new ResourceNotFoundException("Product", "id", item.getProductId());
             }
         }).toList();
-
+        
         Double totalPrice = orderItems.stream().mapToDouble(OrderItem::getTotalPrice).sum();
-
-        Order order = new Order();
-        order.setOrderItems(orderItems);
+        
+//        order.setOrderItems(orderItems);
         order.setTotal(totalPrice);
         order.setOrderType(OrderType.PICKUP_AT_COURT);
         order.setBooking(bookingProxy);
         order.setAccount(account);
-
         orderRepository.save(order);
-
+        
+        bookingProxy.setOrder(order);
+        bookingRepository.save(bookingProxy);
+        
         return orderMapper.toDTO(order);
     }
-
+    
     @Override
     public OrderResponse getOrder(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         return orderMapper.toDTO(order);
     }
-
+    
     @Override
     public Page getAccountOrders(Long id, Pageable pageable) {
         Page<Order> orders = orderRepository.findAllByAccountId(id, pageable);
-
+        
         return orders.map(orderMapper::toDTO);
     }
-
+    
     @Override
     public Page getOrders(Pageable pageable) {
-
+        
         return orderRepository.findAll(pageable);
     }
-
-
+    
+    
 }
