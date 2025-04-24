@@ -171,7 +171,7 @@ public class CourtSeeder implements CommandLineRunner {
             address.setLongitude(Math.round(Math.random() * 10000000));
 
             orga.setAddress(address);
-            orga.setStatus(CourtStatus.values()[i % 3]);
+            orga.setStatus(CourtStatus.values()[((i % 5) % 3)]);
 
             List<ImageCourt> images = Arrays.stream(imageGroups[i % 10]).map((img) -> {
                 ImageCourt imageCourt = new ImageCourt();

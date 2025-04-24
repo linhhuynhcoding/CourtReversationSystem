@@ -50,7 +50,7 @@ public class OrderService implements IOrderService {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException(
             "Account", "id", accountId));
         Address address = addressMapper.createToEntity(payload.getCreateAddressPayload());
-        Cart cart = cartRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Cart",
+        Cart cart = cartRepository.findByAccountId(accountId).orElseThrow(() -> new ResourceNotFoundException("Cart",
             "accountId", accountId));
         List<CartItem> cartItems = cart.getItems();
         if (cartItems.isEmpty()) {
@@ -74,7 +74,7 @@ public class OrderService implements IOrderService {
             orderItem.setUnitPrice(product.getPrice());
             orderItem.setTotalPrice(product.getPrice() * item.getQuantity());
             orderItem.setOrder(order);
-
+            orderItems.add(orderItem);
             orderItemRepository.save(orderItem);
         }
         

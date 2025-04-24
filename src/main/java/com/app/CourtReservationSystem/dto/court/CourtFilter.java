@@ -32,7 +32,7 @@ public class CourtFilter {
 
     private String location = null;
 
-    private CourtStatus status = CourtStatus.OPENING;
+    private CourtStatus status = null;
 
     @Override
     public String toString() {

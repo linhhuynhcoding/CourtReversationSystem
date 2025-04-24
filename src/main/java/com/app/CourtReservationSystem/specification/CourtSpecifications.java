@@ -2,6 +2,7 @@ package com.app.CourtReservationSystem.specification;
 
 import com.app.CourtReservationSystem.dto.court.CourtFilter;
 import com.app.CourtReservationSystem.dto.product.ProductFilter;
+import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.model.Address;
 import com.app.CourtReservationSystem.model.Category;
 import com.app.CourtReservationSystem.model.Organisation;
@@ -21,7 +22,7 @@ public class CourtSpecifications {
 
             // filter: SEARCH
             if (filter.getSearch() != null && !filter.getSearch().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("name"), filter.getSearch() + "%"));
+                predicates.add(criteriaBuilder.like(root.get("name"), "%" + filter.getSearch() + "%"));
             }
 
             // filter: STATUS
@@ -43,11 +44,16 @@ public class CourtSpecifications {
             }
 
             // filter: LOCATION
-            if (filter.getLocation() != null && !filter.getLocation().isEmpty()) {
+            if (filter.getLocation() != null ) {
                 Join<Organisation, Address> addressJoin = root.join("address");
-                predicates.add(criteriaBuilder.notEqual(addressJoin.get("city"), filter.getLocation()));
+                predicates.add(criteriaBuilder.equal(addressJoin.get("city"), filter.getLocation()));
             }
-
+            
+            // filter: STATUS
+            if (filter.getStatus() != null ) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), filter.getStatus()));
+            }
+            
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
