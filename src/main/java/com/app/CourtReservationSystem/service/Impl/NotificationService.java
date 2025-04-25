@@ -34,7 +34,7 @@ public class NotificationService implements INotificationService {
     }
 
     @Override
-    public void addNoti(Long senderId, NotiPayload noti) {
+    public void addNoti(NotiPayload noti) {
         var account = accountRepository.findById(senderId).orElseThrow(() -> new ResourceNotFoundException("Accouht", "id", senderId));
         var notification = notiMapper.toEntity(noti);
 

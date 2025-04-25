@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.service.Impl;
 import com.app.CourtReservationSystem.dto.booking.BookingFilter;
 import com.app.CourtReservationSystem.dto.booking.BookingResponse;
 import com.app.CourtReservationSystem.dto.booking.PlaceBookingPayload;
+import com.app.CourtReservationSystem.dto.noti.NotiPayload;
 import com.app.CourtReservationSystem.enums.*;
 import com.app.CourtReservationSystem.exception.APIException;
 import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import com.app.CourtReservationSystem.model.*;
 import com.app.CourtReservationSystem.model.relationships.CourtFull;
 import com.app.CourtReservationSystem.repository.*;
 import com.app.CourtReservationSystem.service.IBookingService;
+import com.app.CourtReservationSystem.service.INotificationService;
 import com.app.CourtReservationSystem.specification.BookingSpecifications;
 import com.app.CourtReservationSystem.specification.CourtSpecifications;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,6 +44,7 @@ public class BookingService implements IBookingService {
     CourtRepository courtRepository;
     OrgaRepository orgaRepository;
     CourtStatusRepository courtStatusRepository;
+    INotificationService notiService;
     private final AccountRepository accountRepository;
     
     private void updateIfFull(Organisation org, LocalDateTime date) {
@@ -119,6 +122,18 @@ public class BookingService implements IBookingService {
         
         Booking booking1 = bookingRepository.findById(booking.getId()).orElseThrow(() -> new APIException("Tạo " +
             "booking thất bại", HttpStatus.INTERNAL_SERVER_ERROR));
+        
+        // Tạo thông báo đến người dùng
+        NotiPayload notiPayload = new NotiPayload();
+        notiPayload.setNotiType(NotificationType.BOOKING);
+        notiPayload.setTitle("Trạng thái đặt sân!");
+        notiPayload.setRole("PLAYER");
+        notiPayload.setMessage(orgProxy.getName() + " đang xử lý đơn đặt sân của bạn!");
+        notiPayload.setRecipientType(RecipientType.INDIVIDUAL);
+        notiPayload.setRecipientId(accountProxy.getId());
+        notiService.addNoti(orgaRepository.g);
+        
+        
         return bookingMapper.toDTO(booking1);
     }
     

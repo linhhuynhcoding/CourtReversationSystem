@@ -21,10 +21,12 @@ public class Notification extends Audiable {
     @Column
     private String message;
 
-    @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private Account sender;
+    @Column
+    private Long senderId;
 
+    @Column
+    private String senderType;
+    
     @ManyToOne
     @JoinColumn(name = "recipient_id", nullable = true)
     private Account recipient;

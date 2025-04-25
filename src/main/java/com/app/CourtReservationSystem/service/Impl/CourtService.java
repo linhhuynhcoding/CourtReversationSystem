@@ -26,6 +26,9 @@ import com.app.CourtReservationSystem.specification.CourtSpecifications;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
@@ -46,6 +50,8 @@ import static com.app.CourtReservationSystem.utils.StringUtil.toOrders;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CourtService implements ICourtService {
+//    static final Logger logger = LoggerFactory.getLogger(CourtService.class);
+    
     OrgaRepository orgaRepository;
     ImageRepository imageRepository;
     CourtMapper courtMapper;
@@ -53,14 +59,18 @@ public class CourtService implements ICourtService {
     AddressMapper addressMapper;
     IStorageService fileStorageService;
     BookingRepository bookingRepository;
-
+    
+    @Autowired
+    RedisService redisService;
+    
     static Long SEVEN_DAYS_TIMESTAMP = 1000 * 3600 * 24 * 7L;
     private final AccountRepository accountRepository;
     
     
     @Override
     public void updateStatus(Long id, CourtStatus status) {
-        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
+            , id));
         
         court.setStatus(status);
         orgaRepository.save(court);
@@ -68,16 +78,31 @@ public class CourtService implements ICourtService {
     
     @Override
     public OrgaResponse getCourt(Long id) {
-        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
-
+//        Object data = redisService.getData("court:" + id);
+//
+//        if (data != null) {
+//            System.out.println("Lấy thông tin sân từ Redis");
+//            return courtMapper.toDTO((Organisation) data);
+//        }
+        
+        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
+            , id));
+        
+        
+//        redisService.saveData("court:" + id, court);
+//        System.out.println("Cập nhật data vào Redis");
+        
         return courtMapper.toDTO(court);
     }
     
     @Override
     public OrgaResponse getCourtByManagerId(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
+        Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account",
+            "id", id));
         ManagerAccount managerAccount = account.getManager();
-        Organisation court = orgaRepository.findByManager(managerAccount).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
+        Organisation court =
+            orgaRepository.findByManager(managerAccount).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
+                , id));
         
         return courtMapper.toDTO(court);
     }
@@ -85,22 +110,24 @@ public class CourtService implements ICourtService {
     @Override
     public OrgaResponse getCourt(Long id, Date startFrom) {
         Date endAt = new Date(startFrom.getTime() + SEVEN_DAYS_TIMESTAMP);
-        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
-
+        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
+            , id));
+        
         return courtMapper.toDTO(court);
     }
-
-
+    
+    
     @Override
     @Transactional
     public OrgaResponse updateCourt(Long id, UpdateCourtPayload updateCourtPayload) {
         orgaRepository.updateCourtById(id, updateCourtPayload);
-        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id", id));
-
+        Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
+            , id));
+        
         // TODO Xu ly anh
         List<ImageResponse> oldImages = updateCourtPayload.getOldImages();
         List<Image> images = this.imageMapper.toEntities(updateCourtPayload.getImageCourts());
-
+        
         oldImages.stream().forEach((imageDTO) -> {
             Image i = imageRepository.findById(imageDTO.getId()).orElseThrow(null);
             if (imageDTO.getStatus() == ImageStatus.INACTIVE) {
@@ -108,16 +135,16 @@ public class CourtService implements ICourtService {
                 imageRepository.save(i);
             }
         });
-
+        
         List<ImageCourt> newImages = images.stream().map((image) -> {
             ImageCourt imageCourt = new ImageCourt();
             imageCourt.setImage(image);
-
+            
             return imageCourt;
         }).collect(Collectors.toList());
-
+        
         if (!newImages.isEmpty()) court.setImageCourts(newImages);
-
+        
         // TODO Xu ly dia chi
         if (updateCourtPayload.getAddress() != null) {
             CreateAddressPayload createAddressPayload = updateCourtPayload.getAddress();
@@ -126,16 +153,16 @@ public class CourtService implements ICourtService {
             court.getAddress().setWard(createAddressPayload.getWard());
             court.getAddress().setAddressLine(createAddressPayload.getAddressLine());
         }
-
+        
         orgaRepository.save(court);
         return courtMapper.toDTO(court);
     }
-
+    
     @Override
     @Transactional
     public OrgaResponse createCourt(CreateCourtPayload createCourtPayload) {
         Organisation orga = courtMapper.createToEntity(createCourtPayload);
-
+        
         List<Court> courtList = new ArrayList<>();
         for (int j = 1; j <= orga.getNumberOfCourts(); j++) {
             Court court = new Court();
@@ -144,52 +171,52 @@ public class CourtService implements ICourtService {
             courtList.add(court);
         }
         orga.setCourts(courtList);
-
+        
         // TODO Xu ly anh
         List<Image> images = this.imageMapper.toEntities(createCourtPayload.getImageCourts());
         List<ImageCourt> imageCourts = images.stream().map((image) -> {
             ImageCourt imageCourt = new ImageCourt();
             imageCourt.setImage(image);
             imageCourt.setCourtImage(orga);
-
+            
             return imageCourt;
         }).collect(Collectors.toList());
-
+        
         // TODO Xu ly address
         Address address = this.addressMapper.createToEntity(createCourtPayload.getAddress());
-
+        
         orga.setImageCourts(imageCourts);
         orga.setAddress(address);
         orga.setStatus(CourtStatus.OPENING);
-
+        
         orgaRepository.save(orga);
-
+        
         return courtMapper.toDTO(orga);
     }
-
+    
     @Override
     public void deleteCourt(Long id) {
         orgaRepository.deleteById(id);
     }
-
+    
     @Override
     public Page getAllCourts(Pageable pageable) {
-
+        
         Page<Organisation> courts = orgaRepository.findAll(pageable);
-
+        
         return courts.map(courtMapper::toDTO);
 //        return courtMapper.toDTOs(courts);
     }
-
+    
     @Override
     public Page getAllCourts(CourtFilter filter) {
         Specification<Organisation> spec = CourtSpecifications.withFilter(filter);
-
+        
         List<Sort.Order> orders = toOrders(filter.getSort(), CourtSortField.class);
         Pageable pageable = PageRequest.of(filter.getPage(), filter.getPageSize(), Sort.by(orders));
-
+        
         Page<Organisation> courts = orgaRepository.findAll(spec, pageable);
-
+        
         return courts.map(courtMapper::toDTO);
     }
 }

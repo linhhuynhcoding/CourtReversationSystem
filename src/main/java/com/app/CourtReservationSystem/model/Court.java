@@ -6,11 +6,13 @@ import lombok.Data;
 import org.hibernate.envers.Audited;
 import org.springframework.context.annotation.Primary;
 
+import java.io.Serializable;
+
 @Entity
 @Data
 @Audited
 @Table(name = "courts")
-public class Court extends Audiable{
+public class Court extends Audiable implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

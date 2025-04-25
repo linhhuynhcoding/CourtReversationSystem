@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 public class NotiPayload {
     private String title;
     private String message;
+    private Long senderId;
+    private String senderType;
     private Long recipientId;
     private NotificationType notiType;
     private String role;
