@@ -19,6 +19,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,9 @@ public class BookingService implements IBookingService {
     CourtRepository courtRepository;
     OrgaRepository orgaRepository;
     CourtStatusRepository courtStatusRepository;
-    INotificationService notiService;
+    INotificationService notificationService;
+
+
     private final AccountRepository accountRepository;
     
     private void updateIfFull(Organisation org, LocalDateTime date) {
@@ -133,8 +136,8 @@ public class BookingService implements IBookingService {
         notiPayload.setRecipientId(accountProxy.getId());
         notiPayload.setSenderId(orgProxy.getId());
         notiPayload.setSenderType(SenderType.ORGANISATION);
-        notiService.addNoti(notiPayload);
-        
+        notificationService.addNoti(notiPayload);
+
         return bookingMapper.toDTO(booking1);
     }
     
@@ -151,7 +154,13 @@ public class BookingService implements IBookingService {
         
         return bookings.map(bookingMapper::toDTO);
     }
-    
+
+    @Override
+    public List<Booking> getUserTodayBooking(Long accountId) {
+
+        return bookingRepository.findAllByAccountId(accountId);
+    }
+
     @Override
     public List<?> getAllCourtBookings(Long id) {
         return List.of();

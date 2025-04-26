@@ -16,7 +16,7 @@ public class NotiPayload {
     private Long senderId;
     private SenderType senderType;
     private Long recipientId;
-    private NotificationType notiType;
+    private NotificationType notiType = NotificationType.BOOKING;
     private String role;
-    private RecipientType recipientType;
+    private RecipientType recipientType = RecipientType.INDIVIDUAL;
 }

@@ -55,4 +55,8 @@ public class Booking extends Audiable {
 
   @Column
   private Double total;
+
+
+  @Column(nullable = true)
+  private boolean isReminded = false;
 }

@@ -51,4 +51,5 @@ public class Account extends Audiable {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private ManagerAccount manager;
+
 }

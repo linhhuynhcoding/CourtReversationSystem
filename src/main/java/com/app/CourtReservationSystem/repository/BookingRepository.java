@@ -33,6 +33,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long>, JpaSpec
 
 
     Page<Booking> findAllByAccountId(Long id, Pageable pageable);
+    List<Booking> findAllByAccountId(Long id);
 
     List<Booking> findAllByCourtId(Long courtId);
 
