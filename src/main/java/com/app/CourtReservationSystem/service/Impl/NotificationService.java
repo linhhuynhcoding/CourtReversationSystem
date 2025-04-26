@@ -2,9 +2,11 @@ package com.app.CourtReservationSystem.service.Impl;
 
 import com.app.CourtReservationSystem.dto.noti.NotiPayload;
 import com.app.CourtReservationSystem.dto.noti.NotiResponse;
+import com.app.CourtReservationSystem.enums.SenderType;
 import com.app.CourtReservationSystem.exception.ResourceNotFoundException;
 import com.app.CourtReservationSystem.mapper.NotiMapper;
 import com.app.CourtReservationSystem.model.Notification;
+import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.NotificationRepository;
 import com.app.CourtReservationSystem.service.INotificationService;
@@ -35,14 +37,13 @@ public class NotificationService implements INotificationService {
 
     @Override
     public void addNoti(NotiPayload noti) {
-        var account = accountRepository.findById(senderId).orElseThrow(() -> new ResourceNotFoundException("Accouht", "id", senderId));
+        var type = noti.getSenderType();
         var notification = notiMapper.toEntity(noti);
 
         if (noti.getRecipientId() != null) {
             var recipient = accountRepository.findById(noti.getRecipientId()).orElseThrow(() -> new ResourceNotFoundException("Recipient", "id", noti.getRecipientId()));
             notification.setRecipient(recipient);
         }
-        notification.setSender(account);
         notification.setSentTime(LocalDateTime.now());
 
         notiRepository.save(notification);

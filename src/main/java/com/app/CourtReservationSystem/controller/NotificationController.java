@@ -57,7 +57,9 @@ public class NotificationController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long accountId = ((CustomUserDetails) auth.getPrincipal()).getId();
 
-        notificationService.addNoti(accountId, payload);
+        payload.setSenderId(accountId);
+
+        notificationService.addNoti(payload);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>("Success!", "",
                 request.getRequestURI(), ""));

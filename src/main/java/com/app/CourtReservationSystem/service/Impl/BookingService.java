@@ -131,8 +131,9 @@ public class BookingService implements IBookingService {
         notiPayload.setMessage(orgProxy.getName() + " đang xử lý đơn đặt sân của bạn!");
         notiPayload.setRecipientType(RecipientType.INDIVIDUAL);
         notiPayload.setRecipientId(accountProxy.getId());
-        notiService.addNoti(orgaRepository.g);
-        
+        notiPayload.setSenderId(orgProxy.getId());
+        notiPayload.setSenderType(SenderType.ORGANISATION);
+        notiService.addNoti(notiPayload);
         
         return bookingMapper.toDTO(booking1);
     }

@@ -22,7 +22,6 @@ public class SupportChannel extends Audiable {
     @OneToMany(mappedBy = "channel")
     private List<SupportRequest> requests;
 
-    // Getters and Setters
 }
 
 

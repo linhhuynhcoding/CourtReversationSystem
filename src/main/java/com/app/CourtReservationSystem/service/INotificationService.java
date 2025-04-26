@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface INotificationService {
     public List<NotiResponse> getUserNoti(Long accountId);
-    void addNoti(Long senderId, NotiPayload noti);
-    
-    void addRemindBookingNoti(Long accountId);
+    void addNoti(NotiPayload noti);
+//    void addRemindBookingNoti(Long accountId);
+
+    // TODO: viết contructor (ở lớp dẫn xuất)
 }

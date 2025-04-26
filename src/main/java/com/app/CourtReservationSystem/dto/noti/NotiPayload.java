@@ -3,6 +3,7 @@ package com.app.CourtReservationSystem.dto.noti;
 import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.enums.NotificationType;
 import com.app.CourtReservationSystem.enums.RecipientType;
+import com.app.CourtReservationSystem.enums.SenderType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class NotiPayload {
     private String title;
     private String message;
     private Long senderId;
-    private String senderType;
+    private SenderType senderType;
     private Long recipientId;
     private NotificationType notiType;
     private String role;
