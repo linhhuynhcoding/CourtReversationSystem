@@ -6,5 +6,8 @@ import java.time.LocalDateTime;
 
 public interface IStatisticService {
     SystemStatisticResponse getSystemStatistic();
+
     SystemStatisticResponse getSystemStatistic(LocalDateTime fromDate, LocalDateTime toDate);
+
+    void updateStatistic();
 }

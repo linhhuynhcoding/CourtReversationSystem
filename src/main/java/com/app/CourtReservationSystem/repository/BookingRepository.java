@@ -1,5 +1,6 @@
 package com.app.CourtReservationSystem.repository;
 
+import com.app.CourtReservationSystem.dto.statistic.BookingRevenueQueryResponse;
 import com.app.CourtReservationSystem.model.Booking;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +45,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long>, JpaSpec
     List<Booking> findAllByCourtIdAndOrgaIdAndTimeStartBetween
             (Long courtId, Long orgaId, LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
 
-    Integer countBookingByTimeStartBetween(LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
+    Long countBookingByTimeStartBetween(LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
+
+    @Query(
+            """
+                        SELECT new com.app.CourtReservationSystem.dto.statistic.BookingRevenueQueryResponse(b.orga, COUNT(b.id), SUM(b.total))
+                        FROM Booking b
+                        WHERE b.timeStart >= :timeStart AND b.timeEnd <= :timeEnd
+                        GROUP BY b.orga
+                    """
+    )
+    List<BookingRevenueQueryResponse> getBookingRevenue(LocalDateTime timeStart, LocalDateTime timeEnd);
 }

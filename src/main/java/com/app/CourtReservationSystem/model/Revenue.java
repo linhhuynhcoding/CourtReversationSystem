@@ -19,7 +19,10 @@ public class Revenue {
     private LocalDateTime date;
     
     @Column
-    private Double total;
+    private Double totalRevenue;
+
+    @Column
+    private Integer totalBookings;
     
     @Column
     private String city;

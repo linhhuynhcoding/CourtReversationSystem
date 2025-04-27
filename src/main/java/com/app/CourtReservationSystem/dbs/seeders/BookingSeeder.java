@@ -40,7 +40,7 @@ public class BookingSeeder implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         System.out.println("BookingSeeder started");
-//        loadBookingData();
+        loadBookingData();
     }
 
     @Transactional
@@ -53,7 +53,7 @@ public class BookingSeeder implements CommandLineRunner {
             booking.setOrga(orga);
 
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 16);
+            calendar.set(Calendar.HOUR_OF_DAY, 7);
             calendar.set(Calendar.MINUTE, 30);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
@@ -63,13 +63,13 @@ public class BookingSeeder implements CommandLineRunner {
 
 
             booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
-            calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(16 + i, 23)));
+            calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(7 + i, 12)));
             booking.setTimeEnd(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
             booking.setAccount(accountRepository.findById(i).orElse(null));
+            booking.setTotal(orga.getPrice() * 2);
 
             bookings.add(booking);
         }
-
 
 
         bookingRepository.saveAll(bookings);
