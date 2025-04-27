@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.dto.statistic;
 
 import com.app.CourtReservationSystem.dto.product.ProductResponse;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
@@ -9,8 +10,11 @@ import java.util.List;
 public class SystemStatisticResponse {
     private Integer totalUsers;
     private Integer totalOrganisations;
-    private Double totalRevenueBooking; //Tong doanh thu cua tat ca booking
-    private Integer bookingTimes; //So tong booking
+    private Integer totalOrganisationsOpening;
+    private Integer totalOrganisationsMaintaining;
+    private Integer totalOrganisationsClosed;
+    private Double totalRevenueBooking; //Tong doanh thu cua tat ca booking (Theo thời gian)
+    private Integer bookingTimes; //So tong booking (Theo thời gian)
     private List<RevenueBookingLocation> revenueBookingLocations;
     private Double totalRevenueOrder; //Tong doanh thu don hang
     private Integer successOrderCount;

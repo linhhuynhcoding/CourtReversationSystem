@@ -1,6 +1,7 @@
 package com.app.CourtReservationSystem.repository;
 
 import com.app.CourtReservationSystem.dto.court.UpdateCourtPayload;
+import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.model.Organisation;
 import com.app.CourtReservationSystem.model.Product;
 import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
@@ -33,7 +34,10 @@ public interface OrgaRepository extends JpaRepository<Organisation, Long>, JpaSp
         @Param("id") Long id,
         @Param("nc") UpdateCourtPayload nc
     );
-    
+
+    Integer countOrganizations();
+    Integer countOrganizationsByStatus(CourtStatus status);
+
     Optional<Organisation> findByManager(ManagerAccount manager);
 
 //    Page<Court> findAll(Pageable pageable);

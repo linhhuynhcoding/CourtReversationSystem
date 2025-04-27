@@ -40,7 +40,7 @@ public class BookingSeeder implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         System.out.println("BookingSeeder started");
-        loadBookingData();
+//        loadBookingData();
     }
 
     @Transactional

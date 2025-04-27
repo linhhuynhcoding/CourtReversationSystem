@@ -11,8 +11,15 @@ import java.util.List;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    public boolean existsByUsername(String username);
-    public boolean existsByEmail(String email);
-    public Account findByUsername(String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    Account findByUsername(String username);
+
+    Integer countByAccountRole(Role role);
+
     Page<Account> findAllByAccountRole(Role accountRole, Pageable pageable);
+
 }

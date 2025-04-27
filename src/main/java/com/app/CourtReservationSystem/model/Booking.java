@@ -59,4 +59,5 @@ public class Booking extends Audiable {
 
   @Column(nullable = true)
   private boolean isReminded = false;
+
 }

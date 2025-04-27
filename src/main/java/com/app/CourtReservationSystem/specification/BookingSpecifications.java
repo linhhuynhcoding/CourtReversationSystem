@@ -13,8 +13,7 @@ public class BookingSpecifications {
     public static Specification<Booking> withFilter(BookingFilter filter) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            
-            
+
             // filter: DURATION
             LocalDateTime today = LocalDateTime.now().withHour(23).withMinute(59);
             LocalDateTime fromDate = today.minusDays(filter.getDuration());

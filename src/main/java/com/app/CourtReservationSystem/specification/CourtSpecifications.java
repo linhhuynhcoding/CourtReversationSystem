@@ -29,6 +29,7 @@ public class CourtSpecifications {
             if (filter.getDateTime() != null) {
                 Join<Organisation, CourtFull> courtFullJoin = root.join("courtFull", JoinType.LEFT);
                 LocalDateTime date = filter.getDateTime().withHour(0).withMinute(0).withSecond(0);
+                date = date.plusDays(1);
 
                 // Subquery để tìm Organisation có courtFull.date == filter date
                 Subquery<Long> subquery = query.subquery(Long.class);

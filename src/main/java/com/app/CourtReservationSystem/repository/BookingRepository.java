@@ -28,11 +28,13 @@ public interface BookingRepository extends JpaRepository<Booking, Long>, JpaSpec
             WHERE b.orga.id = :org_id
             AND ((b.timeStart <= :timeStart AND b.timeEnd > :timeStart) 
                                     OR (b.timeStart < :timeEnd AND b.timeEnd >= :timeEnd))
+                                                OR (b.timeStart >= :timeStart AND b.timeEnd <= :timeEnd)
             """)
     List<Booking> findAllBookingByOgranisation(Long org_id, LocalDateTime timeStart, LocalDateTime timeEnd);
 
 
     Page<Booking> findAllByAccountId(Long id, Pageable pageable);
+
     List<Booking> findAllByAccountId(Long id);
 
     List<Booking> findAllByCourtId(Long courtId);
@@ -41,4 +43,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long>, JpaSpec
 
     List<Booking> findAllByCourtIdAndOrgaIdAndTimeStartBetween
             (Long courtId, Long orgaId, LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
+
+    Integer countBookingByTimeStartBetween(LocalDateTime createdDateAfter, LocalDateTime createdDateBefore);
 }
