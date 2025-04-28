@@ -28,4 +28,7 @@ public class BookingRevenueStats {
     @Column(name = "total_revenue")
     private Double totalRevenue;
 
+    @Column
+    private String city;
+
 }

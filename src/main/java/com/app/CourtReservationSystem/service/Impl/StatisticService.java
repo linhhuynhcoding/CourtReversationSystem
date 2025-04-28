@@ -30,12 +30,29 @@ public class StatisticService implements IStatisticService {
     RoleRepository roleRepository;
     BookingRevenueStatsRepository bookingRevenueStatsRepository;
     CustomerStatsRepository customerStatsRepository;
-    RevenueRepository revenueRepository;
+    BookingRevenueStatsRepository revenueRepository;
     UsageStatsRepository usageStatsRepository;
 
     @Override
     public SystemStatisticResponse getSystemStatistic() {
-        return null;
+        var today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+        var fromLocalDate = today.minusHours(7);
+        var toLocalDate = today.plusHours(17);
+
+        return getSystemStatistic(fromLocalDate, toLocalDate);
+    }
+
+    @Override
+    public SystemStatisticResponse getSystemStatistic(Integer days) {
+        days -= 1;
+
+        var today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+        var fromLocalDate = today.minusHours(7).minusDays(days);
+        var toLocalDate = today.plusHours(17);
+
+        return getSystemStatistic(fromLocalDate, toLocalDate);
     }
 
     @Override
@@ -107,7 +124,7 @@ public class StatisticService implements IStatisticService {
         List<BookingRevenueQueryResponse> revenue = bookingRepository.getBookingRevenue(fromLocalDate, toLocalDate);
 
         for (BookingRevenueQueryResponse revenueQueryResponse : revenue) {
-            System.out.println(revenueQueryResponse);
+//            System.out.println(revenueQueryResponse);
             BookingRevenueStats bookingRevenueStats1 = bookingRevenueStatsRepository.getBookingRevenue(revenueQueryResponse.getOrganisation(), today)
                     .orElse(null);
 
@@ -117,6 +134,7 @@ public class StatisticService implements IStatisticService {
                 bookingRevenueStats1.setDate(today);
             }
 
+            bookingRevenueStats1.setCity(revenueQueryResponse.getOrganisation().getAddress().getCity());
             bookingRevenueStats1.setTotalBookings(revenueQueryResponse.getTotalBookings());
             bookingRevenueStats1.setTotalRevenue(revenueQueryResponse.getTotalRevenue());
 

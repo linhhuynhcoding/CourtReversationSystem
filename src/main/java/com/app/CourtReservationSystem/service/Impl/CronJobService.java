@@ -18,9 +18,20 @@ public class CronJobService {
     @Autowired
     IStatisticService statisticService;
 
+    @Autowired
+    TelegramService telegramService;
+
     @Scheduled(fixedRate = 5000)
     void updateStatisticEveryHour(){
         System.out.println(LocalDateTime.now() + " ----CRON JOB SERVICE: updateStatisticEveryHour: CHẠY MỖI 1 GIỜ!----");
         statisticService.updateStatistic();
     }
+
+    @Scheduled(cron = "0 2 22 * * ?")
+    void sentMessageTelegramEveryDay(){
+        System.out.println(LocalDateTime.now() + " ----CRON JOB SERVICE: sentMessageTelegramEveryDay: CHẠY MỖI 1 GIỜ!----");
+        telegramService.sentRevenueReport();
+    }
+
+
 }
