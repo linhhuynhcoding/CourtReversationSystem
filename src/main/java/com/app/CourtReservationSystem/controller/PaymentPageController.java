@@ -1,5 +1,7 @@
 package com.app.CourtReservationSystem.controller;
 
+import com.app.CourtReservationSystem.enums.PaymentStatus;
+import com.app.CourtReservationSystem.service.IPaymentService;
 import com.app.CourtReservationSystem.service.Impl.VNPAYService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PaymentPageController {
     @Qualifier("VNPAYService")
     VNPAYService vnpayService;
+
+    IPaymentService paymentService;
     
     @GetMapping("/payment")
     public String home(){
@@ -46,6 +50,13 @@ public class PaymentPageController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
+
+        if (paymentStatus == 1){
+            paymentService.updatePaymentStatus(Long.parseLong(orderInfo), PaymentStatus.SUCCESS);
+        }
+        else {
+            paymentService.updatePaymentStatus(Long.parseLong(orderInfo), PaymentStatus.SUCCESS);
+        }
         
         return paymentStatus == 1 ? "orderSuccess" : "orderFail";
     }

@@ -128,4 +128,13 @@ public class PaymentService implements IPaymentService {
     public void validatePayment(HttpServletRequest request) {
 
     }
+
+    @Override
+    public void updatePaymentStatus(Long paymentId, PaymentStatus status) {
+        var payment = paymentRepository.findById(paymentId).orElseThrow(() -> new ResourceNotFoundException("Payment", "id", paymentId));
+
+        payment.setStatus(status);
+
+        paymentRepository.save(payment);
+    }
 }
