@@ -22,7 +22,7 @@ public class CourtSpecifications {
 
             // filter: SEARCH
             if (filter.getSearch() != null && !filter.getSearch().isEmpty()) {
-                predicates.add(criteriaBuilder.like(root.get("name"), "%" + filter.getSearch() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + filter.getSearch().toLowerCase() + "%"));
             }
 
             // filter: STATUS
@@ -45,16 +45,16 @@ public class CourtSpecifications {
             }
 
             // filter: LOCATION
-            if (filter.getLocation() != null ) {
+            if (filter.getLocation() != null) {
                 Join<Organisation, Address> addressJoin = root.join("address");
                 predicates.add(criteriaBuilder.equal(addressJoin.get("city"), filter.getLocation()));
             }
-            
+
             // filter: STATUS
-            if (filter.getStatus() != null ) {
+            if (filter.getStatus() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), filter.getStatus()));
             }
-            
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
