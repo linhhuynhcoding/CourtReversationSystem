@@ -70,6 +70,9 @@ public class SecurityConfig {
                             authorize.requestMatchers("/v3/api-docs*/**").permitAll();
                             authorize.requestMatchers("/favicon.ico").permitAll();
 
+                            authorize.requestMatchers(HttpMethod.POST, "/api/v1/accounts").hasRole("ADMIN");
+                            authorize.requestMatchers(HttpMethod.POST, "/api/v1/courts").hasRole("ADMIN");
+
                             authorize.requestMatchers(HttpMethod.POST).permitAll();
                             authorize.anyRequest().permitAll();
 //                            authorize.requestMatchers(HttpMethod.GET).authenticated();

@@ -15,16 +15,22 @@ public class BookingSpecifications {
             List<Predicate> predicates = new ArrayList<>();
 
             // filter: DURATION
-            LocalDateTime today = LocalDateTime.now().withHour(23).withMinute(59);
-            LocalDateTime fromDate = today.minusDays(filter.getDuration());
+            LocalDateTime today = LocalDateTime.now().withHour(17).withMinute(0).withSecond(0);
+            LocalDateTime fromDate = today;
+
+            // TODO: fix time
             if (filter.getDuration() < 0) {
-                fromDate = today.minusDays(1);
-                today = today.plusDays(-filter.getDuration());
+                fromDate = today.minusDays(1).withHour(17).withMinute(0).withSecond(0);
+                today = today.plusDays(-filter.getDuration()).withHour(17);
             }
+            else {
+                fromDate = fromDate.minusDays(filter.getDuration());
+            }
+
             System.out.println("today: " + today.toString());
             System.out.println("from: " + fromDate.toString());
             predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("timeStart"), fromDate));
-            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("timeStart"), today));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("timeEnd"), today));
 
             if (filter.getBookingId() != null) {
                 System.out.println(root.get("id"));

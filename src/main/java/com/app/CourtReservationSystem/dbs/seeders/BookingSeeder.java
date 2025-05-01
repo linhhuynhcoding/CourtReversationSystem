@@ -61,12 +61,19 @@ public class BookingSeeder implements CommandLineRunner {
                 booking.setCourt(orga.getCourts().get(0));
             }
 
+            var timeStart = LocalDateTime.now().minusDays(i % 7).withHour((int) (14 + i % 3)).withMinute(0).withSecond(0).withNano(0);
+            var timeEnd = timeStart.plusHours(i % 2);
 
-            booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
-            calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(7 + i, 12)));
-            booking.setTimeEnd(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
+//            booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
+//            calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(7 + i, 12)));
+//            booking.setTimeEnd(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
+
+            booking.setTimeStart(timeStart);
+            booking.setTimeEnd(timeEnd);
+
             booking.setAccount(accountRepository.findById(i).orElse(null));
             booking.setTotal(orga.getPrice() * 2);
+            booking.setReminded(true);
 
             bookings.add(booking);
         }

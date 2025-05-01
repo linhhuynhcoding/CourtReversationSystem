@@ -61,7 +61,7 @@ public class ProductSeeder implements CommandLineRunner {
 
             product.setName("Product " + i);
             product.setCategory(category);
-            product.setPrice((Math.floor(Math.random() * 100000) % 1000 + 70) * 1000);
+            product.setPrice((Math.floor(Math.random() * 100000) % 100 + 70) * 1000);
             product.setStock(Math.round(Math.random() * 1000));
             product.setBuyTurn(Math.round(Math.random() * 1000));
             product.setImageProduct(image);

@@ -75,16 +75,16 @@ public class AccountSeeder implements CommandLineRunner {
             accountList.add(user);
         }
 
-        for (int i = 1; i <= 5; i++) {
-            Account account = new Account();
-            account.setUsername("manager" + i);
-            account.setEmail("manager" + i + "@gmail.com");
-            account.setName("Manager " + i);
-            account.setPassword(passwordEncoder.encode("Manager!123"));
-            account.setAccountRole(managerRole);
-
-            accountList.add(account);
-        }
+//        for (int i = 1; i <= 5; i++) {
+//            Account account = new Account();
+//            account.setUsername("manager" + i);
+//            account.setEmail("manager" + i + "@gmail.com");
+//            account.setName("Manager " + i);
+//            account.setPassword(passwordEncoder.encode("Manager!123"));
+//            account.setAccountRole(managerRole);
+//
+//            accountList.add(account);
+//        }
 
         accountRepository.saveAll(accountList);
     }

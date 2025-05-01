@@ -11,6 +11,7 @@ import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.security.CustomUserDetails;
 import com.app.CourtReservationSystem.service.ICourtService;
 import com.cloudinary.api.exceptions.ApiException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -65,6 +66,7 @@ public class CourtController {
     }
 
     @PostMapping("/update-status")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> updateStatusCourt(
             HttpServletRequest request,
             @PathVariable("id") Long id,
@@ -79,6 +81,7 @@ public class CourtController {
     }
     
     @PostMapping("")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> createCourt(
         HttpServletRequest request,
         @Valid @RequestBody CreateCourtPayload createCourtPayload
@@ -93,6 +96,7 @@ public class CourtController {
     }
 
     @PatchMapping("/{id}")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> updateCourt(
             HttpServletRequest request,
             @Valid @RequestBody UpdateCourtPayload updateCourtPayload,
@@ -105,6 +109,7 @@ public class CourtController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> deleteCourt(
             HttpServletRequest request, @PathVariable(name = "id") Long id) {
         courtService.deleteCourt(id);

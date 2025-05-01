@@ -115,6 +115,7 @@ public class AccountController {
     }
 
     @PostMapping("")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> addAccount(HttpServletRequest request, @RequestBody AddAccountPayload payload) {
 
         AccountResponse accountResponses = accountService.addAccountByRole(payload);

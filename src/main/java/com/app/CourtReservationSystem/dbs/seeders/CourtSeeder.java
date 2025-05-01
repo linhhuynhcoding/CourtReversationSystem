@@ -2,15 +2,16 @@ package com.app.CourtReservationSystem.dbs.seeders;
 
 import com.app.CourtReservationSystem.enums.CourtStatus;
 import com.app.CourtReservationSystem.enums.ResolutionType;
-import com.app.CourtReservationSystem.model.Address;
-import com.app.CourtReservationSystem.model.Court;
-import com.app.CourtReservationSystem.model.Image;
-import com.app.CourtReservationSystem.model.Organisation;
+import com.app.CourtReservationSystem.model.*;
 import com.app.CourtReservationSystem.model.relationships.ImageCourt;
+import com.app.CourtReservationSystem.model.relationships.ManagerAccount;
+import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.OrgaRepository;
+import com.app.CourtReservationSystem.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -126,6 +127,15 @@ public class CourtSeeder implements CommandLineRunner {
     @Autowired
     OrgaRepository courtRepository;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     private static final String[] cities = {"Thành phố Hà Nội", "Thành phố Hồ Chí Minh", "Thành phố Đà Nẵng", "Thành phố Hải Phòng"};
     private static final String[] districts = {"District A", "District B", "District C", "District D"};
     private static final String[] wards = {"Ward A", "Ward B", "Ward C", "Ward D"};
@@ -144,13 +154,14 @@ public class CourtSeeder implements CommandLineRunner {
     private void loadCourtData() {
         List<Organisation> courts = new ArrayList<>() {
         };
+        Role managerRole = roleRepository.findByRole("COURT_MANAGER");
 
         for (int i = 0; i <= 100; i++) {
             Organisation orga = new Organisation();
             Address address = new Address();
 
             orga.setName(names[i % 50]);
-            orga.setPrice((Math.floor(Math.random() * 100000) % 1000 + 150) * 1000);
+            orga.setPrice((Math.floor(Math.random() * 100000) % 400 + 150) * 1000);
             orga.setNumberOfCourts(Math.round(Math.random() * 100000 % 1) + 1);
 
             List<Court> courtList = new ArrayList<>();
@@ -187,8 +198,23 @@ public class CourtSeeder implements CommandLineRunner {
             }).toList();
             orga.setImageCourts(images);
 
+            Account account = new Account();
+            account.setUsername("manager" + i);
+            account.setEmail("manager" + i + "@gmail.com");
+            account.setName("Manager " + i);
+            account.setPassword(passwordEncoder.encode("Manager!123"));
+            account.setAccountRole(managerRole);
+
+            ManagerAccount managerAccount = new ManagerAccount();
+            managerAccount.setAccount(account);
+            managerAccount.setCourt(orga);
+
+
+            orga.setManager(managerAccount);
             courts.add(orga);
         }
+
+
 
         courtRepository.saveAll(courts);
     }

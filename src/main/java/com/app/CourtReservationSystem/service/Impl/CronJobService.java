@@ -27,9 +27,15 @@ public class CronJobService {
         statisticService.updateStatistic();
     }
 
-    @Scheduled(cron = "0 2 22 * * ?")
+    @Scheduled(cron = "0 58 23 * * ?")
+    void clearDataBookingFull(){
+        System.out.println(LocalDateTime.now() + " ----CRON JOB SERVICE: clearDataBookingFull: CHẠY MỖI TỐI!----");
+        // TODO: gọi service xóa data dư thừa
+    }
+
+    @Scheduled(cron = "0 40 13 * * ?")
     void sentMessageTelegramEveryDay(){
-        System.out.println(LocalDateTime.now() + " ----CRON JOB SERVICE: sentMessageTelegramEveryDay: CHẠY MỖI 1 GIỜ!----");
+        System.out.println(LocalDateTime.now() + " ----CRON JOB SERVICE: sentMessageTelegramEveryDay: CHẠY MỖI TỐI!----");
         telegramService.sentRevenueReport();
     }
 

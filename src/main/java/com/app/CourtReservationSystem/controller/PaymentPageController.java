@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PaymentPageController {
-    @Qualifier("VNPAYService")
-    VNPAYService vnpayService;
 
-    IPaymentService paymentService;
-    
+    String clientURL = "http://172.19.128.1:3000";
+
+    @Qualifier("VNPAYService")
+    final VNPAYService vnpayService;
+
+    final IPaymentService paymentService;
+
+
     @GetMapping("/payment")
     public String home(){
         return "createOrder";
@@ -50,15 +55,17 @@ public class PaymentPageController {
         model.addAttribute("totalPrice", totalPrice);
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
+        model.addAttribute("client_url", clientURL +"/me");
 
         if (paymentStatus == 1){
             paymentService.updatePaymentStatus(Long.parseLong(orderInfo), PaymentStatus.SUCCESS);
         }
         else {
-            paymentService.updatePaymentStatus(Long.parseLong(orderInfo), PaymentStatus.SUCCESS);
+            paymentService.updatePaymentStatus(Long.parseLong(orderInfo), PaymentStatus.FAIL);
         }
-        
-        return paymentStatus == 1 ? "orderSuccess" : "orderFail";
+        return "redirect:" + clientURL + "/me";
+
+//        return paymentStatus == 1 ? "orderSuccess" : "orderFail";
     }
     
 }

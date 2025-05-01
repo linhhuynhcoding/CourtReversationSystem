@@ -156,7 +156,7 @@ public class VNPAYService implements IPaymentMethodService {
         resultPayment.setRedirect(true);
         String serverUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         
-        String url = this.createOrder(request, payment.getAmount().longValue(), "1234", serverUrl);
+        String url = this.createOrder(request, payment.getAmount().longValue(), payment.getId().toString(), serverUrl);
         
         resultPayment.setRedirectUrl(url);
 

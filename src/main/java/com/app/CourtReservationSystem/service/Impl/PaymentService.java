@@ -13,6 +13,7 @@ import com.app.CourtReservationSystem.model.Payment;
 import com.app.CourtReservationSystem.repository.BookingRepository;
 import com.app.CourtReservationSystem.repository.OrderRepository;
 import com.app.CourtReservationSystem.repository.PaymentRepository;
+import com.app.CourtReservationSystem.service.IBookingService;
 import com.app.CourtReservationSystem.service.IPaymentMethodService;
 import com.app.CourtReservationSystem.service.IPaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,13 +35,15 @@ public class PaymentService implements IPaymentService {
     private PaymentRepository paymentRepository;
     private BookingRepository bookingRepository;
     private OrderRepository orderRepository;
+    private IBookingService bookingService;
 
     public PaymentService(
             VNPAYService vnpayService,
             CODSerivce codSerivce,
             PaymentRepository paymentRepository,
             BookingRepository bookingRepository,
-            OrderRepository orderRepository
+            OrderRepository orderRepository,
+            BookingService bookingService
     ) {
         paymentMethodServiceMap = new HashMap<>();
         this.paymentMethodServiceMap.put(PaymentMethod.VNPAY, vnpayService);
@@ -49,6 +52,7 @@ public class PaymentService implements IPaymentService {
         this.paymentRepository = paymentRepository;
         this.bookingRepository = bookingRepository;
         this.orderRepository = orderRepository;
+        this.bookingService = bookingService;
     }
 
 //    public PaymentService(
@@ -134,6 +138,10 @@ public class PaymentService implements IPaymentService {
         var payment = paymentRepository.findById(paymentId).orElseThrow(() -> new ResourceNotFoundException("Payment", "id", paymentId));
 
         payment.setStatus(status);
+
+        if (payment.getBooking() != null) {
+            bookingService.updateBookingStatus(payment.getBooking().getId(), BookingStatus.WAITING);
+        }
 
         paymentRepository.save(payment);
     }
