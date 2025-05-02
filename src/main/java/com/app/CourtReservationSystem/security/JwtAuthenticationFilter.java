@@ -53,6 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       // load the user associated with token
       CustomUserDetails userDetails = accountDetailService.loadUserByUsername(username);
+
+      System.out.println("userDetails: " + userDetails.getAuthorities());
       
       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
         userDetails,

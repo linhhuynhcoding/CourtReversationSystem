@@ -73,7 +73,7 @@ public class SecurityConfig {
                             authorize.requestMatchers(HttpMethod.POST, "/api/v1/accounts").hasRole("ADMIN");
                             authorize.requestMatchers(HttpMethod.POST, "/api/v1/courts").hasRole("ADMIN");
 
-                            authorize.requestMatchers(HttpMethod.POST).permitAll();
+//                            authorize.requestMatchers(HttpMethod.POST).permitAll();
                             authorize.anyRequest().permitAll();
 //                            authorize.requestMatchers(HttpMethod.GET).authenticated();
 
