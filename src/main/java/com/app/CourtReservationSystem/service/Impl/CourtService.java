@@ -78,21 +78,22 @@ public class CourtService implements ICourtService {
     
     @Override
     public OrgaResponse getCourt(Long id) {
-//        Object data = redisService.getData("court:" + id);
-//
-//        if (data != null) {
-//            System.out.println("Lấy thông tin sân từ Redis");
-//            return courtMapper.toDTO((Organisation) data);
-//        }
+        Object data = redisService.getData("court:" + id);
+
+        if (data != null) {
+            System.out.println("Lấy thông tin sân từ Redis");
+            return (OrgaResponse) data;
+        }
         
         Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
             , id));
         
+        var orgaDTO = courtMapper.toDTO(court);
         
-//        redisService.saveData("court:" + id, court);
-//        System.out.println("Cập nhật data vào Redis");
+        redisService.saveData("court:" + id, orgaDTO);
+        System.out.println("Cập nhật data vào Redis");
         
-        return courtMapper.toDTO(court);
+        return orgaDTO;
     }
     
     @Override

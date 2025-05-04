@@ -79,29 +79,29 @@ public class NotificationService implements INotificationService {
             var timeBooking = booking.getTimeStart().withMinute(0);
             var timeNow = LocalDateTime.now().plusHours(2).withMinute(0);
 
-            if (timeBooking.isBefore(timeNow)) {
-                if (booking.isReminded()) {
-                    continue;
-                }
-
-                var orga = booking.getOrga();
-                NotiPayload notiPayload = new NotiPayload();
-
-                notiPayload.setTitle("Nhắc nhở sắp đến giờ booking");
-                notiPayload.setMessage("<strong>" + orga.getName() + "</strong> đang chờ bạn đến nhận sân, đừng quên nhé!<br/>"
-                        + "Mã đặt sân: " + booking.getId() + "<br/>"
-                        + "Thời gian: " + booking.getTimeStart().plusHours(7).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "<br/>"
-                );
-                notiPayload.setSenderId(booking.getId());
-                notiPayload.setSenderType(SenderType.ORGANISATION);
-                notiPayload.setRecipientId(accountId);
-                addNoti(notiPayload);
-
-                booking.setReminded(true);
-                bookingRepository.save(booking);
-
-                return;
-            }
+//            if (timeBooking.isBefore(timeNow)) {
+//                if (booking.isReminded()) {
+//                    continue;
+//                }
+//
+//                var orga = booking.getOrga();
+//                NotiPayload notiPayload = new NotiPayload();
+//
+//                notiPayload.setTitle("Nhắc nhở sắp đến giờ booking");
+//                notiPayload.setMessage("<strong>" + orga.getName() + "</strong> đang chờ bạn đến nhận sân, đừng quên nhé!<br/>"
+//                        + "Mã đặt sân: " + booking.getId() + "<br/>"
+//                        + "Thời gian: " + booking.getTimeStart().plusHours(7).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "<br/>"
+//                );
+//                notiPayload.setSenderId(booking.getId());
+//                notiPayload.setSenderType(SenderType.ORGANISATION);
+//                notiPayload.setRecipientId(accountId);
+//                addNoti(notiPayload);
+//
+//                booking.setReminded(true);
+//                bookingRepository.save(booking);
+//
+//                return;
+//            }
         }
     }
 

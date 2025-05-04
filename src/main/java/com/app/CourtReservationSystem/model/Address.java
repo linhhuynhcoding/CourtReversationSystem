@@ -6,12 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.envers.Audited;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "addresses")
 @Audited
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Address extends Audiable {
+public class Address extends Audiable  {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

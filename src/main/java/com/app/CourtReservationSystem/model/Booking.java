@@ -8,14 +8,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "bookings")
 @Audited
 @Data
-public class Booking extends Audiable {
+public class Booking extends Audiable implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +40,12 @@ public class Booking extends Audiable {
   @JoinColumn(name = "account_id")
   private Account account;
 
-//  @Column(name = "time_start", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-  @Column(name = "time_start")
+  @Column(name = "time_start", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+//  @Column(name = "time_start")
   private LocalDateTime timeStart;
   
-  @Column(name = "time_end")
+//  @Column(name = "time_end")
+  @Column(name = "time_end", columnDefinition = "TIMESTAMP WITH TIME ZONE")
   private LocalDateTime timeEnd; // dam bao time_start & time_end chung mot ngay (validation)
 
   @Column(name = "status")

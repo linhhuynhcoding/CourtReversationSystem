@@ -11,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ import java.util.List;
 @Audited
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Organisation extends Audiable {
+public class Organisation extends Audiable implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,6 +6,7 @@ import com.app.CourtReservationSystem.model.Role;
 import com.app.CourtReservationSystem.repository.AccountRepository;
 import com.app.CourtReservationSystem.repository.ProductRepository;
 import com.app.CourtReservationSystem.repository.RoleRepository;
+import com.app.CourtReservationSystem.service.Impl.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -25,13 +26,19 @@ public class AccountSeeder implements CommandLineRunner {
 
     @Autowired
     RoleRepository roleRepository;
-
+    
+    @Autowired
+    RedisService redisService;
+    
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
         try {
+            System.out.println("Clear cache...");
+            redisService.clearCache();
+            
             System.out.println("AccountSeeder started");
             loadUserData();
             System.out.println("AccountSeeder done");

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,6 +64,8 @@ public class BookingSeeder implements CommandLineRunner {
 
             var timeStart = LocalDateTime.now().minusDays(i % 7).withHour((int) (14 + i % 3)).withMinute(0).withSecond(0).withNano(0);
             var timeEnd = timeStart.plusHours(i % 2);
+//            var timeStart = OffsetDateTime.now().minusDays(i % 7).withHour((int) (14 + i % 3)).withMinute(0).withSecond(0).withNano(0);
+//            var timeEnd = timeStart.plusHours(i % 2);
 
 //            booking.setTimeStart(LocalDateTime.ofInstant(calendar.getTime().toInstant(), ZoneId.systemDefault()));
 //            calendar.set(Calendar.HOUR_OF_DAY, (int) (Math.min(7 + i, 12)));

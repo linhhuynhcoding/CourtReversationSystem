@@ -31,4 +31,10 @@ public class RedisService {
     public void deleteData(String key) {
         redisTemplate.delete(key);
     }
+    
+    public void clearCache() {
+        redisTemplate.getConnectionFactory().getConnection().serverCommands().flushAll();
+    }
+    
+    
 }
