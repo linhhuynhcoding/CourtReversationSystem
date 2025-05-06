@@ -28,9 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatisticController {
     IStatisticService statisticService;
 
-    // TODO: add sercurity
-    @GetMapping("/system")
-//    @SecurityRequirement(name = "Bear Authentication")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<ApiResponse<?>> getUserNoti(HttpServletRequest request) throws ApiException {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        Long accountId = ((CustomUserDetails) auth.getPrincipal()).getId();

@@ -11,5 +11,4 @@ public interface INotificationService {
     void addNoti(NotiPayload noti);
     void addRemindBookingNoti(Account account);
 
-    // TODO: viết contructor (ở lớp dẫn xuất)
 }

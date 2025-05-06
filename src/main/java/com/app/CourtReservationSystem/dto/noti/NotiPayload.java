@@ -4,12 +4,15 @@ import com.app.CourtReservationSystem.dto.account.AccountResponse;
 import com.app.CourtReservationSystem.enums.NotificationType;
 import com.app.CourtReservationSystem.enums.RecipientType;
 import com.app.CourtReservationSystem.enums.SenderType;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class NotiPayload {
     private String title;
     private String message;

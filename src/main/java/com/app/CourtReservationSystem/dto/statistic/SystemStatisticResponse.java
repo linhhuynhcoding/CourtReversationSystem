@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Setter @Getter
+@Builder
 public class SystemStatisticResponse {
     private Long totalUsers;
     private Long totalOrganisations;

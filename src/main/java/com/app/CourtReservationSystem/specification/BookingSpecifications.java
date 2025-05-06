@@ -15,13 +15,11 @@ public class BookingSpecifications {
             List<Predicate> predicates = new ArrayList<>();
 
             // filter: DURATION
-            LocalDateTime today = LocalDateTime.now().withHour(17).withMinute(0).withSecond(0);
+            LocalDateTime today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
             LocalDateTime fromDate = today;
 
-            // TODO: fix time
             if (filter.getDuration() < 0) {
-                fromDate = today.minusDays(1).withHour(17).withMinute(0).withSecond(0);
-                today = today.plusDays(-filter.getDuration()).withHour(17);
+                today = today.plusDays(-filter.getDuration() - 1);
             }
             else {
                 fromDate = fromDate.minusDays(filter.getDuration());

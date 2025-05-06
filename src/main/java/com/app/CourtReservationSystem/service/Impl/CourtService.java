@@ -81,7 +81,6 @@ public class CourtService implements ICourtService {
         Object data = redisService.getData("court:" + id);
 
         if (data != null) {
-            System.out.println("Lấy thông tin sân từ Redis");
             return (OrgaResponse) data;
         }
         
@@ -91,7 +90,6 @@ public class CourtService implements ICourtService {
         var orgaDTO = courtMapper.toDTO(court);
         
         redisService.saveData("court:" + id, orgaDTO);
-        System.out.println("Cập nhật data vào Redis");
         
         return orgaDTO;
     }
@@ -125,7 +123,6 @@ public class CourtService implements ICourtService {
         Organisation court = orgaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Court", "id"
             , id));
         
-        // TODO Xu ly anh
         List<ImageResponse> oldImages = updateCourtPayload.getOldImages();
         List<Image> images = this.imageMapper.toEntities(updateCourtPayload.getImageCourts());
         
@@ -146,7 +143,6 @@ public class CourtService implements ICourtService {
         
         if (!newImages.isEmpty()) court.setImageCourts(newImages);
         
-        // TODO Xu ly dia chi
         if (updateCourtPayload.getAddress() != null) {
             CreateAddressPayload createAddressPayload = updateCourtPayload.getAddress();
             court.getAddress().setCity(createAddressPayload.getCity());
@@ -173,7 +169,6 @@ public class CourtService implements ICourtService {
         }
         orga.setCourts(courtList);
         
-        // TODO Xu ly anh
         List<Image> images = this.imageMapper.toEntities(createCourtPayload.getImageCourts());
         List<ImageCourt> imageCourts = images.stream().map((image) -> {
             ImageCourt imageCourt = new ImageCourt();
@@ -183,7 +178,6 @@ public class CourtService implements ICourtService {
             return imageCourt;
         }).collect(Collectors.toList());
         
-        // TODO Xu ly address
         Address address = this.addressMapper.createToEntity(createCourtPayload.getAddress());
         
         orga.setImageCourts(imageCourts);
