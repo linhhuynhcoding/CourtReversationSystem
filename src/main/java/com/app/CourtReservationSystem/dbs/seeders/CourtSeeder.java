@@ -147,8 +147,8 @@ public class CourtSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("CourtSeeder starting...");
-        loadCourtData();
+//        System.out.println("CourtSeeder starting...");
+//        loadCourtData();
     }
 
     private void loadCourtData() {

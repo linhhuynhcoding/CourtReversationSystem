@@ -20,8 +20,8 @@ public class RoleSeeder implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    System.out.println("RoleSeeder starting...");
-    loadUserData();
+//    System.out.println("RoleSeeder starting...");
+//    loadUserData();
   }
 
   private void loadUserData() {

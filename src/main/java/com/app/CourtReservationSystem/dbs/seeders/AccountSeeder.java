@@ -35,17 +35,17 @@ public class AccountSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        try {
-            System.out.println("Clear cache...");
-            redisService.clearCache();
-            
-            System.out.println("AccountSeeder started");
-            loadUserData();
-            System.out.println("AccountSeeder done");
-        } catch (Exception e) {
-            System.out.println("AccountSeeder error");
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("Clear cache...");
+//            redisService.clearCache();
+//
+//            System.out.println("AccountSeeder started");
+//            loadUserData();
+//            System.out.println("AccountSeeder done");
+//        } catch (Exception e) {
+//            System.out.println("AccountSeeder error");
+//            e.printStackTrace();
+//        }
     }
 
     @Transactional

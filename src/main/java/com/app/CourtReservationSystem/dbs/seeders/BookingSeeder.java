@@ -40,8 +40,8 @@ public class BookingSeeder implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        System.out.println("BookingSeeder started");
-        loadBookingData();
+//        System.out.println("BookingSeeder started");
+//        loadBookingData();
     }
 
     @Transactional

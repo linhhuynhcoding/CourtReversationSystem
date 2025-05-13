@@ -29,7 +29,8 @@ public class StatisticController {
     IStatisticService statisticService;
 
     @SecurityRequirement(name = "Bear Authentication")
-    public ResponseEntity<ApiResponse<?>> getUserNoti(HttpServletRequest request) throws ApiException {
+    @GetMapping("/system")
+    public ResponseEntity<ApiResponse<?>> getSystemStatistic(HttpServletRequest request) throws ApiException {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        Long accountId = ((CustomUserDetails) auth.getPrincipal()).getId();
 
